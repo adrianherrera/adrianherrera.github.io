@@ -8,6 +8,11 @@
   </url>
   
   <url>
+    <loc>https://adrianherrera.github.io/post/google-ctf-2016/</loc>
+    <lastmod>2017-08-08T11:50:51+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://adrianherrera.github.io/</loc>
     <lastmod>2017-08-07T07:00:31+02:00</lastmod>
     <priority>0</priority>
@@ -15,6 +20,12 @@
   
   <url>
     <loc>https://adrianherrera.github.io/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://adrianherrera.github.io/post/</loc>
+    <lastmod>2017-08-08T11:50:51+02:00</lastmod>
     <priority>0</priority>
   </url>
   
