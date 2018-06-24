@@ -7,7 +7,7 @@
 <meta name="description" content="" />
 <meta name="keywords" content="reverse engineering, symbolic execution, s2e" />
 <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-<meta name="generator" content="Hugo 0.32.2" />
+<meta name="generator" content="Hugo 0.41" />
 
 <link rel="canonical" href="https://adrianherrera.github.io/post/google-ctf-2016/">
 <base href="https://adrianherrera.github.io/" />
@@ -34,7 +34,8 @@ For comparison, solutions for the challenge using Angr and Manticore are also av
 
 
 
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Solving a CTF Challenge with S2E"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Solving a CTF Challenge with S2E"/>
 <meta name="twitter:description" content="Introduction Symbolic execution tools such as Angr and Manticore have become increasingly popular for analyzing binaries in Capture the Flag (CTF) challenges.
 In this blog post I will show that we can do the same with S2E, using it to solve a reverse engineering challenge from the 2016 Google CTF. This post walks through the process of writing an S2E plugin &ldquo;from first principles&rdquo; to solve this challenge.
 For comparison, solutions for the challenge using Angr and Manticore are also available."/>
@@ -49,7 +50,7 @@ For comparison, solutions for the challenge using Angr and Manticore are also av
 
 <meta itemprop="datePublished" content="2017-08-08T11:50:51&#43;02:00" />
 <meta itemprop="dateModified" content="2017-08-08T11:50:51&#43;02:00" />
-<meta itemprop="wordCount" content="2727">
+<meta itemprop="wordCount" content="2726">
 
 
 
@@ -161,7 +162,7 @@ code). If this argument is not provided the program will print a usage message
 and exit.</p>
 
 
-<figure >
+<figure>
     <a href="/img/google-ctf-2016-binja.png">
         <img src="/img/google-ctf-2016-binja.png" alt="Disassembly view" />
     </a>
@@ -462,7 +463,7 @@ on performance. I will discuss this later.</p>
 constraints accumulated during symbolic execution and displaying the result.</p>
 
 <pre><code class="language-cpp">#include &lt;cctype&gt;
-#include &lt;stringstream&gt;
+#include &lt;sstream&gt;
 
 void GoogleCTFUnbreakable::onSuccess(S2EExecutionState *state, uint64_t pc) {
     // `results` is a vector containing pairs of strings and a vector of bytes.
@@ -516,7 +517,7 @@ challenge. At a minimum the following plugins <strong>must</strong> be enabled:<
 
 <ul>
 <li><code>GoogleCTFUnbreakable</code></li>
-<li><code>Base Instructions</code></li>
+<li><code>BaseInstructions</code></li>
 <li><code>HostFiles</code></li>
 <li><code>LinuxMonitor</code></li>
 <li><code>ProcessExecutionDetector</code></li>

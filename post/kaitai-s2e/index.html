@@ -7,7 +7,7 @@
 <meta name="description" content="" />
 <meta name="keywords" content="reverse engineering, symbolic execution, s2e" />
 <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-<meta name="generator" content="Hugo 0.32.2" />
+<meta name="generator" content="Hugo 0.41" />
 
 <link rel="canonical" href="https://adrianherrera.github.io/post/kaitai-s2e/">
 <base href="https://adrianherrera.github.io/" />
@@ -32,7 +32,8 @@
 
 
 
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="&#34;Targeting&#34; File Parsers with S2E and Kaitai Struct"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="&#34;Targeting&#34; File Parsers with S2E and Kaitai Struct"/>
 <meta name="twitter:description" content="Introduction Recently I&rsquo;ve been playing around with file parsers in S2E. This typically involves calling s2ecmd symbfile to make the parser&rsquo;s input symbolic and then running S2E to explore different paths through the parser. However, this is a relatively heavy-handed approach; it makes the entire input file one big symbolic blob, which quickly causes path explosion. Additionally, we may only be interested in exploring paths that exercise specific functionality."/>
 
 
@@ -751,7 +752,7 @@ with their constraints (in KLEE&rsquo;s
 <a href="https://klee.github.io/docs/kquery/">KQuery</a> format):</p>
 
 
-<figure >
+<figure>
     <a href="/img/readelf-process_section_headers.png">
         <img src="/img/readelf-process_section_headers.png" alt="readelf proccess_section_headers code coverage" />
     </a>
@@ -769,7 +770,7 @@ with their constraints (in KLEE&rsquo;s
 
 
 
-<figure >
+<figure>
     <a href="/img/readelf-init_dwarf_regnames.png">
         <img src="/img/readelf-init_dwarf_regnames.png" alt="readelf init_dwarf_regnames code coverage" />
     </a>
