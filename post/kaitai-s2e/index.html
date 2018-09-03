@@ -7,31 +7,15 @@
 <meta name="description" content="" />
 <meta name="keywords" content="reverse engineering, symbolic execution, s2e" />
 <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-<meta name="generator" content="Hugo 0.41" />
+<meta name="generator" content="Hugo 0.47.1" />
 
 <link rel="canonical" href="https://adrianherrera.github.io/post/kaitai-s2e/">
 <base href="https://adrianherrera.github.io/" />
 <meta property="og:title" content="&#34;Targeting&#34; File Parsers with S2E and Kaitai Struct" />
 <meta property="og:description" content="Introduction Recently I&rsquo;ve been playing around with file parsers in S2E. This typically involves calling s2ecmd symbfile to make the parser&rsquo;s input symbolic and then running S2E to explore different paths through the parser. However, this is a relatively heavy-handed approach; it makes the entire input file one big symbolic blob, which quickly causes path explosion. Additionally, we may only be interested in exploring paths that exercise specific functionality." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://adrianherrera.github.io/post/kaitai-s2e/" />
-
-
-
-<meta property="article:published_time" content="2017-10-23T21:35:48&#43;11:00"/>
-
+<meta property="og:url" content="https://adrianherrera.github.io/post/kaitai-s2e/" /><meta property="article:published_time" content="2017-10-23T21:35:48&#43;11:00"/>
 <meta property="article:modified_time" content="2017-10-23T21:35:48&#43;11:00"/>
-
-
-
-
-
-
-
-
-
-
-
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="&#34;Targeting&#34; File Parsers with S2E and Kaitai Struct"/>
 <meta name="twitter:description" content="Introduction Recently I&rsquo;ve been playing around with file parsers in S2E. This typically involves calling s2ecmd symbfile to make the parser&rsquo;s input symbolic and then running S2E to explore different paths through the parser. However, this is a relatively heavy-handed approach; it makes the entire input file one big symbolic blob, which quickly causes path explosion. Additionally, we may only be interested in exploring paths that exercise specific functionality."/>
@@ -144,10 +128,10 @@ have to repeat this process for different file formats. Can we do better?</p>
 
 <p>Let&rsquo;s briefly diverge from S2E and discuss <a href="http://kaitai.io">Kaitai Struct</a>.
 Kaitai Struct is a tool for developing parsers for binary structures. It
-provides a YAML-like language that allows for the concise definition of a binary
-structure. The Kaitai Struct Compiler (<code>ksc</code>) then generates a parser from this
-definition. This parser can be generated in a number of languages, including
-C++, Python and Java.</p>
+provides a YAML-like language that allows for the concise definition of a
+binary structure. The Kaitai Struct Compiler (<code>ksc</code>) then generates a parser
+from this definition. This parser can be generated in a number of languages,
+including C++, Python and Java.</p>
 
 <p>Here is a partial definition of the ELF format in Kaitai Struct (taken from the
 <a href="http://formats.kaitai.io/elf/index.html">format gallery</a>). It consists of a
