@@ -7,7 +7,7 @@
 <meta name="description" content="" />
 <meta name="keywords" content="reverse engineering, symbolic execution, s2e" />
 <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-<meta name="generator" content="Hugo 0.51" />
+<meta name="generator" content="Hugo 0.54.0" />
 
 <link rel="canonical" href="https://adrianherrera.github.io/post/google-ctf-2016/">
 <base href="https://adrianherrera.github.io/" />
@@ -16,7 +16,8 @@
 In this blog post I will show that we can do the same with S2E, using it to solve a reverse engineering challenge from the 2016 Google CTF. This post walks through the process of writing an S2E plugin &ldquo;from first principles&rdquo; to solve this challenge.
 For comparison, solutions for the challenge using Angr and Manticore are also available." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://adrianherrera.github.io/post/google-ctf-2016/" /><meta property="article:published_time" content="2017-08-08T11:50:51&#43;02:00"/>
+<meta property="og:url" content="https://adrianherrera.github.io/post/google-ctf-2016/" />
+<meta property="article:published_time" content="2017-08-08T11:50:51&#43;02:00"/>
 <meta property="article:modified_time" content="2017-08-08T11:50:51&#43;02:00"/>
 
 <meta name="twitter:card" content="summary"/>
@@ -126,7 +127,7 @@ solve this challenge.</p>
 <a href="https://github.com/angr/angr-doc/blob/master/examples/google2016_unbreakable_0">Angr</a>
 and <a href="https://github.com/trailofbits/manticore-examples/tree/master/google2016_unbreakable">Manticore</a>
 are also available. If you want to cheat and skip straight to the end, the
-final plugin code is available <a href="https://gist.github.com/adrianherrera/397dc68918374c81cf63e53e659bd083">here</a>.</p>
+final plugin code is available <a href="https://github.com/adrianherrera/unbreakable-ctf-s2e">here</a>.</p>
 
 <h2 id="getting-started">Getting started</h2>
 
