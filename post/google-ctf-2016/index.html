@@ -7,7 +7,7 @@
 <meta name="description" content="" />
 <meta name="keywords" content="reverse engineering, symbolic execution, s2e" />
 <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-<meta name="generator" content="Hugo 0.54.0" />
+<meta name="generator" content="Hugo 0.55.3" />
 
 <link rel="canonical" href="https://adrianherrera.github.io/post/google-ctf-2016/">
 <base href="https://adrianherrera.github.io/" />
@@ -36,7 +36,7 @@ For comparison, solutions for the challenge using Angr and Manticore are also av
 
 <meta itemprop="datePublished" content="2017-08-08T11:50:51&#43;02:00" />
 <meta itemprop="dateModified" content="2017-08-08T11:50:51&#43;02:00" />
-<meta itemprop="wordCount" content="2726">
+<meta itemprop="wordCount" content="2728">
 
 
 
@@ -201,6 +201,7 @@ developing a plugin from scratch is a better way to understand how S2E works.</p
 
 #include &lt;s2e/CorePlugin.h&gt;
 #include &lt;s2e/Plugin.h&gt;
+#include &lt;s2e/S2E.h&gt;
 
 namespace s2e {
 namespace plugins {
