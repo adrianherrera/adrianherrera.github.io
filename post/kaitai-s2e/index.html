@@ -7,7 +7,7 @@
 <meta name="description" content="" />
 <meta name="keywords" content="reverse engineering, symbolic execution, s2e" />
 <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-<meta name="generator" content="Hugo 0.55.3" />
+<meta name="generator" content="Hugo 0.55.5" />
 
 <link rel="canonical" href="https://adrianherrera.github.io/post/kaitai-s2e/">
 <base href="https://adrianherrera.github.io/" />
@@ -30,7 +30,7 @@
 
 <meta itemprop="datePublished" content="2017-10-23T21:35:48&#43;11:00" />
 <meta itemprop="dateModified" content="2017-10-23T21:35:48&#43;11:00" />
-<meta itemprop="wordCount" content="4023">
+<meta itemprop="wordCount" content="4022">
 
 
 
@@ -330,9 +330,8 @@ namespace s2e {
 namespace plugins {
 
 // In addition to extending the basic Plugin class, we must also implement the
-// BaseInstructionsPluginInvokerInterface to handle custom S2E commands
-class KaitaiStruct : public Plugin,
-                     public BaseInstructionsPluginInvokerInterface {
+// IPluginInvoker to handle custom S2E commands
+class KaitaiStruct : public Plugin, public IPluginInvoker {
     S2E_PLUGIN
 
 public:
@@ -340,10 +339,9 @@ public:
 
     void initialize();
 
-    // The method from BaseInstructionsPluginInvokerInterface that we must
-    // implement to respond to a custom command. This method takes the current
-    // S2E state, a pointer to the custom command object and the size of the
-    // custom command object
+    // The method from IPluginInvoker that we must implement to respond to a
+    // custom command. This method takes the current S2E state, a pointer to
+    // the custom command object and the size of the custom command object
     virtual void handleOpcodeInvocation(S2EExecutionState *state,
                                         uint64_t guestDataPtr,
                                         uint64_t guestDataSize);
@@ -410,7 +408,7 @@ void KaitaiStruct::handleOpcodeInvocation(S2EExecutionState *state,
     }
 
     // 2. Read the command
-    if (!state-&gt;mem()-&gt;readMemoryConcrete(guestDataPtr, &amp;cmd, guestDataSize)) {
+    if (!state-&gt;mem()-&gt;read(guestDataPtr, &amp;cmd, guestDataSize)) {
         getWarningsStream(state) &lt;&lt; &quot;S2E_KAITAI_COMMAND: Failed to read &quot;
                                  &lt;&lt; &quot;command\n&quot;;
         exit(1);
@@ -423,7 +421,7 @@ void KaitaiStruct::handleOpcodeInvocation(S2EExecutionState *state,
             cmd.MakeSymbolic.Result = success ? 0 : 1;
 
             // Write the result back to the guest
-            if (!state-&gt;mem()-&gt;writeMemory(guestDataPtr, cmd)) {
+            if (!state-&gt;mem()-&gt;write(guestDataPtr, cmd)) {
                 getWarningsStream(State) &lt;&lt; &quot;S2E_KAITAI_COMMAND: Failed to &quot;
                                          &lt;&lt; &quot; write result to guest\n&quot;;
                 exit(1);
@@ -447,7 +445,7 @@ configures S2E&rsquo;s Lua interpreter and allows us to call Lua code in the S2E
 configuration file.</p>
 
 <p>The <code>handleOpcodeInvocation</code> method follows a similar pattern to other plugins
-that implement <code>BaseInstructionsPluginInvokerInterface</code> (e.g.
+that implement <code>IPluginInvoker</code> (e.g.
 <a href="https://github.com/S2E/libs2eplugins/blob/master/src/s2e/Plugins/Models/FunctionModels.cpp">FunctionModels</a>
 and <a href="https://github.com/S2E/libs2eplugins/blob/master/src/s2e/Plugins/OSMonitors/Linux/BaseLinuxMonitor.h">LinuxMonitor</a>):</p>
 
@@ -481,8 +479,7 @@ include some extra header files:</p>
     std::vector&lt;uint8_t&gt; data(size);
 
     // Read the input file's contents from guest memory
-    if (!state-&gt;mem()-&gt;readMemoryConcrete(addr, data.data(),
-                                          sizeof(uint8_t) * size)) {
+    if (!state-&gt;mem()-&gt;read(addr, data.data(), sizeof(uint8_t) * size)) {
         return false;
     }
 
