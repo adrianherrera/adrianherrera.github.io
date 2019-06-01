@@ -30,7 +30,7 @@
 
 <meta itemprop="datePublished" content="2017-10-23T21:35:48&#43;11:00" />
 <meta itemprop="dateModified" content="2017-10-23T21:35:48&#43;11:00" />
-<meta itemprop="wordCount" content="4022">
+<meta itemprop="wordCount" content="4023">
 
 
 
@@ -421,7 +421,7 @@ void KaitaiStruct::handleOpcodeInvocation(S2EExecutionState *state,
             cmd.MakeSymbolic.Result = success ? 0 : 1;
 
             // Write the result back to the guest
-            if (!state-&gt;mem()-&gt;write(guestDataPtr, cmd)) {
+            if (!state-&gt;mem()-&gt;write(guestDataPtr, cmd, guestDataSize)) {
                 getWarningsStream(State) &lt;&lt; &quot;S2E_KAITAI_COMMAND: Failed to &quot;
                                          &lt;&lt; &quot; write result to guest\n&quot;;
                 exit(1);
