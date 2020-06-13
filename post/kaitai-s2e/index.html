@@ -7,12 +7,13 @@
 <meta name="description" content="" />
 <meta name="keywords" content="reverse engineering, symbolic execution, s2e" />
 <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-<meta name="generator" content="Hugo 0.58.3" />
+<meta name="generator" content="Hugo 0.72.0" />
 
 <link rel="canonical" href="https://adrianherrera.github.io/post/kaitai-s2e/">
 <base href="https://adrianherrera.github.io/" />
 <meta property="og:title" content="&#34;Targeting&#34; File Parsers with S2E and Kaitai Struct" />
-<meta property="og:description" content="Introduction Recently I&rsquo;ve been playing around with file parsers in S2E. This typically involves calling s2ecmd symbfile to make the parser&rsquo;s input symbolic and then running S2E to explore different paths through the parser. However, this is a relatively heavy-handed approach; it makes the entire input file one big symbolic blob, which quickly causes path explosion. Additionally, we may only be interested in exploring paths that exercise specific functionality." />
+<meta property="og:description" content="Introduction Recently I&rsquo;ve been playing around with file parsers in S2E. This typically involves calling s2ecmd symbfile to make the parser&rsquo;s input symbolic and then running S2E to explore different paths through the parser. However, this is a relatively heavy-handed approach; it makes the entire input file one big symbolic blob, which quickly causes path explosion. Additionally, we may only be interested in exploring paths that exercise specific functionality.
+So how can we achieve more targeted symbolic execution on file-based programs such as parsers?" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://adrianherrera.github.io/post/kaitai-s2e/" />
 <meta property="article:published_time" content="2017-10-23T21:35:48+11:00" />
@@ -20,21 +21,20 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="&#34;Targeting&#34; File Parsers with S2E and Kaitai Struct"/>
-<meta name="twitter:description" content="Introduction Recently I&rsquo;ve been playing around with file parsers in S2E. This typically involves calling s2ecmd symbfile to make the parser&rsquo;s input symbolic and then running S2E to explore different paths through the parser. However, this is a relatively heavy-handed approach; it makes the entire input file one big symbolic blob, which quickly causes path explosion. Additionally, we may only be interested in exploring paths that exercise specific functionality."/>
+<meta name="twitter:description" content="Introduction Recently I&rsquo;ve been playing around with file parsers in S2E. This typically involves calling s2ecmd symbfile to make the parser&rsquo;s input symbolic and then running S2E to explore different paths through the parser. However, this is a relatively heavy-handed approach; it makes the entire input file one big symbolic blob, which quickly causes path explosion. Additionally, we may only be interested in exploring paths that exercise specific functionality.
+So how can we achieve more targeted symbolic execution on file-based programs such as parsers?"/>
 
 
 <meta itemprop="name" content="&#34;Targeting&#34; File Parsers with S2E and Kaitai Struct">
-<meta itemprop="description" content="Introduction Recently I&rsquo;ve been playing around with file parsers in S2E. This typically involves calling s2ecmd symbfile to make the parser&rsquo;s input symbolic and then running S2E to explore different paths through the parser. However, this is a relatively heavy-handed approach; it makes the entire input file one big symbolic blob, which quickly causes path explosion. Additionally, we may only be interested in exploring paths that exercise specific functionality.">
-
-
+<meta itemprop="description" content="Introduction Recently I&rsquo;ve been playing around with file parsers in S2E. This typically involves calling s2ecmd symbfile to make the parser&rsquo;s input symbolic and then running S2E to explore different paths through the parser. However, this is a relatively heavy-handed approach; it makes the entire input file one big symbolic blob, which quickly causes path explosion. Additionally, we may only be interested in exploring paths that exercise specific functionality.
+So how can we achieve more targeted symbolic execution on file-based programs such as parsers?">
 <meta itemprop="datePublished" content="2017-10-23T21:35:48&#43;11:00" />
 <meta itemprop="dateModified" content="2017-10-23T21:35:48&#43;11:00" />
-<meta itemprop="wordCount" content="4023">
+<meta itemprop="wordCount" content="4018">
 
 
 
 <meta itemprop="keywords" content="" />
-
 
 <link rel="stylesheet" href="css/layout.css" />
 <link rel="stylesheet" href="css/color-dark.css" />
@@ -101,10 +101,7 @@
 
 <article class="post">
     <h1 class="title"> &#34;Targeting&#34; File Parsers with S2E and Kaitai Struct </h1>
-    <div class="content"> 
-
-<h2 id="introduction">Introduction</h2>
-
+    <div class="content"> <h2 id="introduction">Introduction</h2>
 <p>Recently I&rsquo;ve been playing around with file parsers in S2E. This typically
 involves calling <code>s2ecmd symbfile</code> to make the parser&rsquo;s input symbolic and then
 running S2E to explore different paths through the parser. However, this is a
@@ -113,7 +110,6 @@ symbolic blob, which quickly causes
 <a href="https://en.wikipedia.org/wiki/Symbolic_execution#Path_Explosion">path explosion</a>.
 Additionally, we may only be interested in exploring paths that exercise
 specific functionality.</p>
-
 <p>So how can we achieve more targeted symbolic execution on file-based programs
 such as parsers? One approach could be to write a custom S2E plugin that
 handles the <code>onSymbolicVariableCreation</code> event and intercepts
@@ -122,74 +118,64 @@ symbolic data and adjusted what was symbolic/concrete. The downsides of this
 approach should be evident: it is time consuming and error prone to write C++
 code to do this; it requires knowledge of the input file format; and you would
 have to repeat this process for different file formats. Can we do better?</p>
-
 <h2 id="kaitai-struct">Kaitai Struct</h2>
-
 <p>Let&rsquo;s briefly diverge from S2E and discuss <a href="http://kaitai.io">Kaitai Struct</a>.
 Kaitai Struct is a tool for developing parsers for binary structures. It
 provides a YAML-like language that allows for the concise definition of a
 binary structure. The Kaitai Struct Compiler (<code>ksc</code>) then generates a parser
 from this definition. This parser can be generated in a number of languages,
 including C++, Python and Java.</p>
-
 <p>Here is a partial definition of the ELF format in Kaitai Struct (taken from the
 <a href="http://formats.kaitai.io/elf/index.html">format gallery</a>). It consists of a
 number of &ldquo;attributes&rdquo; (e.g. <code>magic</code>, <code>abi_version</code>, etc.) which describe an
 ELF file:</p>
-
-<pre><code class="language-yaml">meta:
-  id: elf
-  title: Executable and Linkable Format
-  application: SVR4 ABI and up, many *nix systems
-  license: CC0-1.0
-  ks-version: 0.8
-seq:
-  # e_ident[EI_MAG0]..e[EI_MAG3]
-  - id: magic
-    size: 4
-    contents: [0x7f, &quot;ELF&quot;]
-  # e_ident[EI_CLASS]
-  - id: bits
-    type: u1
-    enum: bits
-  # e_ident[EI_DATA]
-  - id: endian
-    type: u1
-    enum: endian
-  # e_ident[EI_VERSION]
-  - id: ei_version
-    type: u1
-  # e_ident[EI_OSABI]
-  - id: abi
-    type: u1
-    enum: os_abi
-  - id: abi_version
-    type: u1
-  - id: pad
-    size: 7
-  - id: header
-    type: endian_elf
-</code></pre>
-
-<p>I strongly recommend reading the Kaitai Struct
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">meta</span>:
+  <span style="color:#66d9ef">id</span>: elf
+  <span style="color:#66d9ef">title</span>: Executable and Linkable Format
+  <span style="color:#66d9ef">application</span>: SVR4 ABI and up, many <span style="color:#75715e">*nix</span> systems
+  <span style="color:#66d9ef">license</span>: CC0<span style="color:#ae81ff">-1.0</span>
+  <span style="color:#66d9ef">ks-version</span>: <span style="color:#ae81ff">0.8</span>
+<span style="color:#66d9ef">seq</span>:
+  <span style="color:#75715e"># e_ident[EI_MAG0]..e[EI_MAG3]</span>
+  - <span style="color:#66d9ef">id</span>: magic
+    <span style="color:#66d9ef">size</span>: <span style="color:#ae81ff">4</span>
+    <span style="color:#66d9ef">contents</span>: [<span style="color:#ae81ff">0x7f</span>, <span style="color:#e6db74">&#34;ELF&#34;</span>]
+  <span style="color:#75715e"># e_ident[EI_CLASS]</span>
+  - <span style="color:#66d9ef">id</span>: bits
+    <span style="color:#66d9ef">type</span>: u1
+    <span style="color:#66d9ef">enum</span>: bits
+  <span style="color:#75715e"># e_ident[EI_DATA]</span>
+  - <span style="color:#66d9ef">id</span>: endian
+    <span style="color:#66d9ef">type</span>: u1
+    <span style="color:#66d9ef">enum</span>: endian
+  <span style="color:#75715e"># e_ident[EI_VERSION]</span>
+  - <span style="color:#66d9ef">id</span>: ei_version
+    <span style="color:#66d9ef">type</span>: u1
+  <span style="color:#75715e"># e_ident[EI_OSABI]</span>
+  - <span style="color:#66d9ef">id</span>: abi
+    <span style="color:#66d9ef">type</span>: u1
+    <span style="color:#66d9ef">enum</span>: os_abi
+  - <span style="color:#66d9ef">id</span>: abi_version
+    <span style="color:#66d9ef">type</span>: u1
+  - <span style="color:#66d9ef">id</span>: pad
+    <span style="color:#66d9ef">size</span>: <span style="color:#ae81ff">7</span>
+  - <span style="color:#66d9ef">id</span>: header
+    <span style="color:#66d9ef">type</span>: endian_elf
+</code></pre></div><p>I strongly recommend reading the Kaitai Struct
 <a href="http://doc.kaitai.io">documentation</a> to get the most out of this post, as I
 will skip much of the detail here (mostly because I&rsquo;m not really an expert
 myself!). Nevertheless, there is one feature that is worth singling out: the
 &ldquo;<a href="http://doc.kaitai.io/ksy_reference.html#spec-process">processing spec</a>&rdquo;.</p>
-
 <p>The processing spec allows you to apply a custom function that will &ldquo;process&rdquo;
 an attribute in some way. For example, an attribute may be encrypted/encoded. A
 processing spec can be applied to decrypt/decode this attribute at run time.</p>
-
 <p>How is this relevant to symbolic execution? Suppose that we had an
 <code>s2e_make_symbolic</code> processing spec, and by applying this spec to particular
 attributes we would make <strong>only</strong> those parts of the input file symbolic. This
 would give us more fine-grained control over S2E&rsquo;s state space and potentially
 reduce the path explosion problem. All we need is a way to combine S2E and
 Kaitai Struct to make this possible!</p>
-
 <h2 id="combining-s2e-and-kaitai-struct">Combining S2E and Kaitai Struct</h2>
-
 <p>We will use the <a href="https://www.lua.org">Lua</a> programming language to combine S2E
 and Kaitai Struct. Using Lua allows us to reuse existing components — S2E
 contains an embedded Lua interpreter (for parsing the S2E configuration file
@@ -202,17 +188,14 @@ generate a C++ parser, but this would require recompiling S2E every time we
 wanted to use a different file format.) By selectively applying the
 <code>s2e_make_symbolic</code> processing spec in our input definition, we can achieve
 more targeted symbolic execution.</p>
-
 <p>The remainder of this blog post will walk through how I combined S2E and Kaitai
 Struct. I&rsquo;ll use the ELF definition (discussed previously) and
 <a href="https://sourceware.org/binutils/docs/binutils/readelf.html">readelf</a> as a
 practical example.</p>
-
 <p>In an effort to make it easier for others to play with the code, I&rsquo;ve tried to
 make it as stand-alone as possible — there are no modifications to S2E&rsquo;s core
 engine or <code>ksc</code>. However, this means that the code is far from polished! The
 code consists of the following components:</p>
-
 <ul>
 <li>A command-line tool (<code>s2e_kaitai_cmd</code>) that executes in the guest OS. This
 tool reads the input file and invokes an S2E plugin to selectively make the
@@ -222,36 +205,27 @@ generated by <code>ksc</code>; and</li>
 <li>A small amount of Lua glue between the S2E configuration file and the parser
 generated by <code>ksc</code>.</li>
 </ul>
-
 <p>Each of these components are described below. The complete code is available
 <a href="https://github.com/adrianherrera/kaitai-s2e">here</a>.</p>
-
-<h3 id="the-s2e-kaitai-cmd-tool">The <code>s2e_kaitai_cmd</code> tool</h3>
-
+<h3 id="the-s2e_kaitai_cmd-tool">The <code>s2e_kaitai_cmd</code> tool</h3>
 <p>At the start of this post I mentioned that we would normally use
 <code>s2ecmd symbfile</code> to make an input file symbolic. The <code>symbfile</code> command makes
 an input file symbolic by:</p>
-
 <ol>
 <li>Opening the input file in read/write mode</li>
 <li>Reading the input file into a buffer</li>
 <li>Calling <code>s2e_make_symbolic</code> on the buffer</li>
 <li>Writing the (now symbolic) buffer back to the original input file</li>
 </ol>
-
 <p>We&rsquo;ll take a similar approach, except we&rsquo;ll modify step (3) to:</p>
-
 <ul>
 <li>Invoke the <code>KaitaiStruct</code> plugin to selectively make the buffer symbolic</li>
 </ul>
-
 <p>To do this we&rsquo;ll add the following directories/files to our S2E environment:</p>
-
 <ul>
 <li><code>source/s2e/guest/common/s2e_kaitai_cmd/s2e_kaitai_cmd.c</code></li>
 <li><code>source/s2e/guest/common/include/s2e/kaitai/commands.h</code></li>
 </ul>
-
 <p>I&rsquo;ll skip steps 1, 2 and 4 because they have already been implemented in
 <a href="https://github.com/S2E/guest-tools/blob/master/common/s2ecmd/s2ecmd.c">s2ecmd</a>.
 For step 3, we&rsquo;ll create a custom S2E command to invoke a plugin (described
@@ -263,189 +237,172 @@ standard method for
 <a href="https://github.com/S2E/guest-tools/blob/master/common/include/s2e/monitors/commands/linux.h">S2E</a>
 <a href="https://github.com/S2E/guest-tools/blob/master/common/include/s2e/monitors/commands/raw.h">plugins</a>
 from the guest:</p>
-
-<pre><code class="language-c">enum S2E_KAITAI_COMMANDS {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">enum</span> S2E_KAITAI_COMMANDS {
     KAITAI_MAKE_SYMBOLIC,
 };
 
-struct S2E_KAITAI_COMMAND_MAKE_SYMBOLIC {
-    // Pointer to guest memory where the symbolic file has been loaded
-    uint64_t InputFile;
-    // Size of the input file (in bytes)
-    uint64_t FileSize;
-    // 1 on success, 0 on failure
-    uint64_t Result;
+<span style="color:#66d9ef">struct</span> S2E_KAITAI_COMMAND_MAKE_SYMBOLIC {
+    <span style="color:#75715e">// Pointer to guest memory where the symbolic file has been loaded
+</span><span style="color:#75715e"></span>    uint64_t InputFile;
+    <span style="color:#75715e">// Size of the input file (in bytes)
+</span><span style="color:#75715e"></span>    uint64_t FileSize;
+    <span style="color:#75715e">// 1 on success, 0 on failure
+</span><span style="color:#75715e"></span>    uint64_t Result;
 } __attribute__((packed));
 
-struct S2E_KAITAI_COMMAND {
-    enum S2E_KAITAI_COMMANDS Command;
-    union {
-        struct S2E_KAITAI_COMMAND_MAKE_SYMBOLIC MakeSymbolic;
+<span style="color:#66d9ef">struct</span> S2E_KAITAI_COMMAND {
+    <span style="color:#66d9ef">enum</span> S2E_KAITAI_COMMANDS Command;
+    <span style="color:#66d9ef">union</span> {
+        <span style="color:#66d9ef">struct</span> S2E_KAITAI_COMMAND_MAKE_SYMBOLIC MakeSymbolic;
     };
 } __attribute__((packed));
-</code></pre>
-
-<p>We can then add the following function to <code>s2e_kaitai_cmd.c</code>. This function
+</code></pre></div><p>We can then add the following function to <code>s2e_kaitai_cmd.c</code>. This function
 takes a pointer to the file contents (which have been <code>read</code> into a buffer) and
 the size of the buffer (determined with <code>lseek</code>), constructs the relevant
 command and sends this command to S2E.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">s2e_kaitai_make_symbolic</span>(<span style="color:#66d9ef">const</span> uint8_t <span style="color:#f92672">*</span>buffer, <span style="color:#66d9ef">unsigned</span> size) {
+    <span style="color:#66d9ef">struct</span> S2E_KAITAI_COMMAND cmd <span style="color:#f92672">=</span> {<span style="color:#ae81ff">0</span>};
 
-<pre><code class="language-c">static inline int s2e_kaitai_make_symbolic(const uint8_t *buffer, unsigned size) {
-    struct S2E_KAITAI_COMMAND cmd = {0};
+    cmd.Command <span style="color:#f92672">=</span> S2E_KAITAI_MAKE_SYMBOLIC;
+    cmd.MakeSymbolic.InputFile <span style="color:#f92672">=</span> (uintptr_t) buffer;
+    cmd.MakeSymbolic.FileSize <span style="color:#f92672">=</span> size;
+    cmd.MakeSymbolic.Result <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
 
-    cmd.Command = S2E_KAITAI_MAKE_SYMBOLIC;
-    cmd.MakeSymbolic.InputFile = (uintptr_t) buffer;
-    cmd.MakeSymbolic.FileSize = size;
-    cmd.MakeSymbolic.Result = 0;
+    s2e_invoke_plugin(<span style="color:#e6db74">&#34;KaitaiStruct&#34;</span>, <span style="color:#f92672">&amp;</span>cmd, <span style="color:#66d9ef">sizeof</span>(cmd));
 
-    s2e_invoke_plugin(&quot;KaitaiStruct&quot;, &amp;cmd, sizeof(cmd));
-
-    return (int) cmd.MakeSymbolic.Result;
+    <span style="color:#66d9ef">return</span> (<span style="color:#66d9ef">int</span>) cmd.MakeSymbolic.Result;
 }
-</code></pre>
-
-<p>Now we need an S2E plugin to handle this command.</p>
-
+</code></pre></div><p>Now we need an S2E plugin to handle this command.</p>
 <h3 id="the-kaitaistruct-plugin">The <code>KaitaiStruct</code> plugin</h3>
-
 <p>Let&rsquo;s start with a skeleton plugin (don&rsquo;t forget to add
 <code>s2e/Plugins/KaitaiStruct.cpp</code> to the <code>add_library</code> command in
 <code>source/s2e/libs2eplugins/src/CMakeLists.txt</code>).</p>
-
 <p>The header file:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">#ifndef S2E_PLUGINS_KAITAI_STRUCT_H
+</span><span style="color:#75715e">#define S2E_PLUGINS_KAITAI_STRUCT_H
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;s2e/CorePlugin.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;s2e/Plugins/Core/BaseInstructions.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">// Forward declare the S2E command from s2e_kaitai_cmd
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">S2E_KAITAI_COMMAND</span>;
 
-<pre><code class="language-cpp">#ifndef S2E_PLUGINS_KAITAI_STRUCT_H
-#define S2E_PLUGINS_KAITAI_STRUCT_H
+<span style="color:#66d9ef">namespace</span> s2e {
+<span style="color:#66d9ef">namespace</span> plugins {
 
-#include &lt;s2e/CorePlugin.h&gt;
-#include &lt;s2e/Plugins/Core/BaseInstructions.h&gt;
-
-// Forward declare the S2E command from s2e_kaitai_cmd
-struct S2E_KAITAI_COMMAND;
-
-namespace s2e {
-namespace plugins {
-
-// In addition to extending the basic Plugin class, we must also implement the
-// IPluginInvoker to handle custom S2E commands
-class KaitaiStruct : public Plugin, public IPluginInvoker {
+<span style="color:#75715e">// In addition to extending the basic Plugin class, we must also implement the
+</span><span style="color:#75715e">// IPluginInvoker to handle custom S2E commands
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">KaitaiStruct</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">public</span> Plugin, <span style="color:#66d9ef">public</span> IPluginInvoker {
     S2E_PLUGIN
 
-public:
-    KaitaiStruct(S2E *s2e) : Plugin(s2e) { }
+<span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+    KaitaiStruct(S2E <span style="color:#f92672">*</span>s2e) <span style="color:#f92672">:</span> Plugin(s2e) { }
 
-    void initialize();
+    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">initialize</span>();
 
-    // The method from IPluginInvoker that we must implement to respond to a
-    // custom command. This method takes the current S2E state, a pointer to
-    // the custom command object and the size of the custom command object
-    virtual void handleOpcodeInvocation(S2EExecutionState *state,
-                                        uint64_t guestDataPtr,
-                                        uint64_t guestDataSize);
+    <span style="color:#75715e">// The method from IPluginInvoker that we must implement to respond to a
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// custom command. This method takes the current S2E state, a pointer to
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// the custom command object and the size of the custom command object
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handleOpcodeInvocation</span>(S2EExecutionState <span style="color:#f92672">*</span>state,
+                                        <span style="color:#66d9ef">uint64_t</span> guestDataPtr,
+                                        <span style="color:#66d9ef">uint64_t</span> guestDataSize);
 
-private:
-    // The name of the Lua function that will run the Kaitai Struct parser
-    std::string m_kaitaiParserFunc;
+<span style="color:#66d9ef">private</span><span style="color:#f92672">:</span>
+    <span style="color:#75715e">// The name of the Lua function that will run the Kaitai Struct parser
+</span><span style="color:#75715e"></span>    std<span style="color:#f92672">::</span>string m_kaitaiParserFunc;
 
-    // handleOpcodeInvocation will call this method to actually invoke the Lua
-    // function
-    bool handleMakeSymbolic(S2EExecutionState *state,
-                            const S2E_KAITAI_COMMAND &amp;command);
+    <span style="color:#75715e">// handleOpcodeInvocation will call this method to actually invoke the Lua
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// function
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">bool</span> <span style="color:#a6e22e">handleMakeSymbolic</span>(S2EExecutionState <span style="color:#f92672">*</span>state,
+                            <span style="color:#66d9ef">const</span> S2E_KAITAI_COMMAND <span style="color:#f92672">&amp;</span>command);
 }
 
-} // namespace plugins
-} // namespace s2e
-
-#endif
-</code></pre>
-
-<p>And the CPP file:</p>
-
-<pre><code class="language-cpp">// From source/s2e/guest/common/include
-#include &lt;s2e/kaitai/commands.h&gt;
-
-#include &lt;s2e/ConfigFile.h&gt;
-#include &lt;s2e/S2E.h&gt;
-#include &lt;s2e/Utils.h&gt;
-
-#include &quot;KaitaiStruct.h&quot;
-
-namespace s2e {
-namespace plugins {
+} <span style="color:#75715e">// namespace plugins
+</span><span style="color:#75715e"></span>} <span style="color:#75715e">// namespace s2e
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">#endif
+</span></code></pre></div><p>And the CPP file:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">// From source/s2e/guest/common/include
+</span><span style="color:#75715e"></span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;s2e/kaitai/commands.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;s2e/ConfigFile.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;s2e/S2E.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;s2e/Utils.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;KaitaiStruct.h&#34;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">namespace</span> s2e {
+<span style="color:#66d9ef">namespace</span> plugins {
 
 S2E_DEFINE_PLUGIN(KaitaiStruct,
-                  &quot;Combine S2E and Kaitai Struct&quot;,
-                  &quot;&quot;,
-                  // Dependencies
-                  &quot;LuaBindings&quot;); // Reuse the existing Lua binding code from
-                                  // the function/instruction annotation
-                                  // plugins
-
-void KaitaiStruct::initialize() {
-    m_kaitaiParserFunc = s2e()-&gt;getConfig()-&gt;getString(getConfigKey() +
-                                                       &quot;.parser&quot;);
+                  <span style="color:#e6db74">&#34;Combine S2E and Kaitai Struct&#34;</span>,
+                  <span style="color:#e6db74">&#34;&#34;</span>,
+                  <span style="color:#75715e">// Dependencies
+</span><span style="color:#75715e"></span>                  <span style="color:#e6db74">&#34;LuaBindings&#34;</span>); <span style="color:#75715e">// Reuse the existing Lua binding code from
+</span><span style="color:#75715e"></span>                                  <span style="color:#75715e">// the function/instruction annotation
+</span><span style="color:#75715e"></span>                                  <span style="color:#75715e">// plugins
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">void</span> KaitaiStruct<span style="color:#f92672">::</span>initialize() {
+    m_kaitaiParserFunc <span style="color:#f92672">=</span> s2e()<span style="color:#f92672">-&gt;</span>getConfig()<span style="color:#f92672">-&gt;</span>getString(getConfigKey() <span style="color:#f92672">+</span>
+                                                       <span style="color:#e6db74">&#34;.parser&#34;</span>);
 }
 
-bool KaitaiStruct::handleMakeSymbolic(S2EExecutionState *state,
-                                      const S2E_KAITAI_COMMAND &amp;command) {
-    // We'll finish this later
-    return true;
+<span style="color:#66d9ef">bool</span> KaitaiStruct<span style="color:#f92672">::</span>handleMakeSymbolic(S2EExecutionState <span style="color:#f92672">*</span>state,
+                                      <span style="color:#66d9ef">const</span> S2E_KAITAI_COMMAND <span style="color:#f92672">&amp;</span>command) {
+    <span style="color:#75715e">// We&#39;ll finish this later
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> true;
 }
 
-void KaitaiStruct::handleOpcodeInvocation(S2EExecutionState *state,
-                                          uint64_t guestDataPtr,
-                                          uint64_t guestDataSize) {
+<span style="color:#66d9ef">void</span> KaitaiStruct<span style="color:#f92672">::</span>handleOpcodeInvocation(S2EExecutionState <span style="color:#f92672">*</span>state,
+                                          <span style="color:#66d9ef">uint64_t</span> guestDataPtr,
+                                          <span style="color:#66d9ef">uint64_t</span> guestDataSize) {
     S2E_KAITAI_COMMAND cmd;
 
-    // 1. Validate the received command
-    if (guestDataSize != sizeof(cmd)) {
-        getWarningsStream(state) &lt;&lt; &quot;S2E_KAITAI_COMMAND: Mismatched command &quot;
-                                 &lt;&lt; &quot;structure size &quot; &lt;&lt; guestDataSize &lt;&lt; &quot;\n&quot;;
-        exit(1);
+    <span style="color:#75715e">// 1. Validate the received command
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (guestDataSize <span style="color:#f92672">!=</span> <span style="color:#66d9ef">sizeof</span>(cmd)) {
+        getWarningsStream(state) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;S2E_KAITAI_COMMAND: Mismatched command &#34;</span>
+                                 <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;structure size &#34;</span> <span style="color:#f92672">&lt;&lt;</span> guestDataSize <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+        exit(<span style="color:#ae81ff">1</span>);
     }
 
-    // 2. Read the command
-    if (!state-&gt;mem()-&gt;read(guestDataPtr, &amp;cmd, guestDataSize)) {
-        getWarningsStream(state) &lt;&lt; &quot;S2E_KAITAI_COMMAND: Failed to read &quot;
-                                 &lt;&lt; &quot;command\n&quot;;
-        exit(1);
+    <span style="color:#75715e">// 2. Read the command
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>state<span style="color:#f92672">-&gt;</span>mem()<span style="color:#f92672">-&gt;</span>read(guestDataPtr, <span style="color:#f92672">&amp;</span>cmd, guestDataSize)) {
+        getWarningsStream(state) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;S2E_KAITAI_COMMAND: Failed to read &#34;</span>
+                                 <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;command</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+        exit(<span style="color:#ae81ff">1</span>);
     }
 
-    // 3. Handle the command
-    switch (cmd.Command) {
-        case KAITAI_MAKE_SYMBOLIC: {
-            bool success = handleMakeSymbolic(state, cmd);
-            cmd.MakeSymbolic.Result = success ? 0 : 1;
+    <span style="color:#75715e">// 3. Handle the command
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">switch</span> (cmd.Command) {
+        <span style="color:#66d9ef">case</span> KAITAI_MAKE_SYMBOLIC: {
+            <span style="color:#66d9ef">bool</span> success <span style="color:#f92672">=</span> handleMakeSymbolic(state, cmd);
+            cmd.MakeSymbolic.Result <span style="color:#f92672">=</span> success <span style="color:#f92672">?</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span>;
 
-            // Write the result back to the guest
-            if (!state-&gt;mem()-&gt;write(guestDataPtr, cmd, guestDataSize)) {
-                getWarningsStream(State) &lt;&lt; &quot;S2E_KAITAI_COMMAND: Failed to &quot;
-                                         &lt;&lt; &quot; write result to guest\n&quot;;
-                exit(1);
+            <span style="color:#75715e">// Write the result back to the guest
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>state<span style="color:#f92672">-&gt;</span>mem()<span style="color:#f92672">-&gt;</span>write(guestDataPtr, cmd, guestDataSize)) {
+                getWarningsStream(State) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;S2E_KAITAI_COMMAND: Failed to &#34;</span>
+                                         <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; write result to guest</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+                exit(<span style="color:#ae81ff">1</span>);
             }
-        } break;
+        } <span style="color:#66d9ef">break</span>;
 
-        default: {
-            getWarningsStream(state) &lt;&lt; &quot;S2E_KAITAI_COMMAND: Invalid command &quot;
-                                     &lt;&lt; hexval(cmd.Command) &lt;&lt; &quot;\n&quot;;
-            exit(1);
+        <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span> {
+            getWarningsStream(state) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;S2E_KAITAI_COMMAND: Invalid command &#34;</span>
+                                     <span style="color:#f92672">&lt;&lt;</span> hexval(cmd.Command) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+            exit(<span style="color:#ae81ff">1</span>);
         }
     }
 }
 
-} // namespace plugins
-} // namespace s2e
-</code></pre>
-
-<p>Our plugin has only one dependency: the <code>LuaBindings</code> plugin. This plugin
+} <span style="color:#75715e">// namespace plugins
+</span><span style="color:#75715e"></span>} <span style="color:#75715e">// namespace s2e
+</span></code></pre></div><p>Our plugin has only one dependency: the <code>LuaBindings</code> plugin. This plugin
 configures S2E&rsquo;s Lua interpreter and allows us to call Lua code in the S2E
 configuration file.</p>
-
 <p>The <code>handleOpcodeInvocation</code> method follows a similar pattern to other plugins
 that implement <code>IPluginInvoker</code> (e.g.
 <a href="https://github.com/S2E/libs2eplugins/blob/master/src/s2e/Plugins/Models/FunctionModels.cpp">FunctionModels</a>
 and <a href="https://github.com/S2E/libs2eplugins/blob/master/src/s2e/Plugins/OSMonitors/Linux/BaseLinuxMonitor.h">LinuxMonitor</a>):</p>
-
 <ol>
 <li>Validate the received command by checking its size.</li>
 <li>Read the command. Since the command is issued by the guest, it resides in
@@ -457,148 +414,125 @@ discuss shortly) to invoke the Lua interpreter to parse the input file.</li>
 <li>Indicate success/failure to the guest. We do this by setting a &ldquo;return code&rdquo;
 in the command structure and writing the command back into guest memory.</li>
 </ol>
-
 <p>Let&rsquo;s finish <code>handleMakeSymbolic</code>. Since we are working with Lua code we must
 include some extra header files:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;vector&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;s2e/Plugins/Lua/Lua.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;s2e/Plugins/Lua/LuaS2EExecutionState.h&gt;</span><span style="color:#75715e">
+</span></code></pre></div><p>And finally the function implementation:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">bool</span> KaitaiStruct<span style="color:#f92672">::</span>handleMakeSymbolic(S2EExecutionState <span style="color:#f92672">*</span>state,
+                                      <span style="color:#66d9ef">const</span> S2E_KAITAI_COMMAND <span style="color:#f92672">&amp;</span>command) {
+    <span style="color:#66d9ef">uint64_t</span> addr <span style="color:#f92672">=</span> command.MakeSymbolic.InputFile;
+    <span style="color:#66d9ef">uint64_t</span> size <span style="color:#f92672">=</span> command.MakeSymbolic.FileSize;
+    std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">uint8_t</span><span style="color:#f92672">&gt;</span> data(size);
 
-<pre><code class="language-cpp">#include &lt;vector&gt;
-
-#include &lt;s2e/Plugins/Lua/Lua.h&gt;
-#include &lt;s2e/Plugins/Lua/LuaS2EExecutionState.h&gt;
-</code></pre>
-
-<p>And finally the function implementation:</p>
-
-<pre><code class="language-cpp">bool KaitaiStruct::handleMakeSymbolic(S2EExecutionState *state,
-                                      const S2E_KAITAI_COMMAND &amp;command) {
-    uint64_t addr = command.MakeSymbolic.InputFile;
-    uint64_t size = command.MakeSymbolic.FileSize;
-    std::vector&lt;uint8_t&gt; data(size);
-
-    // Read the input file's contents from guest memory
-    if (!state-&gt;mem()-&gt;read(addr, data.data(), sizeof(uint8_t) * size)) {
-        return false;
+    <span style="color:#75715e">// Read the input file&#39;s contents from guest memory
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>state<span style="color:#f92672">-&gt;</span>mem()<span style="color:#f92672">-&gt;</span>read(addr, data.data(), <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">uint8_t</span>) <span style="color:#f92672">*</span> size)) {
+        <span style="color:#66d9ef">return</span> false;
     }
 
-    // Get the Lua interpreter's state
-    lua_State *L = s2e()-&gt;getConfig()-&gt;getState();
+    <span style="color:#75715e">// Get the Lua interpreter&#39;s state
+</span><span style="color:#75715e"></span>    lua_State <span style="color:#f92672">*</span>L <span style="color:#f92672">=</span> s2e()<span style="color:#f92672">-&gt;</span>getConfig()<span style="color:#f92672">-&gt;</span>getState();
 
-    // Wrap the current S2E execution state
-    LuaS2EExecutionState luaS2EState(state);
+    <span style="color:#75715e">// Wrap the current S2E execution state
+</span><span style="color:#75715e"></span>    LuaS2EExecutionState <span style="color:#a6e22e">luaS2EState</span>(state);
 
-    // Turn the input file into a Lua string
-    luaL_Buffer luaBuff;
-    luaL_buffinit(L, &amp;luaBuff);
-    luaL_addlstring(&amp;luaBuff, (char*) data.data(), sizeof(uint8_t) * size);
+    <span style="color:#75715e">// Turn the input file into a Lua string
+</span><span style="color:#75715e"></span>    luaL_Buffer luaBuff;
+    luaL_buffinit(L, <span style="color:#f92672">&amp;</span>luaBuff);
+    luaL_addlstring(<span style="color:#f92672">&amp;</span>luaBuff, (<span style="color:#66d9ef">char</span><span style="color:#f92672">*</span>) data.data(), <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">uint8_t</span>) <span style="color:#f92672">*</span> size);
 
-    // Set up our function call on Lua's virtual stack
-    lua_getglobal(L, m_kaitaiParserFunc.c_str());
-    Lunar&lt;LuaS2EExecutionState&gt;::push(L, &amp;luaS2EState);
+    <span style="color:#75715e">// Set up our function call on Lua&#39;s virtual stack
+</span><span style="color:#75715e"></span>    lua_getglobal(L, m_kaitaiParserFunc.c_str());
+    Lunar<span style="color:#f92672">&lt;</span>LuaS2EExecutionState<span style="color:#f92672">&gt;::</span>push(L, <span style="color:#f92672">&amp;</span>luaS2EState);
     lua_pushinteger(L, addr);
-    luaL_pushresult(&amp;luaBuff);
+    luaL_pushresult(<span style="color:#f92672">&amp;</span>luaBuff);
 
-    // Call our Kaitai Struct parser function
-    lua_call(L, 3, 0);
+    <span style="color:#75715e">// Call our Kaitai Struct parser function
+</span><span style="color:#75715e"></span>    lua_call(L, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">0</span>);
 
-    return true;
+    <span style="color:#66d9ef">return</span> true;
 }
-</code></pre>
-
-<p>Hopefully this is relatively easy to understand (see
+</code></pre></div><p>Hopefully this is relatively easy to understand (see
 <a href="https://www.lua.org/manual/5.3/manual.html#4.8">here</a> for more information on
 Lua&rsquo;s C API). First we read the input file into a Lua string for the Kaitai
 Struct parser. Then, we call the Kaitai Struct parser function (which we&rsquo;ll
 define in the following section).</p>
-
 <p>We must set up the parser function&rsquo;s arguments before we can call it. A virtual
 stack is used to pass values to Lua functions. The first item pushed onto this
 stack is always the function name. Our parser function will be defined in Lua&rsquo;s
 global namespace (for simplicity), so we can use <code>lua_getglobal</code> to retrieve
 this function from the S2E configuration file and push it onto the stack. We
 then push:</p>
-
 <ol>
 <li>The current S2E execution state;</li>
 <li>The input file&rsquo;s start address (in guest memory); and</li>
 <li>The contents of the input file (as a string).</li>
 </ol>
-
 <p>Now all that&rsquo;s left to do is to implement this parser in the S2E configuration
 file.</p>
-
 <h3 id="lua-scripts">Lua scripts</h3>
-
 <p>First, we need to compile a Kaitai Struct format definition into a Lua parser.
 Since we are going to be experimenting with readelf, let&rsquo;s create our readelf
 project now and get the ELF definition from the Kaitai Struct gallery:</p>
-
-<pre><code class="language-shell"># Create the S2E project
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># Create the S2E project</span>
 s2e new_project -n readelf_kaitai readelf -h @@
 cd projects/readelf_kaitai
 
-# Get the ELF Kaitai Struct definition and compile it
+<span style="color:#75715e"># Get the ELF Kaitai Struct definition and compile it</span>
 wget https://raw.githubusercontent.com/kaitai-io/kaitai_struct_formats/master/executable/elf.ksy
 ksc -t lua elf.ksy
-</code></pre>
-
-<p>This will generate <code>elf.lua</code>. Now let&rsquo;s try it out on a testcase from
+</code></pre></div><p>This will generate <code>elf.lua</code>. Now let&rsquo;s try it out on a testcase from
 <a href="http://lcamtuf.coredump.cx/afl/">AFL</a>. If you don&rsquo;t already have it, you&rsquo;ll
 also need Kaitai Struct&rsquo;s <a href="https://github.com/kaitai-io/kaitai_struct_lua_runtime">Lua
 runtime</a>:</p>
-
-<pre><code class="language-shell"># Get Kaitai Struct's Lua runtime
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># Get Kaitai Struct&#39;s Lua runtime</span>
 git clone https://github.com/kaitai-io/kaitai_struct_lua_runtime lua_runtime
 
-# Get the ELF testcase
+<span style="color:#75715e"># Get the ELF testcase</span>
 wget https://raw.githubusercontent.com/mirrorer/afl/master/testcases/others/elf/small_exec.elf
 
-# Parse the testcase
-lua5.3 - &lt;&lt; EOF
-package.path = package.path .. &quot;;./lua_runtime/?.lua&quot;
-require(&quot;elf&quot;)
-
-inp = assert(io.open(&quot;small_exec.elf&quot;, &quot;rb&quot;))
-testcase = Elf(KaitaiStream(inp))
-print(&quot;testcase e_ehsize: &quot; .. testcase.header.e_ehsize)
-EOF
-</code></pre>
-
-<p>You should see a header size of 52 bytes (you can run
+<span style="color:#75715e"># Parse the testcase</span>
+lua5.3 - <span style="color:#e6db74">&lt;&lt; EOF
+</span><span style="color:#e6db74">package.path = package.path .. &#34;;./lua_runtime/?.lua&#34;
+</span><span style="color:#e6db74">require(&#34;elf&#34;)
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">inp = assert(io.open(&#34;small_exec.elf&#34;, &#34;rb&#34;))
+</span><span style="color:#e6db74">testcase = Elf(KaitaiStream(inp))
+</span><span style="color:#e6db74">print(&#34;testcase e_ehsize: &#34; .. testcase.header.e_ehsize)
+</span><span style="color:#e6db74">EOF</span>
+</code></pre></div><p>You should see a header size of 52 bytes (you can run
 <code>readelf -h small_exec.elf</code> to confirm).</p>
-
 <p>I originally stated that we&rsquo;d be using Kaitai Struct&rsquo;s processing spec to
 target specific file attributes to make symbolic. Let&rsquo;s define this processing
 spec in <code>lua_runtime/s2e_make_symbolic.lua</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua"><span style="color:#66d9ef">local</span> class <span style="color:#f92672">=</span> require(<span style="color:#e6db74">&#34;class&#34;</span>)
 
-<pre><code class="language-lua">local class = require(&quot;class&quot;)
+S2eMakeSymbolic <span style="color:#f92672">=</span> class.class()
 
-S2eMakeSymbolic = class.class()
+<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">S2eMakeSymbolic</span>:<span style="color:#a6e22e">_init</span>(s2e_state, start_addr, curr_pos, name)
+    self._state <span style="color:#f92672">=</span> s2e_state
+    self._addr <span style="color:#f92672">=</span> start_addr <span style="color:#f92672">+</span> curr_pos
+    self._name <span style="color:#f92672">=</span> name
+<span style="color:#66d9ef">end</span>
 
-function S2eMakeSymbolic:_init(s2e_state, start_addr, curr_pos, name)
-    self._state = s2e_state
-    self._addr = start_addr + curr_pos
-    self._name = name
-end
+<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">S2eMakeSymbolic</span>:<span style="color:#a6e22e">decode</span>(data)
+    <span style="color:#66d9ef">local</span> mem <span style="color:#f92672">=</span> self._state:mem()
+    <span style="color:#66d9ef">local</span> size <span style="color:#f92672">=</span> data:len()
 
-function S2eMakeSymbolic:decode(data)
-    local mem = self._state:mem()
-    local size = data:len()
-
-    -- The decode routine is called after the data has already been read, so we
-    -- must return to the start of the data in order to make it symbolic
-    local addr = self._addr - size
+    <span style="color:#75715e">-- The decode routine is called after the data has already been read, so we</span>
+    <span style="color:#75715e">-- must return to the start of the data in order to make it symbolic</span>
+    <span style="color:#66d9ef">local</span> addr <span style="color:#f92672">=</span> self._addr <span style="color:#f92672">-</span> size
 
     mem:makeConcolic(addr, size, self._name)
 
-    -- Return the data unchanged
-    return data
-end
-</code></pre>
-
-<p>All we&rsquo;ve done here is define a new class, <code>S2eMakeSymbolic</code>, with a
+    <span style="color:#75715e">-- Return the data unchanged</span>
+    <span style="color:#66d9ef">return</span> data
+<span style="color:#66d9ef">end</span>
+</code></pre></div><p>All we&rsquo;ve done here is define a new class, <code>S2eMakeSymbolic</code>, with a
 constructor (<code>_init</code>) and a <code>decode</code> method. The constructor takes the
 following arguments:</p>
-
 <ol>
 <li>The current S2E execution state;</li>
 <li>The input file&rsquo;s start address (in guest memory);</li>
@@ -606,98 +540,77 @@ following arguments:</p>
 absolute memory address to make symbolic; and</li>
 <li>The name of the symbolic variable.</li>
 </ol>
-
 <p>The ELF parser will automatically call <code>decode</code> when it encounters an attribute
 with the <code>s2e_make_symbolic</code> processing spec applied. However, the <code>decode</code>
 method is called <em>after</em> the data has been read from the input file, so we must
 compensate for this when we make the data symbolic (by subtracting the size
 of the memory region we just read).</p>
-
 <p>Let&rsquo;s make something symbolic. We&rsquo;ll choose something simple for now — the ELF
 header&rsquo;s <code>e_machine</code> field. In <code>elf.ksy</code> the <code>e_machine</code> field is defined under
 the <code>endian_elf</code> type:</p>
-
-<pre><code class="language-yaml"># The original definition of the e_machine field
-- id: machine
-  type: u2
-  enum: machine
-</code></pre>
-
-<p>Processing specs can only be applied to byte arrays, so we must replace the
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#75715e"># The original definition of the e_machine field</span>
+- <span style="color:#66d9ef">id</span>: machine
+  <span style="color:#66d9ef">type</span>: u2
+  <span style="color:#66d9ef">enum</span>: machine
+</code></pre></div><p>Processing specs can only be applied to byte arrays, so we must replace the
 <code>type</code> specification with a byte array&rsquo;s <code>size</code> specification. Because the
 original type was an unsigned 2-byte value, we can simply treat the <code>machine</code>
 as a byte array of size 2. We must also remove the enum mapping, otherwise
 <code>ksc</code> will raise a compilation error when it tries to apply an enum to a byte
 array.</p>
-
-<pre><code class="language-yaml"># Redefinition of the e_machine field to make it symbolic
-- id: machine
-  size: 2
-  process: s2e_make_symbolic(s2e_state, start_addr, _io.pos, &quot;machine&quot;)
-</code></pre>
-
-<p>Finally, we must propagate two additional arguments — the S2E execution state
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#75715e"># Redefinition of the e_machine field to make it symbolic</span>
+- <span style="color:#66d9ef">id</span>: machine
+  <span style="color:#66d9ef">size</span>: <span style="color:#ae81ff">2</span>
+  <span style="color:#66d9ef">process</span>: s2e_make_symbolic(s2e_state, start_addr, _io.pos, <span style="color:#e6db74">&#34;machine&#34;</span>)
+</code></pre></div><p>Finally, we must propagate two additional arguments — the S2E execution state
 and the input file&rsquo;s start address — from the parser&rsquo;s constructor to
 <code>s2e_make_symbolic</code>. We do this with the &ldquo;params spec&rdquo;. The <code>machine</code> attribute
 is nested under the <code>endian_elf</code> and top-level <code>elf</code> types, so the following
 params spec must be defined under both.</p>
-
-<pre><code class="language-yaml">params:
-  - id: s2e_state
-  - id: start_addr
-</code></pre>
-
-<p>We must also modify the <code>header</code>&rsquo;s type from <code>endian_elf</code> to
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">params</span>:
+  - <span style="color:#66d9ef">id</span>: s2e_state
+  - <span style="color:#66d9ef">id</span>: start_addr
+</code></pre></div><p>We must also modify the <code>header</code>'s type from <code>endian_elf</code> to
 <code>endian_elf(s2e_state, start_addr)</code>. This ensures that the two arguments are
-passed to <code>endian_elf</code>&rsquo;s constructor. (If this is all getting a bit confusing,
+passed to <code>endian_elf</code>'s constructor. (If this is all getting a bit confusing,
 remember that the full source code is available
 <a href="https://github.com/adrianherrera/kaitai-s2e">here</a>).</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#75715e"># The original header&#39;s type</span>
+- <span style="color:#66d9ef">id</span>: header
+  <span style="color:#66d9ef">type</span>: endian_elf
 
-<pre><code class="language-yaml"># The original header's type
-- id: header
-  type: endian_elf
-
-# Redefined to propagate the S2E execution state and input file's start address
-# to the endian_elf type
-- id: header
-  type: endian_elf(s2e_state, start_addr)
-</code></pre>
-
-<p>Now recompile <code>elf.ksy</code>. If you open <code>elf.lua</code> you should see that the
+<span style="color:#75715e"># Redefined to propagate the S2E execution state and input file&#39;s start address</span>
+<span style="color:#75715e"># to the endian_elf type</span>
+- <span style="color:#66d9ef">id</span>: header
+  <span style="color:#66d9ef">type</span>: endian_elf(s2e_state, start_addr)
+</code></pre></div><p>Now recompile <code>elf.ksy</code>. If you open <code>elf.lua</code> you should see that the
 constructor (<code>Elf:_init</code>) now takes <code>s2e_state</code> and <code>start_addr</code> as its first
 two arguments. These arguments are saved and later propagated to the
 <code>S2eMakeSymbolic</code> constructor via the <code>Elf.EndianElf</code> constructor.</p>
-
 <p>All that&rsquo;s left to do is write a small function in our S2E configuration file
 that will instantiate and run our parser. This function is invoked by the
 <code>handleMakeSymbolic</code> method in the <code>KaitaiStruct</code> plugin.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua">package.path <span style="color:#f92672">=</span> package.path <span style="color:#f92672">..</span> <span style="color:#e6db74">&#34;;./lua_runtime/?.lua&#34;</span>
+<span style="color:#66d9ef">local</span> stringstream <span style="color:#f92672">=</span> require(<span style="color:#e6db74">&#34;string_stream&#34;</span>)
+require(<span style="color:#e6db74">&#34;elf&#34;</span>)
 
-<pre><code class="language-lua">package.path = package.path .. &quot;;./lua_runtime/?.lua&quot;
-local stringstream = require(&quot;string_stream&quot;)
-require(&quot;elf&quot;)
+<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">make_symbolic_elf</span>(state, start_addr, buffer)
+    <span style="color:#66d9ef">local</span> ss <span style="color:#f92672">=</span> stringstream(buffer)
 
-function make_symbolic_elf(state, start_addr, buffer)
-    local ss = stringstream(buffer)
-
-    -- This will kick-start the parser. We don't care about the final result
+    <span style="color:#75715e">-- This will kick-start the parser. We don&#39;t care about the final result</span>
     Elf(state, start_addr, KaitaiStream(ss))
-end
+<span style="color:#66d9ef">end</span>
 
--- Enable and configure the necessary plugins
-add_plugin(&quot;LuaBindings&quot;)
-add_plugin(&quot;KaitaiStruct&quot;)
-pluginsConfig.KaitaiStruct = {
-    parser = &quot;make_symbolic_elf&quot;,
+<span style="color:#75715e">-- Enable and configure the necessary plugins</span>
+add_plugin(<span style="color:#e6db74">&#34;LuaBindings&#34;</span>)
+add_plugin(<span style="color:#e6db74">&#34;KaitaiStruct&#34;</span>)
+pluginsConfig.KaitaiStruct <span style="color:#f92672">=</span> {
+    parser <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;make_symbolic_elf&#34;</span>,
 }
-</code></pre>
-
-<p>And we&rsquo;re done!</p>
-
+</code></pre></div><p>And we&rsquo;re done!</p>
 <h2 id="experimenting-with-readelf">Experimenting with readelf</h2>
-
 <p>We&rsquo;re finally ready to experiment with readelf. Before we do, modify the S2E
 configuration file so that only the following plugins are enabled:</p>
-
 <ul>
 <li>BaseInstructions</li>
 <li>HostFiles</li>
@@ -708,36 +621,29 @@ configuration file so that only the following plugins are enabled:</p>
 <li>ProcessExecutionDetector</li>
 <li>LinuxMonitor</li>
 </ul>
-
 <p>We&rsquo;ll also have to modify <code>bootstrap.sh</code>. Under <code>${S2EGET} &quot;readelf&quot;</code> add
 <code>${S2EGET} &quot;small_exec.elf&quot;</code> to copy our testcase to the guest. In the
 <code>prepare_inputs</code> function replace <code>truncate -s 256 ${SYMB_FILE}</code> with
 <code>cp small_exec.elf ${SYMB_FILE}</code> to use our testcase. We won&rsquo;t replace the
 <code>symbfile</code> command yet; let&rsquo;s get an initial idea of how readelf performs on a
 fully symbolic file.</p>
-
 <p>Run S2E for a minute or so before killing it. You should see many forked states
 (I forked 136 states). Let&rsquo;s generate code coverage information:</p>
-
-<pre><code class="language-shell"># The actual disassembler isn't important
-s2e coverage basic_block --disassembler=binaryninja readelf_kaitai
-</code></pre>
-
-<p>Where are these forks occurring? Many are in libc, due to readelf calling
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># The actual disassembler isn&#39;t important</span>
+s2e coverage basic_block --disassembler<span style="color:#f92672">=</span>binaryninja readelf_kaitai
+</code></pre></div><p>Where are these forks occurring? Many are in libc, due to readelf calling
 <code>printf</code> on symbolic data. What about the forks that occur in readelf? The
 following images show snippets of two functions from readelf:
 <code>process_section_headers</code> and <code>init_dwarf_regnames</code>. Green basic blocks
 indicate blocks that were executed by S2E. Fork points have also been annotated
 with their constraints (in KLEE&rsquo;s
 <a href="https://klee.github.io/docs/kquery/">KQuery</a> format):</p>
-
 <figure><a href="/img/readelf-process_section_headers.png">
     <img src="/img/readelf-process_section_headers.png"
          alt="readelf proccess_section_headers code coverage"/> </a><figcaption>
             <p>readelf&rsquo;s process_section_headers code coverage</p>
         </figcaption>
 </figure>
-
 
 <figure><a href="/img/readelf-init_dwarf_regnames.png">
     <img src="/img/readelf-init_dwarf_regnames.png"
@@ -746,16 +652,13 @@ with their constraints (in KLEE&rsquo;s
         </figcaption>
 </figure>
 
-
 <p>Forking also occurs when checking:</p>
-
 <ul>
 <li>If the input file is an archive</li>
 <li>The data encoding (little endian or big endian)</li>
 <li>The section header table&rsquo;s file offset</li>
 <li>If each section&rsquo;s <code>sh_link</code> and <code>sh_info</code> values are valid</li>
 </ul>
-
 <p>And at many other locations! Now let&rsquo;s try and reduce forking to only those
 program paths that relate to the ELF header&rsquo;s <code>e_machine</code> field. Edit
 <code>bootstrap.sh</code> and replace <code>${S2ECMD} symbfile ${SYMB_FILE}</code> with
@@ -763,138 +666,117 @@ program paths that relate to the ELF header&rsquo;s <code>e_machine</code> field
 forking was limited to the <code>get_machine_name</code> and <code>init_dwarf_regnames</code>
 functions, both of which have switch statements based on the value of
 <code>e_machine</code>. Success!</p>
-
 <p>Let&rsquo;s try and target a different field in the ELF file — the section header&rsquo;s
 <code>sh_type</code>. Unlike the <code>e_machine</code> field, which only occurs once in the ELF
 file, the <code>sh_type</code> can occur multiple times throughout the file (depending on
 the number of sections in the ELF file).</p>
-
 <p>Once again, we must propagate the S2E execution state and input file&rsquo;s start
 address to the appropriate attribute in the ELF declaration. This time we must
 add the params spec to the <code>section_header</code> type. The <code>type</code> attribute is
 defined as an unsigned 4-byte enum, so we must change this to a 4 byte array so
 that we can apply <code>s2e_make_symbolic</code>:</p>
-
-<pre><code class="language-yaml"># Elf(32|64)_Shdr
-section_header:
-  params:
-    - id: s2e_state
-    - id: start_addr
-  seq:
-    # sh_name
-    - id: name_offset
-      type: u4
-    # sh_type
-    - id: type
-      size: 4
-      process: s2e_make_symbolic(s2e_state, start_addr, _io.pos, &quot;sh_type&quot;)
-    # ...
-</code></pre>
-
-<p>We must also ensure that these two arguments are passed to the
-<code>SectionHeader</code>&rsquo;s constructor. The section header can be found under the
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#75715e"># Elf(32|64)_Shdr</span>
+<span style="color:#66d9ef">section_header</span>:
+  <span style="color:#66d9ef">params</span>:
+    - <span style="color:#66d9ef">id</span>: s2e_state
+    - <span style="color:#66d9ef">id</span>: start_addr
+  <span style="color:#66d9ef">seq</span>:
+    <span style="color:#75715e"># sh_name</span>
+    - <span style="color:#66d9ef">id</span>: name_offset
+      <span style="color:#66d9ef">type</span>: u4
+    <span style="color:#75715e"># sh_type</span>
+    - <span style="color:#66d9ef">id</span>: type
+      <span style="color:#66d9ef">size</span>: <span style="color:#ae81ff">4</span>
+      <span style="color:#66d9ef">process</span>: s2e_make_symbolic(s2e_state, start_addr, _io.pos, <span style="color:#e6db74">&#34;sh_type&#34;</span>)
+    <span style="color:#75715e"># ...</span>
+</code></pre></div><p>We must also ensure that these two arguments are passed to the
+<code>SectionHeader</code>'s constructor. The section header can be found under the
 <code>section_headers</code> instance:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#75715e"># The original section_headers</span>
+<span style="color:#66d9ef">section_headers</span>:
+  <span style="color:#66d9ef">pos</span>: section_header_offset
+  <span style="color:#66d9ef">repeat</span>: expr
+  <span style="color:#66d9ef">repeat-expr</span>: qty_section_header
+  <span style="color:#66d9ef">size</span>: section_header_entry_size
+  <span style="color:#66d9ef">type</span>: section_header
 
-<pre><code class="language-yaml"># The original section_headers
-section_headers:
-  pos: section_header_offset
-  repeat: expr
-  repeat-expr: qty_section_header
-  size: section_header_entry_size
-  type: section_header
-
-# Redefined for symbolic execution
-section_headers:
-  pos: section_header_offset
-  repeat: expr
-  repeat-expr: qty_section_header
-  size: section_header_entry_size
-  type: section_header(s2e_state, start_addr)
-</code></pre>
-
-<p>Notice that <code>section_headers</code> is declared as an
+<span style="color:#75715e"># Redefined for symbolic execution</span>
+<span style="color:#66d9ef">section_headers</span>:
+  <span style="color:#66d9ef">pos</span>: section_header_offset
+  <span style="color:#66d9ef">repeat</span>: expr
+  <span style="color:#66d9ef">repeat-expr</span>: qty_section_header
+  <span style="color:#66d9ef">size</span>: section_header_entry_size
+  <span style="color:#66d9ef">type</span>: section_header(s2e_state, start_addr)
+</code></pre></div><p>Notice that <code>section_headers</code> is declared as an
 &ldquo;<a href="http://doc.kaitai.io/ksy_reference.html#spec-instance">instance spec</a>&rdquo;. This
 means that <code>section_headers</code> compiles to a function that will only parse the
 section header on demand. Therefore we must access the <code>section_headers</code> to
 force them to be parsed. To do this we must modify the <code>make_elf_symbolic</code>
 function in <code>s2e-config.lua</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">make_symbolic_elf</span>(state, start_addr, buffer)
+    <span style="color:#75715e">-- ...</span>
 
-<pre><code class="language-lua">function make_symbolic_elf(state, start_addr, buffer)
-    -- ...
+    <span style="color:#75715e">-- This will kick-start the parser. However, now we do care about the final</span>
+    <span style="color:#75715e">-- result, because we must access the section headers to force them to be</span>
+    <span style="color:#75715e">-- parsed</span>
+    <span style="color:#66d9ef">local</span> elf_file <span style="color:#f92672">=</span> Elf(state, start_addr, KaitaiStream(ss))
 
-    -- This will kick-start the parser. However, now we do care about the final
-    -- result, because we must access the section headers to force them to be
-    -- parsed
-    local elf_file = Elf(state, start_addr, KaitaiStream(ss))
-
-    -- This will kick-start the section header parser
-    _ = elf_file.header.section_headers
-end
-</code></pre>
-
-<p>Run <code>ksc</code> to regenerate <code>elf.lua</code>. Before we rerun S2E, let&rsquo;s take a look at
+    <span style="color:#75715e">-- This will kick-start the section header parser</span>
+    _ <span style="color:#f92672">=</span> elf_file.header.section_headers
+<span style="color:#66d9ef">end</span>
+</code></pre></div><p>Run <code>ksc</code> to regenerate <code>elf.lua</code>. Before we rerun S2E, let&rsquo;s take a look at
 <code>elf.lua</code>. In particular, the parsing of the section headers in the
 <code>section_headers</code>&rsquo; <code>get</code> method:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">Elf</span>.<span style="color:#a6e22e">EndianElf</span>.<span style="color:#a6e22e">property</span>.<span style="color:#a6e22e">section_headers</span>:<span style="color:#a6e22e">get</span>()
+    <span style="color:#75715e">-- ...</span>
 
-<pre><code class="language-lua">function Elf.EndianElf.property.section_headers:get()
-    -- ...
-
-    for i = 1, self.qty_section_header do
-        self._raw__m_section_headers[i] = \
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>, self.qty_section_header <span style="color:#66d9ef">do</span>
+        self._raw__m_section_headers[i] <span style="color:#f92672">=</span> <span style="color:#960050;background-color:#1e0010">\</span>
             self._io:read_bytes(self.section_header_entry_size)
-        local _io = KaitaiStream(stringstream(self._raw__m_section_headers[i]))
-        self._m_section_headers[i] = Elf.EndianElf.SectionHeader(self.s2e_state,
+        <span style="color:#66d9ef">local</span> _io <span style="color:#f92672">=</span> KaitaiStream(stringstream(self._raw__m_section_headers[i]))
+        self._m_section_headers[i] <span style="color:#f92672">=</span> Elf.EndianElf.SectionHeader(self.s2e_state,
                                                                  self.start_addr,
                                                                  _io, self,
                                                                  self._root,
                                                                  self._is_le)
-    end
+    <span style="color:#66d9ef">end</span>
 
-    -- ...
-end
-</code></pre>
-
-<p>Notice that <code>ksc</code> creates a local variable, <code>_io</code>, that gets passed to the
+    <span style="color:#75715e">-- ...</span>
+<span style="color:#66d9ef">end</span>
+</code></pre></div><p>Notice that <code>ksc</code> creates a local variable, <code>_io</code>, that gets passed to the
 <code>SectionHeader</code> constructor. This <code>_io</code> variable contains the raw data that
 will eventually be transformed into a <code>SectionHeader</code> object. Unfortunately,
 this causes a problem for the <code>s2e_make_symbolic</code> processing spec.</p>
-
 <p>Recall that the parser&rsquo;s current position (<code>_io.pos</code>) is passed to the
 <code>s2e_make_symbolic</code> processing spec. Unfortunately, when the local <code>_io</code> stream
 is created, this position is reset to zero, so using this position would result
 in an incorrect memory address being made symbolic. Fortunately, we can fix
 this with a small change to the Lua code:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua"><span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>, self.qty_section_header <span style="color:#66d9ef">do</span>
+    <span style="color:#75715e">-- Get the absolute start address of the section header before it is parsed</span>
+    <span style="color:#66d9ef">local</span> _sec_hdr_start_addr <span style="color:#f92672">=</span> self.start_addr <span style="color:#f92672">+</span> self._io:pos()
 
-<pre><code class="language-lua">for i = 1, self.qty_section_header do
-    -- Get the absolute start address of the section header before it is parsed
-    local _sec_hdr_start_addr = self.start_addr + self._io:pos()
-
-    self._raw__m_section_headers[i] = \
+    self._raw__m_section_headers[i] <span style="color:#f92672">=</span> <span style="color:#960050;background-color:#1e0010">\</span>
         self._io:read_bytes(self.section_header_entry_size)
-    local _io = KaitaiStream(stringstream(self._raw__m_section_headers[i]))
+    <span style="color:#66d9ef">local</span> _io <span style="color:#f92672">=</span> KaitaiStream(stringstream(self._raw__m_section_headers[i]))
 
-    -- Use the section header's start address instead of the ELF's start address
-    self._m_section_headers[i] = Elf.EndianElf.SectionHeader(self.s2e_state,
+    <span style="color:#75715e">-- Use the section header&#39;s start address instead of the ELF&#39;s start address</span>
+    self._m_section_headers[i] <span style="color:#f92672">=</span> Elf.EndianElf.SectionHeader(self.s2e_state,
                                                              _sec_hdr_start_addr,
                                                              _io, self,
                                                              self._root,
                                                              self._is_le)
-end
-</code></pre>
-
-<p>Yes, hacking the generated Lua code is kind of disgusting. However, it ensures
+<span style="color:#66d9ef">end</span>
+</code></pre></div><p>Yes, hacking the generated Lua code is kind of disgusting. However, it ensures
 that the correct memory address is made symbolic. When I reran S2E, forking was
 limited to <code>sh_type</code> comparisons in the <code>process_section_headers</code> function.
 Success again!</p>
-
 <h2 id="conclusions-and-future-work">Conclusions and future work</h2>
-
 <p>In this post I&rsquo;ve looked at how we can perform more targeted symbolic execution
 of file parsers. Rather than giving the parser a fully-symbolic input file
 (which quickly leads to path explosion), we can use Kaitai Struct to target
 specific parts of the input file to make symbolic. While this approach seems to
 work, there are a few problems associated with it.</p>
-
 <p>First, it relies on the user having a valid <em>seed</em> file to perform symbolic
 execution with. This seed file must also contain data for the part of the
 parser that we wish to exercise. For example, let&rsquo;s assume that we wanted to
@@ -904,14 +786,12 @@ wanted to see what happened when the <code>bkgd_truecolor</code> attribute was m
 symbolic, our PNG seed would also have to contain a <a href="http://www.libpng.org/pub/png/spec/1.2/PNG-Chunks.html#C.bKGD">background color
 chunk</a>.
 Otherwise  our parser would have nothing to make symbolic.</p>
-
 <p>For similar reasons, we cannot just use the &ldquo;empty&rdquo; symbolic file that the S2E
 bootstrap script creates. Why? Because when the Kaitai Struct parser executes,
 it runs on concrete data contained in the file. The default symbolic file that
 S2E creates is filled with <code>NULL</code> characters, so the parser would fail
 instantly. Wouldn&rsquo;t it be cool if we could <a href="http://lcamtuf.blogspot.com.au/2014/11/pulling-jpegs-out-of-thin-air.html">pull files out of thin
 air</a>?</p>
-
 <p>Other issues stem from how we are using Kaitai Struct. This is not the fault of
 Kaitai Struct; in fact the Kaitai Struct
 <a href="http://doc.kaitai.io/faq.html">FAQ</a> explicitly states that the generated
@@ -920,35 +800,30 @@ modified <code>ksc</code> to generate code that required fewer manual modificati
 automatically generate the params spec, use non-lazy instance specs, always
 keep track of the parser&rsquo;s absolute position, etc.), however for simplicity I
 wanted to leave Kaitai Struct &ldquo;as is&rdquo;.</p>
-
 <p>What about non file-based symbolic execution? For example, in my <a href="https://adrianherrera.github.io/post/google-ctf-2016/">previous</a> post I showed how to use S2E to solve a CTF
 challenge that used a command-line string as input. The approach described in
 this post would not help in solving this CTF challenge. However, there is no
 reason why the <code>KaitaiStruct</code> plugin could not be extended to work on
 command-line strings. For example, we could define the CTF challenge&rsquo;s input
 string in Kaitai Struct as follows:</p>
-
-<pre><code class="language-yaml">meta:
-  id: ctf-input
-  title: Google CTF input format
-  ks-version: 0.8
-seq:
-  - id: prefix
-    size: 4
-    contents: &quot;CTF{&quot;
-  - id: to_solve
-    size: 63 # total length of 67 bytes minus the 4 byte prefix
-    process: s2e_make_symbolic(s2e_state, start_addr, _io.pos, &quot;to_solve&quot;)
-params:
-  - id: s2e_state
-  - id: start_addr
-</code></pre>
-
-<p>With some additional code we could run this parser on the input string to make
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">meta</span>:
+  <span style="color:#66d9ef">id</span>: ctf-input
+  <span style="color:#66d9ef">title</span>: Google CTF input format
+  <span style="color:#66d9ef">ks-version</span>: <span style="color:#ae81ff">0.8</span>
+<span style="color:#66d9ef">seq</span>:
+  - <span style="color:#66d9ef">id</span>: prefix
+    <span style="color:#66d9ef">size</span>: <span style="color:#ae81ff">4</span>
+    <span style="color:#66d9ef">contents</span>: <span style="color:#e6db74">&#34;CTF{&#34;</span>
+  - <span style="color:#66d9ef">id</span>: to_solve
+    <span style="color:#66d9ef">size</span>: <span style="color:#ae81ff">63</span> <span style="color:#75715e"># total length of 67 bytes minus the 4 byte prefix</span>
+    <span style="color:#66d9ef">process</span>: s2e_make_symbolic(s2e_state, start_addr, _io.pos, <span style="color:#e6db74">&#34;to_solve&#34;</span>)
+<span style="color:#66d9ef">params</span>:
+  - <span style="color:#66d9ef">id</span>: s2e_state
+  - <span style="color:#66d9ef">id</span>: start_addr
+</code></pre></div><p>With some additional code we could run this parser on the input string to make
 only the last 63 bytes symbolic. This would allow us to remove the
 <code>onSymbolicVariableCreation</code> method from the S2E
 <a href="https://gist.github.com/adrianherrera/397dc68918374c81cf63e53e659bd083">plugin</a>.</p>
-
 <p>Despite these problems, combining S2E and Kaitai Struct seemed to work fairly
 well for the work that I was doing (although your mileage may vary!). We could
 probably get around these problems with a bit more work (and a lot more code).
