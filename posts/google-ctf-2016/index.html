@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html class="" lang="en"><head>
+    
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+
+    <link
+    rel="icon"
+    href='/favicon.png'
+/>
+<link
+    rel="shortcut icon"
+    href='/favicon.ico'
+    type="image/x-icon"
+/>
+<link
+    rel="apple-touch-icon"
+    href='/apple-touch-icon.png'
+/>
+
+<title>
+        
+            Solving a CTF Challenge with S2E  &ndash;
+        
+        Adrian&#39;s Blog: from ⊤ to ⊥
+    </title>
+
+    
+    <link href="/symbols-nerd-font/symbols-nerd-font.css" rel="stylesheet" integrity="sha512-lydow8GLOLlYNOtHlksNCmGWWCBsbIEtikXpHzfWqx78HLlyQZHOzyLwPpKol4Th6aCwLUXOfODVYgwrd3nwKQ=="/>
+    <link href="/jetbrains-mono/jetbrains-mono.css" rel="stylesheet" integrity="sha512-tJxlgL6v1Y7kFf+qB8SloaAMKnOAw6WouknxXtIjkBux9Y/9aX81EUWOJO8c/3l98DmjG8brr4to7zaez606Fg=="/>
+
+    
+    
+    <link type="text/css" rel="stylesheet" href=https://adrianherrera.github.io/css/styles.abbd6311bb4b6ca58f8e7398140529245ae0f6428b759fcd830742eee2619eabb900ba9914a9affb82aa9a16a9b9ea727bb315315a976a0db0e7513a5f12c504.css integrity="sha512-q71jEbtLbKWPjnOYFAUpJFrg9kKLdZ/NgwdC7uJhnqu5ALqZFKmv&#43;4Kqmhapuepye7MVMVqXag2w51E6XxLFBA==" />
+<meta name="author" content="" />
+
+    
+    
+        <meta name="description" content="c execution tools such as Angr and Manticore have become increasingly popular for analyzing binaries in Capture the Flag (CTF) challenges.
+In this blog post I will show that we can do the same with S2E, using it to solve a reverse engineering challenge from the 2016 Google CTF. This post walks through the process of writing an S2E plugin &amp;ldquo;from first principles&amp;rdquo; to solve this challenge.
+For comparison, solutions for the challenge using Angr and Manticore are also available." />
+    
+
+<meta property="og:site_name"
+    content='Adrian&#39;s Blog: from ⊤ to ⊥' />
+
+    <meta property="og:title" content="Solving a CTF Challenge with S2E" />
+    <meta property="og:type" content="article" />
+    
+    <meta
+        property="article:author" content="" />
+    <meta
+        property="article:published_time"
+        content='2017-08-08T11:50:51Z&#43;0200' />
+    
+    <meta property="og:url" content="https://adrianherrera.github.io/posts/google-ctf-2016/" />
+    
+    
+    <meta property="og:image"
+        content="https://adrianherrera.github.io/img/icon.svg" />
+    
+        <meta property="og:description" content="Introduction Symbolic execution tools such as Angr and Manticore have become increasingly popular for analyzing binaries in Capture the Flag (CTF) challenges.
+I" />
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:domain"
+      content='adrianherrera.github.io'
+/>
+<meta property="twitter:url" content="https://adrianherrera.github.io/posts/google-ctf-2016/" />
+
+
+    <meta name="twitter:title" content="Solving a CTF Challenge with S2E" />
+    
+    
+    
+    <meta name="twitter:image"
+        content="https://adrianherrera.github.io/img/icon.svg" />
+    
+        <meta name="twitter:description" content="Introduction Symbolic execution tools such as Angr and Manticore have become increasingly popular for analyzing binaries in Capture the Flag (CTF) challenges.
+I" />
+    
+
+<link rel="manifest" href="/manifest/index.json" />
+</head>
+
+
+<body>
+        <div id="baseContainer"><header class="">
+<div class="titleAndSearchContainer">
+        <div id="titleContainer">
+            
+                <a class="unstyledLink" href="/">
+                    <img src='/headshot.png' alt='Logo'/>
+                </a>
+            
+            <div class="rightOfLogo">
+                <div class="titleAndHamburger">
+                    <h1>
+                        <a class="unstyledLink" href="/">Adrian&#39;s Blog: from ⊤ to ⊥</a>
+                        
+                    </h1>
+                    
+                </div>
+                <div id="wide_nav"><nav>
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+            <li><a href="/publications">Publications</a></li>
+        
+        
+        
+        
+        
+            <li><a href="/about/">About</a></li>
+        
+        
+        
+    </ul>
+</nav>
+</div>
+            </div>
+        </div>
+        <div class="search">
+    <input id="searchbar" type="text" placeholder='Search' />
+    <a class="nerdlink" onclick="newSearch();">&#xf002;</a>
+</div>
+<script>
+    function newSearch() {
+        let term = searchbar.value.trim();
+        if (!term) return;
+        location.href = `/search?q=${term}`;
+    }
+    searchbar.onkeyup = (ev) => {if (ev.keyCode == 13) newSearch()};
+</script>
+
+    </div>
+    <div id="links">
+        
+        
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://github.com/adrianherrera">
+    
+    
+        &#xf09b;
+    
+    <span>
+        Github
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="www.linkedin.com/in/adrian-herrera-53425a260">
+    
+    
+        &#xf0e1;
+    
+    <span>
+        Linkedin
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://twitter.com/0xadr1an">
+    
+    
+        &#xf099;
+    
+    <span>
+        Twitter
+    </span>
+</a>
+
+    </div>
+    
+
+</header>
+<div id="contentContainer">
+                <div id="content">
+                    <main>
+<article class="card single">
+    
+        <h1>Solving a CTF Challenge with S2E</h1>
+    
+    
+        <p class="date">
+            <span title='Date'> </span>
+    2017-08-08
+
+</p>
+    
+    
+    
+    
+    <div><h2 id="introduction">Introduction</h2>
+<p>Symbolic execution tools such as <a href="http://angr.io">Angr</a> and
+<a href="https://github.com/trailofbits/manticore">Manticore</a> have become increasingly
+popular for analyzing binaries in Capture the Flag (CTF) challenges.</p>
+<p>In this blog post I will show that we can do the same with S2E, using it to
+solve a reverse engineering challenge from the 2016 Google CTF. This post
+walks through the process of writing an S2E plugin &ldquo;from first principles&rdquo; to
+solve this challenge.</p>
+<p>For comparison, solutions for the challenge using
+<a href="https://github.com/angr/angr-doc/blob/master/examples/google2016_unbreakable_0">Angr</a>
+and <a href="https://github.com/trailofbits/manticore-examples/tree/master/google2016_unbreakable">Manticore</a>
+are also available. If you want to cheat and skip straight to the end, the
+final plugin code is available <a href="https://github.com/adrianherrera/unbreakable-ctf-s2e">here</a>.</p>
+<h2 id="getting-started">Getting started</h2>
+<p>As usual, I use <a href="https://github.com/S2E/s2e-env">s2e-env</a> to organize my S2E
+environment. The challenge binary is a 64-bit ELF, so I will use S2E&rsquo;s Debian
+x86_64 image. For those playing along at home, the instructions on how to
+use s2e-env can be found
+<a href="https://github.com/S2E/docs/blob/master/src/s2e-env.rst">here</a>.</p>
+<h2 id="initial-analysis">Initial analysis</h2>
+<p>The challenge binary is available
+<a href="https://github.com/ctfs/write-ups-2016/tree/master/google-ctf-2016/reverse/unbreakable-enterprise-product-activation-150">here</a>.
+As other
+<a href="http://www.99cruster.com/blog/2016/05/02/google-ctf-2016-unbreakable-enterprise-product-activation-writeup-using-angr/">writeups</a>
+have discussed, an initial static analysis reveals that the binary (a 64-bit
+ELF executable) accepts a single command line argument (the product activation
+code). If this argument is not provided the program will print a usage message
+and exit.</p>
+<figure><a href="/img/google-ctf-2016-binja.png"><img src="/img/google-ctf-2016-binja.png"
+         alt="Disassembly view"/></a>
+</figure>
+
+<p>If the product activation code is provided, the argument is copied into the
+global buffer <code>dest</code>. The <code>strncpy</code> operation (at address <code>0x4005B8</code>) copies 67
+characters, so we can assume that the product activation code is 67 characters
+long. We are also told that the product activation code starts with &ldquo;CTF{&rdquo;.</p>
+<p>Further analysis reveals that the function at <code>0x400850</code> is called when an
+incorrect product activation code is given. The correct product activation call
+will result in the function at <code>0x400830</code> being called and the message &ldquo;Thank
+you — product activated!&rdquo; printed. Therefore, when exploring the program we
+want to focus on states that will lead to <code>0x400830</code> and avoid those that lead
+to <code>0x400850</code>. With this information, we can develop an S2E plugin to solve the
+challenge.</p>
+<h2 id="creating-the-s2e-project">Creating the S2E project</h2>
+<p>We can use s2e-env&rsquo;s <code>new_project</code> command to create a new analysis project for
+the challenge. We can also use our knowledge about the product activation code
+to automatically add the command line argument to the bootstrap script. Create
+the project using the following command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>s2e new_project --image debian-8.7.1-x86_64 --sym-args<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1&#34;</span> unbreakable <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    <span style="color:#e6db74">`</span>python -c <span style="color:#e6db74">&#34;print(&#39;CTF{%s&#39; % (&#39;x&#39; * (67 - 4)))&#34;</span><span style="color:#e6db74">`</span>
+</span></span></code></pre></div><p>The Python code will generate a 67 character string starting with &ldquo;CTF{&rdquo;.
+<code>--sym-args=&quot;1&quot;</code> makes the first argument (i.e. the product activation code)
+symbolic. Note that the actual contents of the string are not important.</p>
+<p>The astute observer might also notice that the printed instructions contain a
+message regarding S2E&rsquo;s <a href="https://github.com/S2E/docs/blob/master/src/Plugins/Linux/FunctionModels.rst">FunctionModels</a>
+plugin. I will discuss how we can use this plugin later.</p>
+<h2 id="writing-the-s2e-plugin">Writing the S2E plugin</h2>
+<p>We will develop a custom plugin to solve the challenge. Note that this is
+probably the more complex and time-consuming approach — you could also use
+S2E&rsquo;s Lua annotations to avoid having to write C++ code. However, I think that
+developing a plugin from scratch is a better way to understand how S2E works.</p>
+<p>Let&rsquo;s start with the standard S2E plugin template. Create
+<code>libs2eplugins/src/Plugins/GoogleCTFUnbreakable.h</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#ifndef S2E_PLUGINS_GOOGLE_CTF_UNBREAKABLE_H
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define S2E_PLUGINS_GOOGLE_CTF_UNBREAKABLE_H
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;s2e/CorePlugin.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;s2e/Plugin.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;s2e/S2E.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">namespace</span> s2e {
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">namespace</span> plugins {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">GoogleCTFUnbreakable</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">public</span> Plugin {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Declares an S2E plugin
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    S2E_PLUGIN
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Our constructor doesn&#39;t need to do anything
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    GoogleCTFUnbreakable(S2E <span style="color:#f92672">*</span>s2e) <span style="color:#f92672">:</span> Plugin(s2e) { }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// This will be called by S2E when registering and configuring the different plugins
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">initialize</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// We will add some more methods later
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>} <span style="color:#75715e">// namespace plugins
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>} <span style="color:#75715e">// namespace s2e
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#endif
+</span></span></span></code></pre></div><p>And in <code>libs2eplugins/src/Plugins/GoogleCTFUnbreakable.cpp</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;s2e/S2E.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;GoogleCTFUnbreakable.h&#34;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">namespace</span> s2e {
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">namespace</span> plugins {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>S2E_DEFINE_PLUGIN(GoogleCTFUnbreakable, <span style="color:#75715e">// Plugin class
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                  <span style="color:#e6db74">&#34;Solve the Google CTF unbreakable product activation code&#34;</span>, <span style="color:#75715e">// Plugin description
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                  <span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#75715e">// Unused
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                  ); <span style="color:#75715e">// Plugin dependencies (currently there are none)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> GoogleCTFUnbreakable<span style="color:#f92672">::</span>initialize() {
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>} <span style="color:#75715e">// namespace plugins
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>} <span style="color:#75715e">// namespace s2e
+</span></span></span></code></pre></div><p>This is a perfectly valid S2E plugin, it just doesn&rsquo;t do anything useful. We
+need to tell the plugin what events we are interested in and how to react to
+them during runtime.
+<a href="https://github.com/S2E/libs2ecore/blob/master/include/s2e/CorePlugin.h">CorePlugin.h</a>
+gives an idea of what events are available. Events can also be generated by
+other plugins. For example, the
+<a href="https://github.com/S2E/libs2eplugins/blob/master/src/s2e/Plugins/OSMonitors/OSMonitor.h">OSMonitor</a>
+plugin generates events for process creation, module loading/unloading, etc.</p>
+<p>So what events are we interested in? From our initial analysis we know the
+function addresses that indicate success or failure. We can therefore use the
+<code>onTranslateInstructionStart</code> event to notify us when the code at these
+addresses is translated by QEMU. Declare an event handler in
+<code>GoogleCTFUnbreakable.h</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">private</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// The method signature corresponds to the onTranslateInstructionStart
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// signal template in CorePlugin.h
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">void</span> onTranslateInstruction(ExecutionSignal <span style="color:#f92672">*</span>signal,
+</span></span><span style="display:flex;"><span>            S2EExecutionState <span style="color:#f92672">*</span>state, TranslationBlock <span style="color:#f92672">*</span>tb, <span style="color:#66d9ef">uint64_t</span> pc);
+</span></span></code></pre></div><p>We also need to register our interest in this event, which we do in the
+plugin&rsquo;s <code>initialize</code> method.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> GoogleCTFUnbreakable<span style="color:#f92672">::</span>initialize() {
+</span></span><span style="display:flex;"><span>    s2e()<span style="color:#f92672">-&gt;</span>getCorePlugin()<span style="color:#f92672">-&gt;</span>onTranslateInstructionStart.connect(
+</span></span><span style="display:flex;"><span>        sigc<span style="color:#f92672">::</span>mem_fun(<span style="color:#f92672">*</span><span style="color:#66d9ef">this</span>, <span style="color:#f92672">&amp;</span>GoogleCTFUnbreakable<span style="color:#f92672">::</span>onTranslateInstruction));
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>This event occurs when code is translated by QEMU. We need to register another
+event listener to notify our plugin when the code is actually executed. We do
+this using the <code>ExecutionSignal</code> that is generated by the
+<code>onTranslateInstructionStart</code> event. In <code>GoogleCTFUnbreakable.cpp</code> (don&rsquo;t
+forget to add the method declarations to <code>GoogleCTFUnbreakable.h</code>):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">// We found these addresses during our initial analysis in IDA Pro.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// Note that we assume non-PIE addresses
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">uint64_t</span> SUCCESS_ADDRESS <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x400724</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">uint64_t</span> FAILURE_ADDRESS <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x400850</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> GoogleCTFUnbreakable<span style="color:#f92672">::</span>onTranslateInstruction(ExecutionSignal <span style="color:#f92672">*</span>signal,
+</span></span><span style="display:flex;"><span>        S2EExecutionState <span style="color:#f92672">*</span>state, TranslationBlock <span style="color:#f92672">*</span>tb, <span style="color:#66d9ef">uint64_t</span> pc) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (pc <span style="color:#f92672">==</span> SUCCESS_ADDRESS) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Register a handler for when the &#34;success&#34; code is executed
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        signal<span style="color:#f92672">-&gt;</span>connect(sigc<span style="color:#f92672">::</span>mem_fun(<span style="color:#f92672">*</span><span style="color:#66d9ef">this</span>, <span style="color:#f92672">&amp;</span>GoogleCTFUnbreakable<span style="color:#f92672">::</span>onSuccess));
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> <span style="color:#a6e22e">if</span> (pc <span style="color:#f92672">==</span> FAILURE_ADDRESS) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Register a handler for when the &#34;failure&#34; code is executed
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        signal<span style="color:#f92672">-&gt;</span>connect(sigc<span style="color:#f92672">::</span>mem_fun(<span style="color:#f92672">*</span><span style="color:#66d9ef">this</span>, <span style="color:#f92672">&amp;</span>GoogleCTFUnbreakable<span style="color:#f92672">::</span>onFailure));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> GoogleCTFUnbreakable<span style="color:#f92672">::</span>onSuccess(S2EExecutionState <span style="color:#f92672">*</span>state, <span style="color:#66d9ef">uint64_t</span> pc) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// We will return to this later
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> GoogleCTFUnbreakable<span style="color:#f92672">::</span>onFailure(S2EExecutionState <span style="color:#f92672">*</span>state, <span style="color:#66d9ef">uint64_t</span> pc) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// There is no reason to continue execution any further. So kill the state
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    s2e()<span style="color:#f92672">-&gt;</span>getExecutor()<span style="color:#f92672">-&gt;</span>terminateStateEarly(<span style="color:#f92672">*</span>state, <span style="color:#e6db74">&#34;Invalid path&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Once execution reaches either the success or failure code, there is no reason
+to continue. We therefore kill the state to avoid wasting resources.</p>
+<p>Note that we use absolute addresses for our success and failure code. For
+position independent code (PIE), you will need to register for module load
+events, record the load address of the module you are interested in (in this
+case unbreakable) and calculate the success and failure addresses via offsets
+at run time.</p>
+<p>Unfortunately, there is a problem with our plugin. Remember that S2E performs
+full-system emulation, meaning other processes may be executing at the same
+time that we are analyzing unbreakable. Virtual addressing also means that
+there may be other processes that have code at <code>SUCCESS_ADDRESS</code> and
+<code>FAILURE_ADDRESS</code>. If this code is executed, our plugin&rsquo;s <code>onSuccess</code> and
+<code>onFailure</code> methods will execute, potentially interfering with our analysis.
+We will avoid this problem with the
+<a href="https://github.com/S2E/libs2eplugins/blob/master/src/s2e/Plugins/OSMonitors/Support/ProcessExecutionDetector.h">ProcessExecutionDetector</a>
+plugin.</p>
+<p>The <code>ProcessExecutionDetector</code> tracks the execution of processes in the
+system. It is configurable so that only processes of interest are tracked. To
+add this plugin as a dependency, in <code>GoogleCTFUnbreakable.cpp</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;s2e/Plugins/OSMonitors/Support/ProcessExecutionDetector.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>S2E_DEFINE_PLUGIN(GoogleCTFUnbreakable,
+</span></span><span style="display:flex;"><span>                  <span style="color:#e6db74">&#34;Solve the Google CTF unbreakable product activation code&#34;</span>,
+</span></span><span style="display:flex;"><span>                  <span style="color:#e6db74">&#34;&#34;</span>,
+</span></span><span style="display:flex;"><span>                  <span style="color:#e6db74">&#34;ProcessExecutionDetector&#34;</span>); <span style="color:#75715e">// Plugin dependency
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> GoogleCTFUnbreakable<span style="color:#f92672">::</span>initialize() {
+</span></span><span style="display:flex;"><span>    m_procDetector <span style="color:#f92672">=</span> s2e()<span style="color:#f92672">-&gt;</span>getPlugin<span style="color:#f92672">&lt;</span>ProcessExecutionDetector<span style="color:#f92672">&gt;</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p>And add the <code>ProcessExecutionDetector</code> as a private member of the
+<code>GoogleCTFUnbreakable</code> class:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">// In GoogleCTFUnbreakable.h
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">GoogleCTFUnbreakable</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">public</span> Plugin {
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    ProcessExecutionDetector <span style="color:#f92672">*</span>m_procDetector;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>};
+</span></span></code></pre></div><p>Now we can filter out all other processes <strong>except</strong> the unbreakable process.
+The following code should be added to the <strong>beginning</strong> of the
+<code>onTranslateInstruction</code> event handler:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> GoogleCTFUnbreakable<span style="color:#f92672">::</span>onTranslateInstruction(ExecutionSignal <span style="color:#f92672">*</span>signal,
+</span></span><span style="display:flex;"><span>        S2EExecutionState <span style="color:#f92672">*</span>state, TranslationBlock <span style="color:#f92672">*</span>tb, <span style="color:#66d9ef">uint64_t</span> pc) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// The processes to track are declared in the S2E LUA configuration file
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>m_procDetector<span style="color:#f92672">-&gt;</span>isTracked(state)) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p>This takes care of our success and failure paths. What about the rest of our
+initial analysis? Remember that we were told that the activation code begins
+with &ldquo;CTF{&rdquo;. How can we encode this knowledge in our plugin?</p>
+<p>Because we made the product activation string symbolic, we can use the
+<code>onSymbolicVariableCreation</code> event to wait for the product activation code to
+become symbolic, and then constrain this variable with our existing knowledge.
+In <code>GoogleCTFUnbreakable.cpp</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;klee/util/ExprTemplatees.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Register our onSymbolicVariableCreation event handler
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> GoogleCTFUnbreakable<span style="color:#f92672">::</span>initialize() {
+</span></span><span style="display:flex;"><span>    s2e()<span style="color:#f92672">-&gt;</span>getCorePlugin()<span style="color:#f92672">-&gt;</span>onSymbolicVariableCreation.connect(
+</span></span><span style="display:flex;"><span>        sigc<span style="color:#f92672">::</span>mem_fun(<span style="color:#f92672">*</span><span style="color:#66d9ef">this</span>, <span style="color:#f92672">&amp;</span>GoogleCTFUnbreakable<span style="color:#f92672">::</span>onSymbolicVariableCreation));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> GoogleCTFUnbreakable<span style="color:#f92672">::</span>onSymbolicVariableCreation(S2EExecutionState <span style="color:#f92672">*</span>state,
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> std<span style="color:#f92672">::</span>string <span style="color:#f92672">&amp;</span>name, <span style="color:#66d9ef">const</span> std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span>klee<span style="color:#f92672">::</span>ref<span style="color:#f92672">&lt;</span>klee<span style="color:#f92672">::</span>Expr<span style="color:#f92672">&gt;&gt;</span> <span style="color:#f92672">&amp;</span>expr,
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> klee<span style="color:#f92672">::</span>MemoryObject <span style="color:#f92672">*</span>mo, <span style="color:#66d9ef">const</span> klee<span style="color:#f92672">::</span>Array <span style="color:#f92672">*</span>array) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// This check is not strictly required, because we only have one symbolic
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// variable in the analysis.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// The first program argument made symbolic with the S2E_SYM_ARGS
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// environment variable will have the name &#34;arg1&#34;.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (name <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#34;arg1&#34;</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// We know that the product activation key starts with &#34;CTF{&#34;. We encode
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// this information as KLEE constraints
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    state<span style="color:#f92672">-&gt;</span>constraints.addConstraint(E_EQ(expr[<span style="color:#ae81ff">0</span>], E_CONST(<span style="color:#e6db74">&#39;C&#39;</span>, klee<span style="color:#f92672">::</span>Expr<span style="color:#f92672">::</span>Int8)));
+</span></span><span style="display:flex;"><span>    state<span style="color:#f92672">-&gt;</span>constraints.addConstraint(E_EQ(expr[<span style="color:#ae81ff">1</span>], E_CONST(<span style="color:#e6db74">&#39;T&#39;</span>, klee<span style="color:#f92672">::</span>Expr<span style="color:#f92672">::</span>Int8)));
+</span></span><span style="display:flex;"><span>    state<span style="color:#f92672">-&gt;</span>constraints.addConstraint(E_EQ(expr[<span style="color:#ae81ff">2</span>], E_CONST(<span style="color:#e6db74">&#39;F&#39;</span>, klee<span style="color:#f92672">::</span>Expr<span style="color:#f92672">::</span>Int8)));
+</span></span><span style="display:flex;"><span>    state<span style="color:#f92672">-&gt;</span>constraints.addConstraint(E_EQ(expr[<span style="color:#ae81ff">3</span>], E_CONST(<span style="color:#e6db74">&#39;{&#39;</span>, klee<span style="color:#f92672">::</span>Expr<span style="color:#f92672">::</span>Int8)));
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Encoding this information in the form of additional constraints helps to speed
+up symbolic execution. Now the constraint solver will not waste time generating
+solutions which we know are not viable (e.g. activation codes beginning with
+&ldquo;ABCD&rdquo;, &ldquo;1337&rdquo;, etc.).</p>
+<p>We could have also encoded additional constraints for our solution. For
+example, we can assume that none of the remaining characters is a NULL
+terminator.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">unsigned</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>; i <span style="color:#f92672">&lt;</span> expr.size(); <span style="color:#f92672">++</span>i) {
+</span></span><span style="display:flex;"><span>    state<span style="color:#f92672">-&gt;</span>constraints.addConstraint(E_NEQ(expr[i], E_CONST(<span style="color:#e6db74">&#39;\0&#39;</span>, klee<span style="color:#f92672">::</span>Expr<span style="color:#f92672">::</span>Int8)));
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>An alternate set of constraints could be that the other remaining characters
+are printable ASCII characters.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">unsigned</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>; i <span style="color:#f92672">&lt;</span> expr.size(); <span style="color:#f92672">++</span>i) {
+</span></span><span style="display:flex;"><span>    state<span style="color:#f92672">-&gt;</span>constraints.addConstraint(E_GE(expr[i], E_CONST(<span style="color:#e6db74">&#39; &#39;</span>, klee<span style="color:#f92672">::</span>Expr<span style="color:#f92672">::</span>Int8)));
+</span></span><span style="display:flex;"><span>    state<span style="color:#f92672">-&gt;</span>constraints.addConstraint(E_LE(expr[i], E_CONST(<span style="color:#e6db74">&#39;~&#39;</span>, klee<span style="color:#f92672">::</span>Expr<span style="color:#f92672">::</span>Int8)));
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>In practice I found that these additional constraints had a significant impact
+on performance. I will discuss this later.</p>
+<p>The final step is to complete the <code>onSuccess</code> method. This involves solving the
+constraints accumulated during symbolic execution and displaying the result.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;cctype&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;sstream&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> GoogleCTFUnbreakable<span style="color:#f92672">::</span>onSuccess(S2EExecutionState <span style="color:#f92672">*</span>state, <span style="color:#66d9ef">uint64_t</span> pc) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// `results` is a vector containing pairs of strings and a vector of bytes.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// The string corresponds to the symbolic variable&#39;s name while the vector
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// of bytes is the actual solution
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span>std<span style="color:#f92672">::</span>pair<span style="color:#f92672">&lt;</span>std<span style="color:#f92672">::</span>string, std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span><span style="color:#f92672">&gt;&gt;&gt;</span> results;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Invoke the constraint solver
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>s2e()<span style="color:#f92672">-&gt;</span>getExecutor()<span style="color:#f92672">-&gt;</span>getSymbolicSolution(<span style="color:#f92672">*</span>state, results)) {
+</span></span><span style="display:flex;"><span>        getWarningsStream(state) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Unable to generate a solution for the product activation code</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+</span></span><span style="display:flex;"><span>        exit(<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Since we only have a single symbolic variable, we will only have a
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// single result. We then iterate over the bytes in this result to print
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// the solution
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    std<span style="color:#f92672">::</span>stringstream ss;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">auto</span> c : results[<span style="color:#ae81ff">0</span>].second) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>std<span style="color:#f92672">::</span>isprint(c)) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        ss <span style="color:#f92672">&lt;&lt;</span> (<span style="color:#66d9ef">char</span>) c;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    getInfoStream(state) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Product activation code = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> ss.str() <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// No need to continue running S2E — terminate
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    exit(<span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>With the plugin complete, we need to ensure that it is compiled with the other
+S2E plugins. To do this, add the following to <code>libs2eplugins/src/CMakeLists.txt</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cmake" data-lang="cmake"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">src/Plugins/GoogleCTFUnbreakable.cpp
+</span></span></span></code></pre></div><p>S2E will need to be rebuilt to ensure that our plugin is compiled and available
+for the analysis. Finally, we need to rebuild S2E with our plugin.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>s2e build --clean-target libs2e
+</span></span></code></pre></div><h2 id="capturing-the-flag">Capturing the flag</h2>
+<p>With the plugin complete, we can use it to solve the challenge. First, the
+plugin must be enabled in our project&rsquo;s S2E config file. By default,
+<code>s2e new_project</code> will generate a <code>s2e-config.lua</code> file with a standard set of
+plugins enabled and configured. However, most of them are not needed for this
+challenge. At a minimum the following plugins <strong>must</strong> be enabled:</p>
+<ul>
+<li><code>GoogleCTFUnbreakable</code></li>
+<li><code>BaseInstructions</code></li>
+<li><code>HostFiles</code></li>
+<li><code>LinuxMonitor</code></li>
+<li><code>ProcessExecutionDetector</code></li>
+</ul>
+<p>Finally, we can run S2E with the <code>launch-s2e.sh</code> script. After a short while
+S2E will terminate and the following message will be displayed:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>Product activation code <span style="color:#f92672">=</span> CTF<span style="color:#f92672">{</span>0The1Quick2Brown3Fox4Jumped5Over6The7Lazy8Fox9<span style="color:#f92672">}</span>
+</span></span></code></pre></div><h2 id="performance">Performance</h2>
+<p>Let&rsquo;s return to the discussion on (1) the <code>FunctionModels</code> plugin and (2)
+the performance impact caused by enforcing additional constraints on the
+product activation code.</p>
+<h3 id="using-the-functionmodels-plugin">Using the FunctionModels plugin</h3>
+<p>The <a href="https://github.com/S2E/docs/blob/master/src/Plugins/Linux/FunctionModels.rst">FunctionModels</a>
+plugin attempts to reduce <a href="https://en.wikipedia.org/wiki/Symbolic_execution#Path_Explosion">path explosion</a>.
+<code>s2e-env</code> analyzes the binary when the <code>new_project</code> command is executed and
+determines that the binary imports the <code>strncpy</code> function, for which a model
+exists.</p>
+<p><code>strncpy</code> is typically implemented as a loop over the input string until either
+a NULL terminator is found or <code>n</code> characters have been copied. By analyzing the
+binary in a disassembler we can see that this input string is the product
+activation key, which we made symbolic. Looping over a symbolic string will
+result in a greater number of states forked, because any of the 63 characters
+following the &ldquo;CTF{&rdquo; prefix could contain a NULL terminator.</p>
+<p>By enabling the <code>FunctionModels</code> plugin, the <code>strncpy</code> loop will be
+replaced by a single symbolic expression, reducing the total number of states
+forked. However, this comes with some performance trade-offs that I will
+discuss later.</p>
+<p>To enable the <code>FunctionModels</code> plugin, add the following to <code>s2e-config.lua</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>add_plugin(<span style="color:#e6db74">&#34;FunctionModels&#34;</span>)
+</span></span></code></pre></div><h3 id="measuring-performance">Measuring performance</h3>
+<p>With the flag under our belt, we can now explore the various performance
+trade-offs that must be taken into account when we (1) apply various
+constraints to the product activation code and (2) use the <code>FunctionModels</code>
+plugin. Results are given in the tables below — one for execution time and one
+for the number of states forked.</p>
+<p>For the &ldquo;explore all states&rdquo; results I removed the call to <code>exit</code> in the
+<code>onSuccess</code> method, even after capturing the flag (in practice this is
+unnecessary). For reference I also give the Angr results (as quoted from their
+source code) and Manticore results (from running it myself).</p>
+<h5 id="execution-times">Execution times</h5>
+<table>
+<thead>
+<tr>
+<th>Description</th>
+<th>Terminate on solution (secs)</th>
+<th>Explore all states (secs)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>No additional constraints on the input string</td>
+<td>12</td>
+<td>240</td>
+</tr>
+<tr>
+<td>No NULL terminator within the input string</td>
+<td>12</td>
+<td>12</td>
+</tr>
+<tr>
+<td>All characters must be printable ASCII</td>
+<td>3,180</td>
+<td>3,180</td>
+</tr>
+<tr>
+<td>Using FunctionModels</td>
+<td>13</td>
+<td>13</td>
+</tr>
+<tr>
+<td>Angr</td>
+<td>4.5</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Manticore</td>
+<td>60</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+<h5 id="no-of-states-forked">No. of states forked</h5>
+<table>
+<thead>
+<tr>
+<th>Description</th>
+<th>Terminate on solution (no. states)</th>
+<th>Explore all states (no. states)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>No additional constraints on the input string</td>
+<td>111</td>
+<td>1720</td>
+</tr>
+<tr>
+<td>No NULL terminator within the input string</td>
+<td>49</td>
+<td>49</td>
+</tr>
+<tr>
+<td>All characters must be printable ASCII</td>
+<td>44</td>
+<td>44</td>
+</tr>
+<tr>
+<td>Using FunctionModels</td>
+<td>49</td>
+<td>49</td>
+</tr>
+<tr>
+<td>Angr</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Manticore</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+<p>The first set of results are our baseline. The only constraints that we impose
+are that the product activation code begins with &ldquo;CTF{&rdquo;; the remaining 63
+characters are unconstrained. Of the 111 states forked before the solution is
+found, 62 of them occurred within <code>strncpy</code>. These 62 states correspond to the
+NULL terminator being located within one of the remaining 63 characters
+(e.g. &ldquo;CTF{\0&rdquo;, &ldquo;CTF{x\0&rdquo;, &ldquo;CTF{xxxxxxxx\0&rdquo;, etc.). However, the depth-first
+search (DFS) strategy means that none of these 62 states is scheduled for
+execution before the solution is found. The total number of states quickly
+explodes otherwise.</p>
+<p>Now look at the performance after we constrain the remaining 63 characters of
+the product activation code to <strong>exclude</strong> the NULL terminator. The total
+number of states is reduced to 49. While this has negligible impact on
+execution time (when we terminate after the solution is found — again due to
+DFS), the total number of states no longer explodes.</p>
+<p>Performance degrades significantly when we over-constrain the product
+activation code to <strong>only</strong> contain printable ASCII characters. While the total
+number of states is reduced, the bottleneck is simply transferred from state
+exploration to the constraint solver.</p>
+<p><strong>NOTE</strong>: To view the symbolic formulae during execution the
+<code>--verbose-fork-info</code> can be added to the <code>kleeArgs</code> table in <code>s2e-config.lua</code>.</p>
+<p>Finally, we find that the <code>FunctionModels</code> plugin reduces the state space to
+the same levels as when we excluded NULL terminators from the product
+activation code. However, like when we over-constrain, the formula that the
+constraint solver must solve grows increasingly complex after the <code>strncpy</code>
+model is applied and the constraint solver once again becomes the bottleneck.</p>
+<p>I personally find this trade-off between state space and constraint formulae
+complexity quite interesting. AFAIK there are no automatic ways to determine
+this trade-off; it can only be found through experimentation.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Compared to the Angr and Manticore solutions, solving this challenge with S2E
+may seem overly complex. There are a variety of reasons for this: S2E runs a
+full-system emulator, so the user must handle the full software stack (OS
+kernel, libraries, drivers, etc.); S2E is written in C++; and S2E is built on
+top of many different tools and frameworks (KLEE, QEMU, LLVM, etc.), each with
+their own APIs.</p>
+<p>Ultimately it is a matter of selecting the correct tool for the job. For
+CTF-style challenges, where the program is largely self-contained and has very
+little interaction with the rest of the system (e.g. the OS, libraries such as
+libc, etc.), using full-system emulation is probably overkill (however, as I&rsquo;ve
+hopefully demonstrated, it can be done!). However for more complex software
+(e.g. device drivers, software with more complex interaction with the system,
+etc.), S2E may be the more suitable choice.</p>
+</div>
+</article>
+
+
+
+
+
+
+                    </main><footer>
+    <hr />
+
+<p><small>
+        2023 &copy; Copyright (c) 2023, all rights reserved.
+    </small></p>
+    <p><small>
+        <a href='https://gitlab.com/gabmus/hugo-ficurinia'>Ficurinia theme</a> for <a href='https://gohugo.io'>Hugo</a> by <a href='https://gabmus.org'>Gabriele Musco</a>. Licensed under <a href='https://www.gnu.org/licenses/agpl-3.0.html'>GNU AGPLv3</a>.
+    </small></p>
+</footer>
+</div>
+            </div>
+        </div>
+
+
+</body>
+</html>

@@ -1,175 +1,303 @@
-
 <!DOCTYPE html>
-<html lang="en-us">
+<html class="home" lang="en"><head>
+	<meta name="generator" content="Hugo 0.111.1">
+    
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
 
-<head>
-<meta charset="utf-8" />
-<meta name="author" content="Adrian Herrera" />
-<meta name="description" content="" />
-<meta name="keywords" content="reverse engineering, symbolic execution, s2e" />
-<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-<meta name="generator" content="Hugo 0.73.0" />
-
-<link rel="canonical" href="https://adrianherrera.github.io/">
-<base href="https://adrianherrera.github.io/" />
-<meta property="og:title" content="Adrian&#39;s Blog: from ⊤ to ⊥" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://adrianherrera.github.io/" />
-<meta property="og:updated_time" content="2018-09-02T12:08:25+11:00" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Adrian&#39;s Blog: from ⊤ to ⊥"/>
-<meta name="twitter:description" content=""/>
-
-
-<meta itemprop="name" content="Adrian&#39;s Blog: from ⊤ to ⊥">
-<meta itemprop="description" content="">
-
-<link rel="stylesheet" href="css/layout.css" />
-<link rel="stylesheet" href="css/color-dark.css" />
-
-
+    
+        
+          <link href="https://adrianherrera.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Adrian&#39;s Blog: from ⊤ to ⊥" />
+          <link href="https://adrianherrera.github.io/index.xml" rel="feed" type="application/rss+xml" title="Adrian&#39;s Blog: from ⊤ to ⊥" />
+        
+    <link
+    rel="icon"
+    href='/favicon.png'
+/>
+<link
+    rel="shortcut icon"
+    href='/favicon.ico'
+    type="image/x-icon"
+/>
+<link
+    rel="apple-touch-icon"
+    href='/apple-touch-icon.png'
+/>
 
 <title>
+        
+        Adrian&#39;s Blog: from ⊤ to ⊥
+    </title>
+
+    
+    <link href="/symbols-nerd-font/symbols-nerd-font.css" rel="stylesheet" integrity="sha512-lydow8GLOLlYNOtHlksNCmGWWCBsbIEtikXpHzfWqx78HLlyQZHOzyLwPpKol4Th6aCwLUXOfODVYgwrd3nwKQ=="/>
+    <link href="/jetbrains-mono/jetbrains-mono.css" rel="stylesheet" integrity="sha512-tJxlgL6v1Y7kFf+qB8SloaAMKnOAw6WouknxXtIjkBux9Y/9aX81EUWOJO8c/3l98DmjG8brr4to7zaez606Fg=="/>
+
+    
+    
+    <link type="text/css" rel="stylesheet" href=https://adrianherrera.github.io/css/styles.abbd6311bb4b6ca58f8e7398140529245ae0f6428b759fcd830742eee2619eabb900ba9914a9affb82aa9a16a9b9ea727bb315315a976a0db0e7513a5f12c504.css integrity="sha512-q71jEbtLbKWPjnOYFAUpJFrg9kKLdZ/NgwdC7uJhnqu5ALqZFKmv&#43;4Kqmhapuepye7MVMVqXag2w51E6XxLFBA==" />
+<meta name="author" content="" />
+
+    
+
+<meta property="og:site_name"
+    content='Adrian&#39;s Blog: from ⊤ to ⊥' />
+
+    <meta property="og:title"
+        content='Adrian&#39;s Blog: from ⊤ to ⊥' />
+    
+    <meta property="og:type" content="blog" />
+    <meta property="og:image"
+        content='https://adrianherrera.github.io/img/icon.svg' />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:domain"
+      content='adrianherrera.github.io'
+/>
+<meta property="twitter:url" content="https://adrianherrera.github.io/" />
 
 
-     Adrian&#39;s Blog: from ⊤ to ⊥ 
+    <meta name="twitter:title"
+        content='Adrian&#39;s Blog: from ⊤ to ⊥' />
+    
+    <meta name="twitter:image"
+        content='https://adrianherrera.github.io/img/icon.svg' />
 
-</title>
-
-<script src="js/highlight.min.js"></script>
-<link rel="stylesheet" href="css/tomorrow-night.min.css" />
-<script>hljs.initHighlightingOnLoad();</script>
-
+<link rel="manifest" href="/manifest/index.json" />
 </head>
 
 
+    
+    
+    
+
 <body>
-<div class="main">
-<header>
-
-<div class="header-bar">
-
-  <nav>
-    <div class="siteTitle">
-      <a href="https://adrianherrera.github.io/">Adrian&#39;s Blog: from ⊤ to ⊥</a>
-    </div> 
-
+        <div id="baseContainer"><header class="jumbotronContainer">
+<div class="titleAndSearchContainer">
+        <div id="titleContainer">
+            
+                <a class="unstyledLink" href="/">
+                    <img src='/headshot.png' alt='Logo'/>
+                </a>
+            
+            <div class="rightOfLogo">
+                <div class="titleAndHamburger">
+                    <h1>
+                        <a class="unstyledLink" href="/">Adrian&#39;s Blog: from ⊤ to ⊥</a>
+                        
+                    </h1>
+                    
+                </div>
+                <div id="wide_nav"><nav>
     
-    
-    <a class="nav-item" href="/post/"><div class="nav-item-title">Posts</div></a>
-    
-    <a class="nav-item" href="/about/"><div class="nav-item-title">About</div></a>
-    
-
-  </nav>
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+            <li><a href="/publications">Publications</a></li>
+        
+        
+        
+        
+        
+            <li><a href="/about/">About</a></li>
+        
+        
+        
+    </ul>
+</nav>
 </div>
-
-  
-<div class="social-links-header">
-
-  
-
-  
-  <a href="https://github.com/adrianherrera" target="_blank"><div class="social-link">GitHub</div></a>
-  
-
-  
-
-  
-  <a href="https://twitter.com/0xadr1an" target="_blank"><div class="social-link">Twitter</div></a>
-  
-
-  
-
+            </div>
+        </div>
+        <div class="search">
+    <input id="searchbar" type="text" placeholder='Search' />
+    <a class="nerdlink" onclick="newSearch();">&#xf002;</a>
 </div>
+<script>
+    function newSearch() {
+        let term = searchbar.value.trim();
+        if (!term) return;
+        location.href = `/search?q=${term}`;
+    }
+    searchbar.onkeyup = (ev) => {if (ev.keyCode == 13) newSearch()};
+</script>
 
+    </div>
+    <div id="links">
+        
+        
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://github.com/adrianherrera">
+    
+    
+        &#xf09b;
+    
+    <span>
+        Github
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="www.linkedin.com/in/adrian-herrera-53425a260">
+    
+    
+        &#xf0e1;
+    
+    <span>
+        Linkedin
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://twitter.com/0xadr1an">
+    
+    
+        &#xf099;
+    
+    <span>
+        Twitter
+    </span>
+</a>
 
-</header>
-
-
-<main>
-
-
-  
-    <article class="post-preview">
-
-  <header>
-    <h2 class="title"> <a href='https://adrianherrera.github.io/post/'> Posts</a> </h2>
-    <div class="meta">
-      Sep 2, 2018 - 0 minutes
     </div>
     
-<div class="tags">
+
+</header>
+<div id="contentContainer">
+                <div id="content">
+                    <main>
+
     
-</div>
+    
+    
 
-  </header>
 
-  <div class="summary">  </div>
 
-  <footer>
-  <div class="rmore">
-    <a href='https://adrianherrera.github.io/post/'><nobr>Read more ...</nobr></a>
-  </div>
-  </footer>
 
+
+    
+
+
+
+<div class="postlist " id="postlist">
+<article class="card postlistitem">
+    <div>
+        <h2>
+            <a href="https://adrianherrera.github.io/posts/malware-s2e/">Analysing &#34;Trigger-based&#34; Malware with S2E</a>
+        </h2>
+        <p class="date">
+            <span title='Date'> </span>
+    2018-09-02
+
+
+        </p>
+        
+        
+            <div class="articlePreview">
+                <p>
+                    
+                        Introduction This blog post is a quick brain-dump of the work that I was doing during my last month in the Dependable Systems Lab at EPFL. At the time I was working on malware analysis with S2E. While not anything earth-shatteringly novel, I&rsquo;m hopeful that this post will help others who want to use symbolic execution/S2E to analyse malware behaviour.
+What makes malware analysis different? My previous blog posts have looked at solving a CTF challenge and analysing file parsers.
+                    
+                </p>
+                <p><a href="https://adrianherrera.github.io/posts/malware-s2e/">Continue reading </a></p>
+            </div>
+        
+    </div>
+    <hr />
+</article>
+<article class="card postlistitem">
+    <div>
+        <h2>
+            <a href="https://adrianherrera.github.io/posts/kaitai-s2e/">&#34;Targeting&#34; File Parsers with S2E and Kaitai Struct</a>
+        </h2>
+        <p class="date">
+            <span title='Date'> </span>
+    2017-10-23
+
+
+        </p>
+        
+        
+            <div class="articlePreview">
+                <p>
+                    
+                        Introduction Recently I&rsquo;ve been playing around with file parsers in S2E. This typically involves calling s2ecmd symbfile to make the parser&rsquo;s input symbolic and then running S2E to explore different paths through the parser. However, this is a relatively heavy-handed approach; it makes the entire input file one big symbolic blob, which quickly causes path explosion. Additionally, we may only be interested in exploring paths that exercise specific functionality.
+So how can we achieve more targeted symbolic execution on file-based programs such as parsers?
+                    
+                </p>
+                <p><a href="https://adrianherrera.github.io/posts/kaitai-s2e/">Continue reading </a></p>
+            </div>
+        
+    </div>
+    <hr />
+</article>
+<article class="card postlistitem">
+    <div>
+        <h2>
+            <a href="https://adrianherrera.github.io/posts/google-ctf-2016/">Solving a CTF Challenge with S2E</a>
+        </h2>
+        <p class="date">
+            <span title='Date'> </span>
+    2017-08-08
+
+
+        </p>
+        
+        
+            <div class="articlePreview">
+                <p>
+                    
+                        Introduction Symbolic execution tools such as Angr and Manticore have become increasingly popular for analyzing binaries in Capture the Flag (CTF) challenges.
+In this blog post I will show that we can do the same with S2E, using it to solve a reverse engineering challenge from the 2016 Google CTF. This post walks through the process of writing an S2E plugin &ldquo;from first principles&rdquo; to solve this challenge.
+For comparison, solutions for the challenge using Angr and Manticore are also available.
+                    
+                </p>
+                <p><a href="https://adrianherrera.github.io/posts/google-ctf-2016/">Continue reading </a></p>
+            </div>
+        
+    </div>
+    <hr />
 </article>
 
-
-
-
-<div class="page-nav">
-  <div class="page-prev">
-    
-  </div>
-
-  <div class="page-num">
-    1/1
-  </div>
-
-  <div class="page-next">
-    
-  </div>
-</div> 
-
-
-</main>
-
-  <footer>
-
-  <div class="social-links-footer">
-
-  
-
-  
-  <a href="https://github.com/adrianherrera" target="_blank"><div class="social-link">GitHub</div></a>
-  
-
-  
-
-  
-  <a href="https://twitter.com/0xadr1an" target="_blank"><div class="social-link">Twitter</div></a>
-  
-
-  
-
-  <div class="social-link">
-  <a href="https://adrianherrera.github.io/index.xml" target="_blank">RSS</a>
-  </div>
-
 </div>
+<div id="getNextBtnContainer"></div>
 
 
-  <div class="copyright"> Copyright (c) 2017, all rights reserved. </div>
 
-  <div class="poweredby">
-    Powered by <a href="https://gohugo.io/">Hugo</a>.
-  </div>
 
-  </footer>
+
+
+                    </main><footer>
+    <hr />
+
+<p><small>
+        2023 &copy; Copyright (c) 2023, all rights reserved.
+    </small></p>
+    <p><small>
+        <a href='https://gitlab.com/gabmus/hugo-ficurinia'>Ficurinia theme</a> for <a href='https://gohugo.io'>Hugo</a> by <a href='https://gabmus.org'>Gabriele Musco</a>. Licensed under <a href='https://www.gnu.org/licenses/agpl-3.0.html'>GNU AGPLv3</a>.
+    </small></p>
+</footer>
+</div>
+            </div>
+        </div>
+
 
 </body>
 </html>
-

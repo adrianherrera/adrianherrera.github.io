@@ -2,42 +2,38 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Adrian&#39;s Blog: from ⊤ to ⊥</title>
-    <link>https://adrianherrera.github.io/post/</link>
+    <link>https://adrianherrera.github.io/posts/</link>
     <description>Recent content in Posts on Adrian&#39;s Blog: from ⊤ to ⊥</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <copyright>Copyright (c) 2017, all rights reserved.</copyright>
-    <lastBuildDate>Sun, 02 Sep 2018 12:08:25 +1100</lastBuildDate>
-    
-	<atom:link href="https://adrianherrera.github.io/post/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>en</language>
+    <copyright>Copyright (c) 2023, all rights reserved.</copyright>
+    <lastBuildDate>Sun, 02 Sep 2018 12:08:25 +1100</lastBuildDate><atom:link href="https://adrianherrera.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Analysing &#34;Trigger-based&#34; Malware with S2E</title>
-      <link>https://adrianherrera.github.io/post/malware-s2e/</link>
+      <link>https://adrianherrera.github.io/posts/malware-s2e/</link>
       <pubDate>Sun, 02 Sep 2018 12:08:25 +1100</pubDate>
       
-      <guid>https://adrianherrera.github.io/post/malware-s2e/</guid>
+      <guid>https://adrianherrera.github.io/posts/malware-s2e/</guid>
       <description>Introduction This blog post is a quick brain-dump of the work that I was doing during my last month in the Dependable Systems Lab at EPFL. At the time I was working on malware analysis with S2E. While not anything earth-shatteringly novel, I&amp;rsquo;m hopeful that this post will help others who want to use symbolic execution/S2E to analyse malware behaviour.
 What makes malware analysis different? My previous blog posts have looked at solving a CTF challenge and analysing file parsers.</description>
     </item>
     
     <item>
       <title>&#34;Targeting&#34; File Parsers with S2E and Kaitai Struct</title>
-      <link>https://adrianherrera.github.io/post/kaitai-s2e/</link>
+      <link>https://adrianherrera.github.io/posts/kaitai-s2e/</link>
       <pubDate>Mon, 23 Oct 2017 21:35:48 +1100</pubDate>
       
-      <guid>https://adrianherrera.github.io/post/kaitai-s2e/</guid>
+      <guid>https://adrianherrera.github.io/posts/kaitai-s2e/</guid>
       <description>Introduction Recently I&amp;rsquo;ve been playing around with file parsers in S2E. This typically involves calling s2ecmd symbfile to make the parser&amp;rsquo;s input symbolic and then running S2E to explore different paths through the parser. However, this is a relatively heavy-handed approach; it makes the entire input file one big symbolic blob, which quickly causes path explosion. Additionally, we may only be interested in exploring paths that exercise specific functionality.
 So how can we achieve more targeted symbolic execution on file-based programs such as parsers?</description>
     </item>
     
     <item>
       <title>Solving a CTF Challenge with S2E</title>
-      <link>https://adrianherrera.github.io/post/google-ctf-2016/</link>
+      <link>https://adrianherrera.github.io/posts/google-ctf-2016/</link>
       <pubDate>Tue, 08 Aug 2017 11:50:51 +0200</pubDate>
       
-      <guid>https://adrianherrera.github.io/post/google-ctf-2016/</guid>
+      <guid>https://adrianherrera.github.io/posts/google-ctf-2016/</guid>
       <description>Introduction Symbolic execution tools such as Angr and Manticore have become increasingly popular for analyzing binaries in Capture the Flag (CTF) challenges.
 In this blog post I will show that we can do the same with S2E, using it to solve a reverse engineering challenge from the 2016 Google CTF. This post walks through the process of writing an S2E plugin &amp;ldquo;from first principles&amp;rdquo; to solve this challenge.
 For comparison, solutions for the challenge using Angr and Manticore are also available.</description>
