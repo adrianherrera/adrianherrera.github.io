@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/web-manifest-combined.json",
-  "name": "Adrian's Blog: from ⊤ to ⊥",
-  "short_name": "Adrian's Blog: from ⊤ to ⊥",
+  "name": "Program Analysis from ⊤ to ⊥",
+  "short_name": "Program Analysis from ⊤ to ⊥",
   "start_url": "/",
   "display": "standalone",
   
