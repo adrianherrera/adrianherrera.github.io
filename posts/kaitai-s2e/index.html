@@ -360,39 +360,39 @@ standard method for
 <a href="https://github.com/S2E/guest-tools/blob/master/common/include/s2e/monitors/commands/raw.h">plugins</a>
 from the guest:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">enum</span> S2E_KAITAI_COMMANDS {
-</span></span><span style="display:flex;"><span>    KAITAI_MAKE_SYMBOLIC,
+</span></span><span style="display:flex;"><span>  KAITAI_MAKE_SYMBOLIC,
 </span></span><span style="display:flex;"><span>};
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> S2E_KAITAI_COMMAND_MAKE_SYMBOLIC {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Pointer to guest memory where the symbolic file has been loaded
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">uint64_t</span> InputFile;
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Size of the input file (in bytes)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">uint64_t</span> FileSize;
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 1 on success, 0 on failure
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">uint64_t</span> Result;
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Pointer to guest memory where the symbolic file has been loaded
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">uint64_t</span> InputFile;
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Size of the input file (in bytes)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">uint64_t</span> FileSize;
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 1 on success, 0 on failure
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">uint64_t</span> Result;
 </span></span><span style="display:flex;"><span>} <span style="color:#a6e22e">__attribute__</span>((packed));
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> S2E_KAITAI_COMMAND {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">enum</span> S2E_KAITAI_COMMANDS Command;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">union</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">struct</span> S2E_KAITAI_COMMAND_MAKE_SYMBOLIC MakeSymbolic;
-</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">enum</span> S2E_KAITAI_COMMANDS Command;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">union</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> S2E_KAITAI_COMMAND_MAKE_SYMBOLIC MakeSymbolic;
+</span></span><span style="display:flex;"><span>  };
 </span></span><span style="display:flex;"><span>} <span style="color:#a6e22e">__attribute__</span>((packed));
 </span></span></code></pre></div><p>We can then add the following function to <code>s2e_kaitai_cmd.c</code>. This function
 takes a pointer to the file contents (which have been <code>read</code> into a buffer) and
 the size of the buffer (determined with <code>lseek</code>), constructs the relevant
 command and sends this command to S2E.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">s2e_kaitai_make_symbolic</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">uint8_t</span> <span style="color:#f92672">*</span>buffer, <span style="color:#66d9ef">unsigned</span> size) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> S2E_KAITAI_COMMAND cmd <span style="color:#f92672">=</span> {<span style="color:#ae81ff">0</span>};
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">struct</span> S2E_KAITAI_COMMAND cmd <span style="color:#f92672">=</span> {<span style="color:#ae81ff">0</span>};
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    cmd.Command <span style="color:#f92672">=</span> S2E_KAITAI_MAKE_SYMBOLIC;
-</span></span><span style="display:flex;"><span>    cmd.MakeSymbolic.InputFile <span style="color:#f92672">=</span> (<span style="color:#66d9ef">uintptr_t</span>) buffer;
-</span></span><span style="display:flex;"><span>    cmd.MakeSymbolic.FileSize <span style="color:#f92672">=</span> size;
-</span></span><span style="display:flex;"><span>    cmd.MakeSymbolic.Result <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>  cmd.Command <span style="color:#f92672">=</span> S2E_KAITAI_MAKE_SYMBOLIC;
+</span></span><span style="display:flex;"><span>  cmd.MakeSymbolic.InputFile <span style="color:#f92672">=</span> (<span style="color:#66d9ef">uintptr_t</span>) buffer;
+</span></span><span style="display:flex;"><span>  cmd.MakeSymbolic.FileSize <span style="color:#f92672">=</span> size;
+</span></span><span style="display:flex;"><span>  cmd.MakeSymbolic.Result <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">s2e_invoke_plugin</span>(<span style="color:#e6db74">&#34;KaitaiStruct&#34;</span>, <span style="color:#f92672">&amp;</span>cmd, <span style="color:#66d9ef">sizeof</span>(cmd));
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">s2e_invoke_plugin</span>(<span style="color:#e6db74">&#34;KaitaiStruct&#34;</span>, <span style="color:#f92672">&amp;</span>cmd, <span style="color:#66d9ef">sizeof</span>(cmd));
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (<span style="color:#66d9ef">int</span>) cmd.MakeSymbolic.Result;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> (<span style="color:#66d9ef">int</span>) cmd.MakeSymbolic.Result;
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Now we need an S2E plugin to handle this command.</p>
 <h3 id="the-kaitaistruct-plugin">The <code>KaitaiStruct</code> plugin</h3>
@@ -415,28 +415,26 @@ command and sends this command to S2E.</p>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">// In addition to extending the basic Plugin class, we must also implement the
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">// IPluginInvoker to handle custom S2E commands
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">KaitaiStruct</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">public</span> Plugin, <span style="color:#66d9ef">public</span> IPluginInvoker {
-</span></span><span style="display:flex;"><span>    S2E_PLUGIN
+</span></span><span style="display:flex;"><span>  S2E_PLUGIN
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
-</span></span><span style="display:flex;"><span>    KaitaiStruct(S2E <span style="color:#f92672">*</span>s2e) <span style="color:#f92672">:</span> Plugin(s2e) { }
+</span></span><span style="display:flex;"><span>  KaitaiStruct(S2E <span style="color:#f92672">*</span>s2e) <span style="color:#f92672">:</span> Plugin(s2e) { }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">initialize</span>();
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">initialize</span>();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// The method from IPluginInvoker that we must implement to respond to a
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// custom command. This method takes the current S2E state, a pointer to
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// the custom command object and the size of the custom command object
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handleOpcodeInvocation</span>(S2EExecutionState <span style="color:#f92672">*</span>state,
-</span></span><span style="display:flex;"><span>                                        <span style="color:#66d9ef">uint64_t</span> guestDataPtr,
-</span></span><span style="display:flex;"><span>                                        <span style="color:#66d9ef">uint64_t</span> guestDataSize);
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// The method from IPluginInvoker that we must implement to respond to a
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">// custom command. This method takes the current S2E state, a pointer to
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">// the custom command object and the size of the custom command object
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handleOpcodeInvocation</span>(S2EExecutionState <span style="color:#f92672">*</span>state,
+</span></span><span style="display:flex;"><span>                                      <span style="color:#66d9ef">uint64_t</span> guestDataPtr,
+</span></span><span style="display:flex;"><span>                                      <span style="color:#66d9ef">uint64_t</span> guestDataSize);
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span><span style="color:#f92672">:</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// The name of the Lua function that will run the Kaitai Struct parser
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    std<span style="color:#f92672">::</span>string m_kaitaiParserFunc;
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// The name of the Lua function that will run the Kaitai Struct parser
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  std<span style="color:#f92672">::</span>string m_kaitaiParserFunc;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// handleOpcodeInvocation will call this method to actually invoke the Lua
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// function
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">bool</span> <span style="color:#a6e22e">handleMakeSymbolic</span>(S2EExecutionState <span style="color:#f92672">*</span>state,
-</span></span><span style="display:flex;"><span>                            <span style="color:#66d9ef">const</span> S2E_KAITAI_COMMAND <span style="color:#f92672">&amp;</span>command);
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// handleOpcodeInvocation will call this method to actually invoke the Lua function
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">bool</span> <span style="color:#a6e22e">handleMakeSymbolic</span>(S2EExecutionState <span style="color:#f92672">*</span>state, <span style="color:#66d9ef">const</span> S2E_KAITAI_COMMAND <span style="color:#f92672">&amp;</span>command);
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>} <span style="color:#75715e">// namespace plugins
@@ -456,64 +454,64 @@ command and sends this command to S2E.</p>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">namespace</span> s2e {
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">namespace</span> plugins {
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>S2E_DEFINE_PLUGIN(KaitaiStruct,
-</span></span><span style="display:flex;"><span>                  <span style="color:#e6db74">&#34;Combine S2E and Kaitai Struct&#34;</span>,
-</span></span><span style="display:flex;"><span>                  <span style="color:#e6db74">&#34;&#34;</span>,
-</span></span><span style="display:flex;"><span>                  <span style="color:#75715e">// Dependencies
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                  <span style="color:#e6db74">&#34;LuaBindings&#34;</span>); <span style="color:#75715e">// Reuse the existing Lua binding code from
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                                  <span style="color:#75715e">// the function/instruction annotation
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                                  <span style="color:#75715e">// plugins
+</span></span><span style="display:flex;"><span>S2E_DEFINE_PLUGIN(
+</span></span><span style="display:flex;"><span>  KaitaiStruct,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;Combine S2E and Kaitai Struct&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Dependencies
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#e6db74">&#34;LuaBindings&#34;</span>); <span style="color:#75715e">// Reuse the existing Lua binding code from the
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                  <span style="color:#75715e">// function/instruction annotation plugins
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> KaitaiStruct<span style="color:#f92672">::</span>initialize() {
-</span></span><span style="display:flex;"><span>    m_kaitaiParserFunc <span style="color:#f92672">=</span> s2e()<span style="color:#f92672">-&gt;</span>getConfig()<span style="color:#f92672">-&gt;</span>getString(getConfigKey() <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>                                                       <span style="color:#e6db74">&#34;.parser&#34;</span>);
+</span></span><span style="display:flex;"><span>  m_kaitaiParserFunc <span style="color:#f92672">=</span> s2e()<span style="color:#f92672">-&gt;</span>getConfig()<span style="color:#f92672">-&gt;</span>getString(
+</span></span><span style="display:flex;"><span>    getConfigKey() <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;.parser&#34;</span>);
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">bool</span> KaitaiStruct<span style="color:#f92672">::</span>handleMakeSymbolic(S2EExecutionState <span style="color:#f92672">*</span>state,
 </span></span><span style="display:flex;"><span>                                      <span style="color:#66d9ef">const</span> S2E_KAITAI_COMMAND <span style="color:#f92672">&amp;</span>command) {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// We&#39;ll finish this later
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> true;
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// We&#39;ll finish this later
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">return</span> true;
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> KaitaiStruct<span style="color:#f92672">::</span>handleOpcodeInvocation(S2EExecutionState <span style="color:#f92672">*</span>state,
 </span></span><span style="display:flex;"><span>                                          <span style="color:#66d9ef">uint64_t</span> guestDataPtr,
 </span></span><span style="display:flex;"><span>                                          <span style="color:#66d9ef">uint64_t</span> guestDataSize) {
-</span></span><span style="display:flex;"><span>    S2E_KAITAI_COMMAND cmd;
+</span></span><span style="display:flex;"><span>  S2E_KAITAI_COMMAND cmd;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 1. Validate the received command
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (guestDataSize <span style="color:#f92672">!=</span> <span style="color:#66d9ef">sizeof</span>(cmd)) {
-</span></span><span style="display:flex;"><span>        getWarningsStream(state) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;S2E_KAITAI_COMMAND: Mismatched command &#34;</span>
-</span></span><span style="display:flex;"><span>                                 <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;structure size &#34;</span> <span style="color:#f92672">&lt;&lt;</span> guestDataSize <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 1. Validate the received command
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">if</span> (guestDataSize <span style="color:#f92672">!=</span> <span style="color:#66d9ef">sizeof</span>(cmd)) {
+</span></span><span style="display:flex;"><span>    getWarningsStream(state) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;S2E_KAITAI_COMMAND: Mismatched command &#34;</span>
+</span></span><span style="display:flex;"><span>                             <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;structure size &#34;</span> <span style="color:#f92672">&lt;&lt;</span> guestDataSize <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+</span></span><span style="display:flex;"><span>    exit(<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 2. Read the command
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>state<span style="color:#f92672">-&gt;</span>mem()<span style="color:#f92672">-&gt;</span>read(guestDataPtr, <span style="color:#f92672">&amp;</span>cmd, guestDataSize)) {
+</span></span><span style="display:flex;"><span>    getWarningsStream(state) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;S2E_KAITAI_COMMAND: Failed to read &#34;</span>
+</span></span><span style="display:flex;"><span>                             <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;command</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+</span></span><span style="display:flex;"><span>    exit(<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 3. Handle the command
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">switch</span> (cmd.Command) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> KAITAI_MAKE_SYMBOLIC: {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">bool</span> success <span style="color:#f92672">=</span> handleMakeSymbolic(state, cmd);
+</span></span><span style="display:flex;"><span>      cmd.MakeSymbolic.Result <span style="color:#f92672">=</span> success <span style="color:#f92672">?</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// Write the result back to the guest
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>state<span style="color:#f92672">-&gt;</span>mem()<span style="color:#f92672">-&gt;</span>write(guestDataPtr, cmd, guestDataSize)) {
+</span></span><span style="display:flex;"><span>        getWarningsStream(State) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;S2E_KAITAI_COMMAND: Failed to &#34;</span>
+</span></span><span style="display:flex;"><span>                                 <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; write result to guest</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
 </span></span><span style="display:flex;"><span>        exit(<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>      getWarningsStream(state) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;S2E_KAITAI_COMMAND: Invalid command &#34;</span>
+</span></span><span style="display:flex;"><span>                               <span style="color:#f92672">&lt;&lt;</span> hexval(cmd.Command) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+</span></span><span style="display:flex;"><span>      exit(<span style="color:#ae81ff">1</span>);
 </span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 2. Read the command
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>state<span style="color:#f92672">-&gt;</span>mem()<span style="color:#f92672">-&gt;</span>read(guestDataPtr, <span style="color:#f92672">&amp;</span>cmd, guestDataSize)) {
-</span></span><span style="display:flex;"><span>        getWarningsStream(state) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;S2E_KAITAI_COMMAND: Failed to read &#34;</span>
-</span></span><span style="display:flex;"><span>                                 <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;command</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
-</span></span><span style="display:flex;"><span>        exit(<span style="color:#ae81ff">1</span>);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 3. Handle the command
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">switch</span> (cmd.Command) {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">case</span> KAITAI_MAKE_SYMBOLIC: {
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">bool</span> success <span style="color:#f92672">=</span> handleMakeSymbolic(state, cmd);
-</span></span><span style="display:flex;"><span>            cmd.MakeSymbolic.Result <span style="color:#f92672">=</span> success <span style="color:#f92672">?</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Write the result back to the guest
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>state<span style="color:#f92672">-&gt;</span>mem()<span style="color:#f92672">-&gt;</span>write(guestDataPtr, cmd, guestDataSize)) {
-</span></span><span style="display:flex;"><span>                getWarningsStream(State) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;S2E_KAITAI_COMMAND: Failed to &#34;</span>
-</span></span><span style="display:flex;"><span>                                         <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; write result to guest</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
-</span></span><span style="display:flex;"><span>                exit(<span style="color:#ae81ff">1</span>);
-</span></span><span style="display:flex;"><span>            }
-</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">break</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span> {
-</span></span><span style="display:flex;"><span>            getWarningsStream(state) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;S2E_KAITAI_COMMAND: Invalid command &#34;</span>
-</span></span><span style="display:flex;"><span>                                     <span style="color:#f92672">&lt;&lt;</span> hexval(cmd.Command) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
-</span></span><span style="display:flex;"><span>            exit(<span style="color:#ae81ff">1</span>);
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>} <span style="color:#75715e">// namespace plugins
@@ -545,36 +543,36 @@ include some extra header files:</p>
 </span></span></span></code></pre></div><p>And finally the function implementation:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">bool</span> KaitaiStruct<span style="color:#f92672">::</span>handleMakeSymbolic(S2EExecutionState <span style="color:#f92672">*</span>state,
 </span></span><span style="display:flex;"><span>                                      <span style="color:#66d9ef">const</span> S2E_KAITAI_COMMAND <span style="color:#f92672">&amp;</span>command) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">uint64_t</span> addr <span style="color:#f92672">=</span> command.MakeSymbolic.InputFile;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">uint64_t</span> size <span style="color:#f92672">=</span> command.MakeSymbolic.FileSize;
-</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">uint8_t</span><span style="color:#f92672">&gt;</span> data(size);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">uint64_t</span> addr <span style="color:#f92672">=</span> command.MakeSymbolic.InputFile;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">uint64_t</span> size <span style="color:#f92672">=</span> command.MakeSymbolic.FileSize;
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">uint8_t</span><span style="color:#f92672">&gt;</span> data(size);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Read the input file&#39;s contents from guest memory
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>state<span style="color:#f92672">-&gt;</span>mem()<span style="color:#f92672">-&gt;</span>read(addr, data.data(), <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">uint8_t</span>) <span style="color:#f92672">*</span> size)) {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> false;
-</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Read the input file&#39;s contents from guest memory
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>state<span style="color:#f92672">-&gt;</span>mem()<span style="color:#f92672">-&gt;</span>read(addr, data.data(), <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">uint8_t</span>) <span style="color:#f92672">*</span> size)) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> false;
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Get the Lua interpreter&#39;s state
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    lua_State <span style="color:#f92672">*</span>L <span style="color:#f92672">=</span> s2e()<span style="color:#f92672">-&gt;</span>getConfig()<span style="color:#f92672">-&gt;</span>getState();
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Get the Lua interpreter&#39;s state
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  lua_State <span style="color:#f92672">*</span>L <span style="color:#f92672">=</span> s2e()<span style="color:#f92672">-&gt;</span>getConfig()<span style="color:#f92672">-&gt;</span>getState();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Wrap the current S2E execution state
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    LuaS2EExecutionState <span style="color:#a6e22e">luaS2EState</span>(state);
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Wrap the current S2E execution state
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  LuaS2EExecutionState <span style="color:#a6e22e">luaS2EState</span>(state);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Turn the input file into a Lua string
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    luaL_Buffer luaBuff;
-</span></span><span style="display:flex;"><span>    luaL_buffinit(L, <span style="color:#f92672">&amp;</span>luaBuff);
-</span></span><span style="display:flex;"><span>    luaL_addlstring(<span style="color:#f92672">&amp;</span>luaBuff, (<span style="color:#66d9ef">char</span><span style="color:#f92672">*</span>) data.data(), <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">uint8_t</span>) <span style="color:#f92672">*</span> size);
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Turn the input file into a Lua string
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  luaL_Buffer luaBuff;
+</span></span><span style="display:flex;"><span>  luaL_buffinit(L, <span style="color:#f92672">&amp;</span>luaBuff);
+</span></span><span style="display:flex;"><span>  luaL_addlstring(<span style="color:#f92672">&amp;</span>luaBuff, (<span style="color:#66d9ef">char</span><span style="color:#f92672">*</span>) data.data(), <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">uint8_t</span>) <span style="color:#f92672">*</span> size);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Set up our function call on Lua&#39;s virtual stack
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    lua_getglobal(L, m_kaitaiParserFunc.c_str());
-</span></span><span style="display:flex;"><span>    Lunar<span style="color:#f92672">&lt;</span>LuaS2EExecutionState<span style="color:#f92672">&gt;::</span>push(L, <span style="color:#f92672">&amp;</span>luaS2EState);
-</span></span><span style="display:flex;"><span>    lua_pushinteger(L, addr);
-</span></span><span style="display:flex;"><span>    luaL_pushresult(<span style="color:#f92672">&amp;</span>luaBuff);
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Set up our function call on Lua&#39;s virtual stack
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  lua_getglobal(L, m_kaitaiParserFunc.c_str());
+</span></span><span style="display:flex;"><span>  Lunar<span style="color:#f92672">&lt;</span>LuaS2EExecutionState<span style="color:#f92672">&gt;::</span>push(L, <span style="color:#f92672">&amp;</span>luaS2EState);
+</span></span><span style="display:flex;"><span>  lua_pushinteger(L, addr);
+</span></span><span style="display:flex;"><span>  luaL_pushresult(<span style="color:#f92672">&amp;</span>luaBuff);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Call our Kaitai Struct parser function
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    lua_call(L, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Call our Kaitai Struct parser function
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  lua_call(L, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">0</span>);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> true;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> true;
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Hopefully this is relatively easy to understand (see
 <a href="https://www.lua.org/manual/5.3/manual.html#4.8">here</a> for more information on
@@ -634,23 +632,23 @@ spec in <code>lua_runtime/s2e_make_symbolic.lua</code>:</p>
 </span></span><span style="display:flex;"><span>S2eMakeSymbolic <span style="color:#f92672">=</span> class.class()
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">S2eMakeSymbolic</span>:<span style="color:#a6e22e">_init</span>(s2e_state, start_addr, curr_pos, name)
-</span></span><span style="display:flex;"><span>    self._state <span style="color:#f92672">=</span> s2e_state
-</span></span><span style="display:flex;"><span>    self._addr <span style="color:#f92672">=</span> start_addr <span style="color:#f92672">+</span> curr_pos
-</span></span><span style="display:flex;"><span>    self._name <span style="color:#f92672">=</span> name
+</span></span><span style="display:flex;"><span>  self._state <span style="color:#f92672">=</span> s2e_state
+</span></span><span style="display:flex;"><span>  self._addr <span style="color:#f92672">=</span> start_addr <span style="color:#f92672">+</span> curr_pos
+</span></span><span style="display:flex;"><span>  self._name <span style="color:#f92672">=</span> name
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">S2eMakeSymbolic</span>:<span style="color:#a6e22e">decode</span>(data)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">local</span> mem <span style="color:#f92672">=</span> self._state:mem()
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">local</span> size <span style="color:#f92672">=</span> data:len()
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">local</span> mem <span style="color:#f92672">=</span> self._state:mem()
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">local</span> size <span style="color:#f92672">=</span> data:len()
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- The decode routine is called after the data has already been read, so we</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- must return to the start of the data in order to make it symbolic</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">local</span> addr <span style="color:#f92672">=</span> self._addr <span style="color:#f92672">-</span> size
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- The decode routine is called after the data has already been read, so we</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- must return to the start of the data in order to make it symbolic</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">local</span> addr <span style="color:#f92672">=</span> self._addr <span style="color:#f92672">-</span> size
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    mem:makeConcolic(addr, size, self._name)
+</span></span><span style="display:flex;"><span>  mem:makeConcolic(addr, size, self._name)
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- Return the data unchanged</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> data
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- Return the data unchanged</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> data
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
 </span></span></code></pre></div><p>All we&rsquo;ve done here is define a new class, <code>S2eMakeSymbolic</code>, with a
 constructor (<code>_init</code>) and a <code>decode</code> method. The constructor takes the
@@ -717,17 +715,17 @@ that will instantiate and run our parser. This function is invoked by the
 </span></span><span style="display:flex;"><span>require(<span style="color:#e6db74">&#34;elf&#34;</span>)
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">make_symbolic_elf</span>(state, start_addr, buffer)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">local</span> ss <span style="color:#f92672">=</span> stringstream(buffer)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">local</span> ss <span style="color:#f92672">=</span> stringstream(buffer)
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- This will kick-start the parser. We don&#39;t care about the final result</span>
-</span></span><span style="display:flex;"><span>    Elf(state, start_addr, KaitaiStream(ss))
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- This will kick-start the parser. We don&#39;t care about the final result</span>
+</span></span><span style="display:flex;"><span>  Elf(state, start_addr, KaitaiStream(ss))
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">-- Enable and configure the necessary plugins</span>
 </span></span><span style="display:flex;"><span>add_plugin(<span style="color:#e6db74">&#34;LuaBindings&#34;</span>)
 </span></span><span style="display:flex;"><span>add_plugin(<span style="color:#e6db74">&#34;KaitaiStruct&#34;</span>)
 </span></span><span style="display:flex;"><span>pluginsConfig.KaitaiStruct <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>    parser <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;make_symbolic_elf&#34;</span>,
+</span></span><span style="display:flex;"><span>  parser <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;make_symbolic_elf&#34;</span>,
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>And we&rsquo;re done!</p>
 <h2 id="experimenting-with-readelf">Experimenting with readelf</h2>
@@ -834,34 +832,34 @@ section header on demand. Therefore we must access the <code>section_headers</co
 force them to be parsed. To do this we must modify the <code>make_elf_symbolic</code>
 function in <code>s2e-config.lua</code>:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">make_symbolic_elf</span>(state, start_addr, buffer)
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- ...</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- ...</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- This will kick-start the parser. However, now we do care about the final</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- result, because we must access the section headers to force them to be</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- parsed</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">local</span> elf_file <span style="color:#f92672">=</span> Elf(state, start_addr, KaitaiStream(ss))
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- This will kick-start the parser. However, now we do care about the final</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- result, because we must access the section headers to force them to be</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- parsed</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">local</span> elf_file <span style="color:#f92672">=</span> Elf(state, start_addr, KaitaiStream(ss))
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- This will kick-start the section header parser</span>
-</span></span><span style="display:flex;"><span>    _ <span style="color:#f92672">=</span> elf_file.header.section_headers
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- This will kick-start the section header parser</span>
+</span></span><span style="display:flex;"><span>  _ <span style="color:#f92672">=</span> elf_file.header.section_headers
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
 </span></span></code></pre></div><p>Run <code>ksc</code> to regenerate <code>elf.lua</code>. Before we rerun S2E, let&rsquo;s take a look at
 <code>elf.lua</code>. In particular, the parsing of the section headers in the
 <code>section_headers</code>&rsquo; <code>get</code> method:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">Elf</span>.<span style="color:#a6e22e">EndianElf</span>.<span style="color:#a6e22e">property</span>.<span style="color:#a6e22e">section_headers</span>:<span style="color:#a6e22e">get</span>()
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- ...</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- ...</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>, self.qty_section_header <span style="color:#66d9ef">do</span>
-</span></span><span style="display:flex;"><span>        self._raw__m_section_headers[i] <span style="color:#f92672">=</span> <span style="color:#960050;background-color:#1e0010">\</span>
-</span></span><span style="display:flex;"><span>            self._io:read_bytes(self.section_header_entry_size)
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">local</span> _io <span style="color:#f92672">=</span> KaitaiStream(stringstream(self._raw__m_section_headers[i]))
-</span></span><span style="display:flex;"><span>        self._m_section_headers[i] <span style="color:#f92672">=</span> Elf.EndianElf.SectionHeader(self.s2e_state,
-</span></span><span style="display:flex;"><span>                                                                 self.start_addr,
-</span></span><span style="display:flex;"><span>                                                                 _io, self,
-</span></span><span style="display:flex;"><span>                                                                 self._root,
-</span></span><span style="display:flex;"><span>                                                                 self._is_le)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>, self.qty_section_header <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>    self._raw__m_section_headers[i] <span style="color:#f92672">=</span> <span style="color:#960050;background-color:#1e0010">\</span>
+</span></span><span style="display:flex;"><span>      self._io:read_bytes(self.section_header_entry_size)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">local</span> _io <span style="color:#f92672">=</span> KaitaiStream(stringstream(self._raw__m_section_headers[i]))
+</span></span><span style="display:flex;"><span>    self._m_section_headers[i] <span style="color:#f92672">=</span> Elf.EndianElf.SectionHeader(self.s2e_state,
+</span></span><span style="display:flex;"><span>                                                             self.start_addr,
+</span></span><span style="display:flex;"><span>                                                             _io, self,
+</span></span><span style="display:flex;"><span>                                                             self._root,
+</span></span><span style="display:flex;"><span>                                                             self._is_le)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">end</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- ...</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- ...</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
 </span></span></code></pre></div><p>Notice that <code>ksc</code> creates a local variable, <code>_io</code>, that gets passed to the
 <code>SectionHeader</code> constructor. This <code>_io</code> variable contains the raw data that
@@ -873,19 +871,19 @@ is created, this position is reset to zero, so using this position would result
 in an incorrect memory address being made symbolic. Fortunately, we can fix
 this with a small change to the Lua code:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>, self.qty_section_header <span style="color:#66d9ef">do</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- Get the absolute start address of the section header before it is parsed</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">local</span> _sec_hdr_start_addr <span style="color:#f92672">=</span> self.start_addr <span style="color:#f92672">+</span> self._io:pos()
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- Get the absolute start address of the section header before it is parsed</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">local</span> _sec_hdr_start_addr <span style="color:#f92672">=</span> self.start_addr <span style="color:#f92672">+</span> self._io:pos()
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    self._raw__m_section_headers[i] <span style="color:#f92672">=</span> <span style="color:#960050;background-color:#1e0010">\</span>
-</span></span><span style="display:flex;"><span>        self._io:read_bytes(self.section_header_entry_size)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">local</span> _io <span style="color:#f92672">=</span> KaitaiStream(stringstream(self._raw__m_section_headers[i]))
+</span></span><span style="display:flex;"><span>  self._raw__m_section_headers[i] <span style="color:#f92672">=</span> <span style="color:#960050;background-color:#1e0010">\</span>
+</span></span><span style="display:flex;"><span>    self._io:read_bytes(self.section_header_entry_size)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">local</span> _io <span style="color:#f92672">=</span> KaitaiStream(stringstream(self._raw__m_section_headers[i]))
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- Use the section header&#39;s start address instead of the ELF&#39;s start address</span>
-</span></span><span style="display:flex;"><span>    self._m_section_headers[i] <span style="color:#f92672">=</span> Elf.EndianElf.SectionHeader(self.s2e_state,
-</span></span><span style="display:flex;"><span>                                                             _sec_hdr_start_addr,
-</span></span><span style="display:flex;"><span>                                                             _io, self,
-</span></span><span style="display:flex;"><span>                                                             self._root,
-</span></span><span style="display:flex;"><span>                                                             self._is_le)
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- Use the section header&#39;s start address instead of the ELF&#39;s start address</span>
+</span></span><span style="display:flex;"><span>  self._m_section_headers[i] <span style="color:#f92672">=</span> Elf.EndianElf.SectionHeader(self.s2e_state,
+</span></span><span style="display:flex;"><span>                                                           _sec_hdr_start_addr,
+</span></span><span style="display:flex;"><span>                                                           _io, self,
+</span></span><span style="display:flex;"><span>                                                           self._root,
+</span></span><span style="display:flex;"><span>                                                           self._is_le)
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
 </span></span></code></pre></div><p>Yes, hacking the generated Lua code is kind of disgusting. However, it ensures
 that the correct memory address is made symbolic. When I reran S2E, forking was
