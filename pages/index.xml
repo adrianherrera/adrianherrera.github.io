@@ -26,7 +26,7 @@ Magma: A Ground-Truth Fuzzing Benchmark. Ahmad Hazimeh, Adrian Herrera, and Math
       
       <guid>https://adrianherrera.github.io/pages/about/</guid>
       <description>Hi there! My name is Adrian Herrera. I am a security researcher interested in applying program analysis techniques to reverse engineering and software security problems. This blog is mainly about those things.
-In addition to my day job, I am a PhD student at the Australian National University (ANU) under the supervision of Tony Hosking (ANU) and Mathias Payer (EPFL). In a previous life I worked on the S2E symbolic execution engine.</description>
+In addition to my day job, I am a PhD student at the Australian National University (ANU) under the supervision of Tony Hosking (ANU), Michael Norrish (ANU), and Mathias Payer (EPFL). In a previous life I worked on the S2E symbolic execution engine.</description>
     </item>
     
   </channel>
