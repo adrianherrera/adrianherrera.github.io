@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pages on Adrian&#39;s Blog: from ⊤ to ⊥</title>
+    <link>https://adrianherrera.github.io/pages/</link>
+    <description>Recent content in Pages on Adrian&#39;s Blog: from ⊤ to ⊥</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>Copyright (c) 2023, all rights reserved.</copyright>
+    <lastBuildDate>Sun, 05 Mar 2023 09:44:19 +1100</lastBuildDate><atom:link href="https://adrianherrera.github.io/pages/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Publications</title>
+      <link>https://adrianherrera.github.io/pages/publications/</link>
+      <pubDate>Sun, 05 Mar 2023 09:44:19 +1100</pubDate>
+      
+      <guid>https://adrianherrera.github.io/pages/publications/</guid>
+      <description>Conference Proceedings Evocatio: Conjuring Bug Capabilities from a Single PoC. Zhiyuan Jiang, Shuitao Gan, Adrian Herrera, Flavio Toffalini, Lucio Romerio, Chaojing Tang, Manuel Egele, Chao Zhang, and Mathias Payer. In CCS&#39;22: Computer and Communications Security.
+Seed Selection for Successful Fuzzing. Adrian Herrera, Hendra Gunadi, Shane Magrath, Michael Norrish, Mathias Payer, and Antony L. Hosking. In ISSTA&#39;21: International Symposium on Software Testing and Analysis.
+Magma: A Ground-Truth Fuzzing Benchmark. Ahmad Hazimeh, Adrian Herrera, and Mathias Payer.</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>https://adrianherrera.github.io/pages/about/</link>
+      <pubDate>Mon, 07 Aug 2017 07:00:31 +0200</pubDate>
+      
+      <guid>https://adrianherrera.github.io/pages/about/</guid>
+      <description>Hi there! My name is Adrian Herrera. I am a security researcher interested in applying program analysis techniques to reverse engineering and software security problems. This blog is mainly about those things.
+In addition to my day job, I am a PhD student at the Australian National University (ANU) under the supervision of Tony Hosking (ANU) and Mathias Payer (EPFL). In a previous life I worked on the S2E symbolic execution engine.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -6,39 +6,15 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Copyright (c) 2023, all rights reserved.</copyright>
-    <lastBuildDate>Sun, 02 Sep 2018 12:08:25 +1100</lastBuildDate><atom:link href="https://adrianherrera.github.io/index.xml" rel="self" type="application/rss+xml" /><icon>https://adrianherrera.github.io/img/logo.png</icon>
-    
-    
-    <item>
-      <title>About</title>
-      <link>https://adrianherrera.github.io/about/</link>
-      <pubDate>Mon, 07 Aug 2017 07:00:31 +0200</pubDate>
-      
-      <guid>https://adrianherrera.github.io/about/</guid>
-      <description><![CDATA[<p>Hi there! My name is Adrian Herrera. I am a security researcher interested in
-applying program analysis techniques to reverse engineering and software
-security problems. This blog is mainly about those things.</p>
-<p>In addition to my day job, I am also a PhD student at the <a href="http://www.anu.edu.au/">Australian National
-University</a> under the supervision of <a href="http://hosking.github.io/">Tony
-Hosking</a> (ANU) and <a href="https://nebelwelt.net/">Mathias
-Payer</a> (EPFL).
-In a previous life I worked on the <a href="http://s2e.systems">S2E</a> symbolic execution
-engine.</p>
-<p>When I&rsquo;m not breaking software I like to run, climb, and take
-<a href="https://www.instagram.com/adrian.herrera87/">photos</a> of things (generally not
-at the same time).</p>
-]]></description>
-      
-    </item>
-    
+    <lastBuildDate>Sun, 05 Mar 2023 09:44:19 +1100</lastBuildDate><atom:link href="https://adrianherrera.github.io/index.xml" rel="self" type="application/rss+xml" /><icon>https://adrianherrera.github.io/img/logo.png</icon>
     
     
     <item>
       <title>Publications</title>
-      <link>https://adrianherrera.github.io/publications/</link>
+      <link>https://adrianherrera.github.io/pages/publications/</link>
       <pubDate>Sun, 05 Mar 2023 09:44:19 +1100</pubDate>
       
-      <guid>https://adrianherrera.github.io/publications/</guid>
+      <guid>https://adrianherrera.github.io/pages/publications/</guid>
       <description><![CDATA[<h1 id="conference-proceedings">Conference Proceedings</h1>
 <ul>
 <li>
@@ -2310,6 +2286,31 @@ libc, etc.), using full-system emulation is probably overkill (however, as I&rsq
 hopefully demonstrated, it can be done!). However for more complex software
 (e.g. device drivers, software with more complex interaction with the system,
 etc.), S2E may be the more suitable choice.</p>
+]]></description>
+      
+    </item>
+    
+    
+    
+    <item>
+      <title>About</title>
+      <link>https://adrianherrera.github.io/pages/about/</link>
+      <pubDate>Mon, 07 Aug 2017 07:00:31 +0200</pubDate>
+      
+      <guid>https://adrianherrera.github.io/pages/about/</guid>
+      <description><![CDATA[<p>Hi there! My name is Adrian Herrera. I am a security researcher interested in
+applying program analysis techniques to reverse engineering and software
+security problems. This blog is mainly about those things.</p>
+<p>In addition to my day job, I am a PhD student at the <a href="http://www.anu.edu.au/">Australian National
+University</a> (ANU) under the supervision of <a href="http://hosking.github.io/">Tony
+Hosking</a> (ANU) and <a href="https://nebelwelt.net/">Mathias
+Payer</a> (EPFL).
+In a previous life I worked on the <a href="http://s2e.systems">S2E</a> symbolic execution
+engine. I regularly contribute to open-source software (mostly focused around
+program analysis and software security. Unsurprisingly).</p>
+<p>When I&rsquo;m not breaking software I like to run, climb, and take
+<a href="https://www.instagram.com/adrian.herrera87/">photos</a> of things (generally not
+at the same time).</p>
 ]]></description>
       
     </item>

@@ -6,6 +6,43 @@
     <description>Recent content in Tags on Adrian&#39;s Blog: from ⊤ to ⊥</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <copyright>Copyright (c) 2023, all rights reserved.</copyright><atom:link href="https://adrianherrera.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>Copyright (c) 2023, all rights reserved.</copyright>
+    <lastBuildDate>Sun, 02 Sep 2018 12:08:25 +1100</lastBuildDate><atom:link href="https://adrianherrera.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>malware analysis</title>
+      <link>https://adrianherrera.github.io/tags/malware-analysis/</link>
+      <pubDate>Sun, 02 Sep 2018 12:08:25 +1100</pubDate>
+      
+      <guid>https://adrianherrera.github.io/tags/malware-analysis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>s2e</title>
+      <link>https://adrianherrera.github.io/tags/s2e/</link>
+      <pubDate>Sun, 02 Sep 2018 12:08:25 +1100</pubDate>
+      
+      <guid>https://adrianherrera.github.io/tags/s2e/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>symbolic execution</title>
+      <link>https://adrianherrera.github.io/tags/symbolic-execution/</link>
+      <pubDate>Sun, 02 Sep 2018 12:08:25 +1100</pubDate>
+      
+      <guid>https://adrianherrera.github.io/tags/symbolic-execution/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kaitai struct</title>
+      <link>https://adrianherrera.github.io/tags/kaitai-struct/</link>
+      <pubDate>Mon, 23 Oct 2017 21:35:48 +1100</pubDate>
+      
+      <guid>https://adrianherrera.github.io/tags/kaitai-struct/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>

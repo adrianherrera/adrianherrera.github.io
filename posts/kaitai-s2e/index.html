@@ -36,6 +36,8 @@
 <meta name="author" content="" />
 
     
+        <meta name="keywords" content='kaitai struct, s2e, symbolic execution' />
+    
     
         <meta name="description" content="y I&amp;rsquo;ve been playing around with file parsers in S2E. This typically involves calling s2ecmd symbfile to make the parser&amp;rsquo;s input symbolic and then running S2E to explore different paths through the parser. However, this is a relatively heavy-handed approach; it makes the entire input file one big symbolic blob, which quickly causes path explosion. Additionally, we may only be interested in exploring paths that exercise specific functionality.
 So how can we achieve more targeted symbolic execution on file-based programs such as parsers?" />
@@ -52,6 +54,14 @@ So how can we achieve more targeted symbolic execution on file-based programs su
     <meta
         property="article:published_time"
         content='2017-10-23T21:35:48Z&#43;1100' />
+    
+        
+            <meta property="article:tag" content="kaitai struct" />
+        
+            <meta property="article:tag" content="s2e" />
+        
+            <meta property="article:tag" content="symbolic execution" />
+        
     
     <meta property="og:url" content="https://adrianherrera.github.io/posts/kaitai-s2e/" />
     
@@ -108,14 +118,20 @@ So how can we achieve more targeted symbolic execution on file-based programs su
             <li><a href="/posts">Posts</a></li>
         
         
-            <li><a href="/publications">Publications</a></li>
         
         
         
+            <li><a href="https://adrianherrera.github.io/pages/publications/">
+                Publications
+            </a></li>
+        
+            <li><a href="https://adrianherrera.github.io/pages/about/">
+                About
+            </a></li>
         
         
-            <li><a href="/about/">About</a></li>
         
+            <li><a href="/tags">Tags</a></li>
         
         
     </ul>
@@ -934,6 +950,25 @@ probably get around these problems with a bit more work (and a lot more code).
 However, I think I&rsquo;ll save that for a future post :)</p>
 </div>
 </article>
+
+    <hr />
+    <p class="articleTagsContainer">
+        <span> </span>
+        <strong>Tags:</strong>
+        
+            <a
+                
+                href="/tags/kaitai-struct">#kaitai struct</a>
+        
+            <a
+                
+                href="/tags/s2e">#s2e</a>
+        
+            <a
+                
+                href="/tags/symbolic-execution">#symbolic execution</a>
+        
+    </p>
 
 
 

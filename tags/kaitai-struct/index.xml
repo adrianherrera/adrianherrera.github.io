@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>kaitai struct on Adrian&#39;s Blog: from ⊤ to ⊥</title>
+    <link>https://adrianherrera.github.io/tags/kaitai-struct/</link>
+    <description>Recent content in kaitai struct on Adrian&#39;s Blog: from ⊤ to ⊥</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>Copyright (c) 2023, all rights reserved.</copyright>
+    <lastBuildDate>Mon, 23 Oct 2017 21:35:48 +1100</lastBuildDate><atom:link href="https://adrianherrera.github.io/tags/kaitai-struct/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>&#34;Targeting&#34; File Parsers with S2E and Kaitai Struct</title>
+      <link>https://adrianherrera.github.io/posts/kaitai-s2e/</link>
+      <pubDate>Mon, 23 Oct 2017 21:35:48 +1100</pubDate>
+      
+      <guid>https://adrianherrera.github.io/posts/kaitai-s2e/</guid>
+      <description>Introduction Recently I&amp;rsquo;ve been playing around with file parsers in S2E. This typically involves calling s2ecmd symbfile to make the parser&amp;rsquo;s input symbolic and then running S2E to explore different paths through the parser. However, this is a relatively heavy-handed approach; it makes the entire input file one big symbolic blob, which quickly causes path explosion. Additionally, we may only be interested in exploring paths that exercise specific functionality.
+So how can we achieve more targeted symbolic execution on file-based programs such as parsers?</description>
+    </item>
+    
+  </channel>
+</rss>

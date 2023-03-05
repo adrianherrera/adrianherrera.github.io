@@ -2,33 +2,49 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://adrianherrera.github.io/about/</loc>
-    <lastmod>2017-08-07T07:00:31+02:00</lastmod>
-  </url><url>
-    <loc>https://adrianherrera.github.io/publications/</loc>
+    <loc>https://adrianherrera.github.io/</loc>
     <lastmod>2023-03-05T09:44:19+11:00</lastmod>
   </url><url>
-    <loc>https://adrianherrera.github.io/</loc>
-    <lastmod>2018-09-02T12:08:25+11:00</lastmod>
+    <loc>https://adrianherrera.github.io/pages/</loc>
+    <lastmod>2023-03-05T09:44:19+11:00</lastmod>
+  </url><url>
+    <loc>https://adrianherrera.github.io/pages/publications/</loc>
+    <lastmod>2023-03-05T09:44:19+11:00</lastmod>
   </url><url>
     <loc>https://adrianherrera.github.io/posts/malware-s2e/</loc>
+    <lastmod>2018-09-02T12:08:25+11:00</lastmod>
+  </url><url>
+    <loc>https://adrianherrera.github.io/tags/malware-analysis/</loc>
     <lastmod>2018-09-02T12:08:25+11:00</lastmod>
   </url><url>
     <loc>https://adrianherrera.github.io/posts/</loc>
     <lastmod>2018-09-02T12:08:25+11:00</lastmod>
   </url><url>
+    <loc>https://adrianherrera.github.io/tags/s2e/</loc>
+    <lastmod>2018-09-02T12:08:25+11:00</lastmod>
+  </url><url>
+    <loc>https://adrianherrera.github.io/tags/symbolic-execution/</loc>
+    <lastmod>2018-09-02T12:08:25+11:00</lastmod>
+  </url><url>
+    <loc>https://adrianherrera.github.io/tags/</loc>
+    <lastmod>2018-09-02T12:08:25+11:00</lastmod>
+  </url><url>
     <loc>https://adrianherrera.github.io/posts/kaitai-s2e/</loc>
+    <lastmod>2017-10-23T21:35:48+11:00</lastmod>
+  </url><url>
+    <loc>https://adrianherrera.github.io/tags/kaitai-struct/</loc>
     <lastmod>2017-10-23T21:35:48+11:00</lastmod>
   </url><url>
     <loc>https://adrianherrera.github.io/posts/google-ctf-2016/</loc>
     <lastmod>2017-08-08T11:50:51+02:00</lastmod>
+  </url><url>
+    <loc>https://adrianherrera.github.io/pages/about/</loc>
+    <lastmod>2017-08-07T07:00:31+02:00</lastmod>
   </url><url>
     <loc>https://adrianherrera.github.io/categories/</loc>
   </url><url>
     <loc>https://adrianherrera.github.io/manifest/index.json</loc>
   </url><url>
     <loc>https://adrianherrera.github.io/search/</loc>
-  </url><url>
-    <loc>https://adrianherrera.github.io/tags/</loc>
   </url>
 </urlset>
