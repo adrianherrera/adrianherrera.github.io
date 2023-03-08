@@ -58,7 +58,7 @@ In <strong>SCAM'20</strong>: Source Code Analysis and Manipulation.</p>
 </ul>
 <h2 id="journal-publications">Journal Publications</h2>
 <ul>
-<li><strong>datAFLow: Toward a Data-Flow-Guided Fuzzer</strong>.
+<li><a href="/publications/dataflow.pdf">datAFLow: Toward a Data-Flow-Guided Fuzzer</a>.
 <strong>Adrian Herrera</strong>, Mathias Payer, and Antony L. Hosking.
 In <strong>TOSEM'23</strong>: Transactions on Software Engineering Methodologies.</li>
 </ul>
