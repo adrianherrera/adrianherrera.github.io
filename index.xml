@@ -58,9 +58,16 @@ In <strong>SCAM'20</strong>: Source Code Analysis and Manipulation.</p>
 </ul>
 <h2 id="journal-publications">Journal Publications</h2>
 <ul>
-<li><a href="/publications/dataflow.pdf">datAFLow: Toward a Data-Flow-Guided Fuzzer</a>.
+<li>
+<p><a href="/publications/dataflow.pdf">datAFLow: Toward a Data-Flow-Guided Fuzzer</a>.
 <strong>Adrian Herrera</strong>, Mathias Payer, and Antony L. Hosking.
-In <strong>TOSEM'23</strong>: Transactions on Software Engineering Methodologies.</li>
+In <strong>TOSEM'23</strong>: Transactions on Software Engineering Methodologies.</p>
+</li>
+<li>
+<p><a href="/publications/deep-bugs.pdf">Discover deeper bugs with dynamic symbolic execution and coverage-based fuzz testing</a>.
+Bin Zhang, Chao Feng, <strong>Adrian Herrera</strong>, Vitaly Chipounov, George Candea, and Chaojing Tang.
+In <strong>IET SOFTWARE'18</strong>.</p>
+</li>
 </ul>
 <h2 id="technical-reports">Technical Reports</h2>
 <ul>
