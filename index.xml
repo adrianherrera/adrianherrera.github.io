@@ -10,12 +10,30 @@
     
     
     <item>
-      <title>Publications</title>
-      <link>https://adrianherrera.github.io/pages/publications/</link>
+      <title>Academics</title>
+      <link>https://adrianherrera.github.io/pages/academics/</link>
       <pubDate>Sun, 05 Mar 2023 09:44:19 +1100</pubDate>
       
-      <guid>https://adrianherrera.github.io/pages/publications/</guid>
-      <description><![CDATA[<h2 id="conference-proceedings">Conference Proceedings</h2>
+      <guid>https://adrianherrera.github.io/pages/academics/</guid>
+      <description><![CDATA[<p>A summary of my academic endeavours.</p>
+<div class="toc">
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#publications">Publications</a>
+      <ul>
+        <li><a href="#conference-proceedings">Conference Proceedings</a></li>
+        <li><a href="#workshop-proceedings">Workshop Proceedings</a></li>
+        <li><a href="#journal-publications">Journal Publications</a></li>
+        <li><a href="#technical-reports">Technical Reports</a></li>
+      </ul>
+    </li>
+    <li><a href="#service">Service</a></li>
+  </ul>
+</nav>
+</div>
+
+<h2 id="publications">Publications</h2>
+<h3 id="conference-proceedings">Conference Proceedings</h3>
 <ul>
 <li>
 <p><a href="/publications/evocatio.pdf">Evocatio: Conjuring Bug Capabilities from a Single PoC</a>.
@@ -43,7 +61,7 @@ In <strong>AISC'2015</strong>: Australiasian Information Security Conference.</p
 In <strong>LCN'12</strong>: Local Computer Networks.</p>
 </li>
 </ul>
-<h2 id="workshop-proceedings">Workshop Proceedings</h2>
+<h3 id="workshop-proceedings">Workshop Proceedings</h3>
 <ul>
 <li>
 <p><a href="/publications/dataflow-rr.pdf">Registered Report: datAFLow - Towards a Data-Flow-Guided Fuzzer</a>.
@@ -56,7 +74,7 @@ In <strong>FUZZING'22</strong>: International Fuzzing Workshop.</p>
 In <strong>SCAM'20</strong>: Source Code Analysis and Manipulation.</p>
 </li>
 </ul>
-<h2 id="journal-publications">Journal Publications</h2>
+<h3 id="journal-publications">Journal Publications</h3>
 <ul>
 <li>
 <p><a href="/publications/dataflow.pdf">datAFLow: Toward a Data-Flow-Guided Fuzzer</a>.
@@ -69,11 +87,19 @@ Bin Zhang, Chao Feng, <strong>Adrian Herrera</strong>, Vitaly Chipounov, George 
 In <strong>IET SOFTWARE'18</strong>.</p>
 </li>
 </ul>
-<h2 id="technical-reports">Technical Reports</h2>
+<h3 id="technical-reports">Technical Reports</h3>
 <ul>
 <li><a href="/publications/ipv6.pdf">How Secure is the Next-Generation Internet? An Examination of IPv6</a>.
 <strong>Adrian Herrera</strong>.
 Defence Science and Technology Group (DSTG) Technical Report.</li>
+</ul>
+<h2 id="service">Service</h2>
+<ul>
+<li>Artifact evaluation committee, 17th IEEE <a href="https://wootconference.org/">Workshop on Offensive Technologies</a> (WOOT)</li>
+<li>Technical reviewer, <a href="https://www.amazon.com/Fuzzing-Against-Machine-Automate-vulnerability-ebook/dp/B0BSNNBP1D">Fuzzing Against the Machine: Automated vulnerability research with emulated IoT devices on Qemu</a></li>
+<li>Artifact evaluation committee, 1st International <a href="https://fuzzingworkshop.github.io/editions/2022/index.html">Fuzzing Workshop</a> (FUZZING)</li>
+<li>Organizing committee, <a href="https://research.csiro.au/csss/">CSIRO&rsquo;s Data61 &amp; DSTG Cyber Security Summer School</a> (CSSS)</li>
+<li>Organizing committee, 9th <a href="https://www.issisp.org/2018/">International Summer School on Information Security and Protection</a> (ISSIP)</li>
 </ul>
 ]]></description>
       
