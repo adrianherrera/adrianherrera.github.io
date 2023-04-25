@@ -7,7 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Copyright (c) 2023, all rights reserved.</copyright>
-    <lastBuildDate>Sun, 05 Mar 2023 09:44:19 +1100</lastBuildDate><atom:link href="https://adrianherrera.github.io/pages/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 25 Apr 2023 14:29:43 +1000</lastBuildDate><atom:link href="https://adrianherrera.github.io/pages/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Talks</title>
+      <link>https://adrianherrera.github.io/pages/talks/</link>
+      <pubDate>Tue, 25 Apr 2023 14:29:43 +1000</pubDate>
+      
+      <guid>https://adrianherrera.github.io/pages/talks/</guid>
+      <description>Talks I&amp;rsquo;ve given.
+Hot Fuzz: &amp;ldquo;We&amp;rsquo;ve got grey, or&amp;hellip; white[box fuzzers]&amp;rdquo;. Australian Reverse Engineering and Vulnerability Research (AUREVR), Jun. 2022.
+Seed Selection for Successful Fuzzing. CSIRO&amp;rsquo;s Data61 &amp;amp; DST Cyber Security Summer School (CSSS), Feb. 2022.
+Analyzing Trigger-Based Malware with S2E. Malware Reverse Engineering (MRE), Jul. 2019.
+Optimizing Away JavaScript Obfuscation. BSides Canberra, Mar. 2019.
+Program Analysis for Reverse Engineers: from ⊤ to ⊥. BSides Canberra, Mar. 2018.</description>
+    </item>
+    
     <item>
       <title>Academics</title>
       <link>https://adrianherrera.github.io/pages/academics/</link>

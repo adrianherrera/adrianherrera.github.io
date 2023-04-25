@@ -6,7 +6,44 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Copyright (c) 2023, all rights reserved.</copyright>
-    <lastBuildDate>Sun, 05 Mar 2023 09:44:19 +1100</lastBuildDate><atom:link href="https://adrianherrera.github.io/index.xml" rel="self" type="application/rss+xml" /><icon>https://adrianherrera.github.io/img/logo.png</icon>
+    <lastBuildDate>Tue, 25 Apr 2023 14:29:43 +1000</lastBuildDate><atom:link href="https://adrianherrera.github.io/index.xml" rel="self" type="application/rss+xml" /><icon>https://adrianherrera.github.io/img/logo.png</icon>
+    
+    
+    <item>
+      <title>Talks</title>
+      <link>https://adrianherrera.github.io/pages/talks/</link>
+      <pubDate>Tue, 25 Apr 2023 14:29:43 +1000</pubDate>
+      
+      <guid>https://adrianherrera.github.io/pages/talks/</guid>
+      <description><![CDATA[<p>Talks I&rsquo;ve given.</p>
+<ul>
+<li>
+<p><a href="/talks/hotfuzz.pdf">Hot Fuzz: &ldquo;We&rsquo;ve got grey, or&hellip; white[box fuzzers]&rdquo;</a>.
+Australian Reverse Engineering and Vulnerability Research (AUREVR), Jun. 2022.</p>
+</li>
+<li>
+<p><a href="/talks/seed-select.pdf">Seed Selection for Successful Fuzzing</a>. CSIRO&rsquo;s
+Data61 &amp; DST <a href="https://research.csiro.au/csss/">Cyber Security Summer School</a>
+(CSSS), Feb. 2022.</p>
+</li>
+<li>
+<p><a href="/talks/s2e-malware.pdf">Analyzing Trigger-Based Malware with S2E</a>. <a href="https://federation.edu.au/icsl/past-mre-conferences/mre2019">Malware
+Reverse Engineering</a>
+(MRE), Jul. 2019.</p>
+</li>
+<li>
+<p><a href="/talks/optimize-js.pdf">Optimizing Away JavaScript Obfuscation</a>. <a href="https://www.bsidesau.com.au/2019/">BSides
+Canberra</a>, Mar. 2019.</p>
+</li>
+<li>
+<p><a href="/talks/program-analysis-re.pdf">Program Analysis for Reverse Engineers: from ⊤ to ⊥</a>.
+<a href="https://www.bsidesau.com.au/2018/">BSides Canberra</a>, Mar. 2018.</p>
+</li>
+</ul>
+]]></description>
+      
+    </item>
+    
     
     
     <item>
