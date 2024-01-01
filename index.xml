@@ -2366,17 +2366,20 @@ etc.), S2E may be the more suitable choice.</p>
 analysis techniques to reverse engineering and software security problems.
 I have a penchant for functional programming languages. This blog is mainly
 about those things.</p>
-<p>In addition to my day job, I am a PhD student at the <a href="http://www.anu.edu.au/">Australian National
-University</a> (ANU) under the supervision of <a href="http://hosking.github.io/">Tony
+<p>In addition to my day job as a researcher at
+<a href="https://www.interruptlabs.co.uk/">Interrupt Labs</a> I also teach <a href="https://programsandcourses.anu.edu.au/2022/course/comp3703">software
+security</a> to
+undergraduates at the <a href="https://www.anu.edu.au">Australian National University</a>.
+ANU is also where I completed my PhD, under the supervision of <a href="http://hosking.github.io/">Tony
 Hosking</a> (ANU),
 <a href="https://comp.anu.edu.au/people/michael-norrish/">Michael Norrish</a> (ANU), and
-<a href="https://nebelwelt.net/">Mathias Payer</a> (EPFL). I also teach ANU&rsquo;s <a href="https://programsandcourses.anu.edu.au/2022/course/comp3703">software
-security</a>
-undergraduate course.
-In a previous life I worked on the <a href="http://s2e.systems">S2E</a> symbolic execution
-engine. I regularly contribute to open-source software (mostly focused around
-program analysis and software security. Unsurprisingly). My CV is available
-<a href="/cv.pdf">here</a>.</p>
+<a href="https://nebelwelt.net/">Mathias Payer</a> (EPFL).</p>
+<p>In a previous life I undertook software security research at the <a href="https://www.dst.defence.gov.au/">Defence
+Science and Technology Group</a> (DSTG) and
+hacked on the <a href="http://s2e.systems">S2E</a> symbolic execution engine. I regularly
+contribute to open-source software (mostly focused around program analysis and
+software security. Unsurprisingly) and speak at both &ldquo;hacker&rdquo; and academic
+conferences in Australia. My CV is available <a href="/cv.pdf">here</a>.</p>
 <p>When I&rsquo;m not breaking software I like to run, climb, and take
 <a href="https://www.instagram.com/adrian.herrera87/">photos</a> of things (generally not
 at the same time).</p>
