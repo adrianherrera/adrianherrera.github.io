@@ -73,6 +73,13 @@ Canberra</a>, Mar. 2019.</p>
 <h3 id="conference-proceedings">Conference Proceedings</h3>
 <ul>
 <li>
+<p><a href="/publications/thompson.pdf">Make out like a (Multi-Armed) Bandit: Improving the Odds of Fuzzer Seed
+Scheduling with T-Scheduler</a>.
+Simon Luo, <strong>Adrian Herrera</strong>, Paul Quirk, Michael Chase, Damith C. Ranasinghe,
+and Salil S. Kanhere.
+In <strong>AsiaCCS'24</strong>: Asia Computer and Communications Security.</p>
+</li>
+<li>
 <p><a href="/publications/evocatio.pdf">Evocatio: Conjuring Bug Capabilities from a Single PoC</a>.
 Zhiyuan Jiang, Shuitao Gan, <strong>Adrian Herrera</strong>, Flavio Toffalini, Lucio Romerio, Chaojing Tang, Manuel Egele, Chao Zhang, and Mathias Payer.
 In <strong>CCS'22</strong>: Computer and Communications Security.</p>
@@ -2369,8 +2376,8 @@ about those things.</p>
 <p>In addition to my day job as a researcher at
 <a href="https://www.interruptlabs.co.uk/">Interrupt Labs</a> I also teach <a href="https://programsandcourses.anu.edu.au/2022/course/comp3703">software
 security</a> to
-undergraduates at the <a href="https://www.anu.edu.au">Australian National University</a>.
-ANU is also where I completed my PhD, under the supervision of <a href="http://hosking.github.io/">Tony
+undergraduates at the <a href="https://www.anu.edu.au">Australian National University</a>
+(ANU). ANU is also where I completed my PhD, under the supervision of <a href="http://hosking.github.io/">Tony
 Hosking</a> (ANU),
 <a href="https://comp.anu.edu.au/people/michael-norrish/">Michael Norrish</a> (ANU), and
 <a href="https://nebelwelt.net/">Mathias Payer</a> (EPFL).</p>
