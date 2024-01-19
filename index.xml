@@ -18,6 +18,10 @@
       <description><![CDATA[<p>Talks I&rsquo;ve given.</p>
 <ul>
 <li>
+<p>The Hitchhiker&rsquo;s Guide to Fuzzer Coverage Metrics.
+Australasian Software Engineering Summer School (ASESS), Jan. 2024.</p>
+</li>
+<li>
 <p><a href="/talks/hotfuzz.pdf">Hot Fuzz: &ldquo;We&rsquo;ve got grey, or&hellip; white[box fuzzers]&rdquo;</a>.
 Australian Reverse Engineering and Vulnerability Research (AUREVR), Jun. 2022.</p>
 </li>
