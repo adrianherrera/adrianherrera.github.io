@@ -14,14 +14,14 @@
       <link>https://adrianherrera.github.io/pages/talks/</link>
       <pubDate>Tue, 25 Apr 2023 14:29:43 +1000</pubDate>
       <guid>https://adrianherrera.github.io/pages/talks/</guid>
-      <description>Talks I&amp;rsquo;ve given.&#xA;The Hitchhiker&amp;rsquo;s Guide to Fuzzer Coverage Metrics. Australasian Software Engineering Summer School (ASESS), Jan. 2024.&#xA;Hot Fuzz: &amp;ldquo;We&amp;rsquo;ve got grey, or&amp;hellip; white[box fuzzers]&amp;rdquo;. Australian Reverse Engineering and Vulnerability Research (AUREVR), Jun. 2022.&#xA;Seed Selection for Successful Fuzzing. CSIRO&amp;rsquo;s Data61 &amp;amp; DST Cyber Security Summer School (CSSS), Feb. 2022.&#xA;Analyzing Trigger-Based Malware with S2E. Malware Reverse Engineering (MRE), Jul. 2019.&#xA;Optimizing Away JavaScript Obfuscation. BSides Canberra, Mar. 2019.</description>
+      <description>Talks I&amp;rsquo;ve given.&#xA;The Hitchhiker&amp;rsquo;s Guide to Fuzzer Coverage Metrics. Australasian Software Engineering Summer School (ASESS), 2024.&#xA;Hot Fuzz: &amp;ldquo;We&amp;rsquo;ve got grey, or&amp;hellip; white[box fuzzers]&amp;rdquo;. Australian Reverse Engineering and Vulnerability Research (AUREVR), 2022.&#xA;Seed Selection for Successful Fuzzing. CSIRO&amp;rsquo;s Data61 &amp;amp; DST Cyber Security Summer School (CSSS), 2022.&#xA;Analyzing Trigger-Based Malware with S2E. Malware Reverse Engineering (MRE), 2019.&#xA;Optimizing Away JavaScript Obfuscation. BSides Canberra, 2019.&#xA;Program Analysis for Reverse Engineers: from ⊤ to ⊥.</description>
     </item>
     <item>
       <title>Academics</title>
       <link>https://adrianherrera.github.io/pages/academics/</link>
       <pubDate>Sun, 05 Mar 2023 09:44:19 +1100</pubDate>
       <guid>https://adrianherrera.github.io/pages/academics/</guid>
-      <description>A summary of my academic endeavours.&#xA;Publications Conference Proceedings Workshop Proceedings Journal Publications Technical Reports Service Publications Conference Proceedings Make out like a (Multi-Armed) Bandit: Improving the Odds of Fuzzer Seed Scheduling with T-Scheduler. Simon Luo, Adrian Herrera, Paul Quirk, Michael Chase, Damith C. Ranasinghe, and Salil S. Kanhere. In AsiaCCS&#39;24: Asia Computer and Communications Security.&#xA;Evocatio: Conjuring Bug Capabilities from a Single PoC. Zhiyuan Jiang, Shuitao Gan, Adrian Herrera, Flavio Toffalini, Lucio Romerio, Chaojing Tang, Manuel Egele, Chao Zhang, and Mathias Payer.</description>
+      <description>A summary of my academic endeavours.&#xA;Publications Conference Proceedings Workshop Proceedings Journal Publications Technical Reports Service Publications Conference Proceedings Make out like a (Multi-Armed) Bandit: Improving the Odds of Fuzzer Seed Scheduling with T-Scheduler. Simon Luo, Adrian Herrera, Paul Quirk, Michael Chase, Damith C. Ranasinghe, and Salil S. Kanhere. Asia Computer and Communications Security (AsiaCCS), 2024.&#xA;Evocatio: Conjuring Bug Capabilities from a Single PoC. Zhiyuan Jiang, Shuitao Gan, Adrian Herrera, Flavio Toffalini, Lucio Romerio, Chaojing Tang, Manuel Egele, Chao Zhang, and Mathias Payer.</description>
     </item>
     <item>
       <title>About</title>
