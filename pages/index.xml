@@ -4,7 +4,7 @@
     <title>Pages on Software Security from ⊤ to ⊥</title>
     <link>https://adrianherrera.github.io/pages/</link>
     <description>Recent content in Pages on Software Security from ⊤ to ⊥</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en</language>
     <copyright>Copyright (c) 2023, all rights reserved.</copyright>
     <lastBuildDate>Tue, 25 Apr 2023 14:29:43 +1000</lastBuildDate>
@@ -28,7 +28,7 @@
       <link>https://adrianherrera.github.io/pages/about/</link>
       <pubDate>Mon, 07 Aug 2017 07:00:31 +0200</pubDate>
       <guid>https://adrianherrera.github.io/pages/about/</guid>
-      <description>Hi there! 👋&#xA;My name is Adrian. I am a security researcher interested in applying program analysis techniques to reverse engineering and software security problems. I have a penchant for functional programming languages. This blog is mainly about those things.&#xA;In addition to my day job as a researcher at Interrupt Labs I also teach software security to undergraduates at the Australian National University (ANU). ANU is also where I completed my PhD, under the supervision of Tony Hosking (ANU), Michael Norrish (ANU), and Mathias Payer (EPFL).</description>
+      <description>Hi there! 👋&#xA;My name is Adrian. I am a security researcher interested in applying program analysis techniques to reverse engineering and software security problems. I have a penchant for functional programming (and programming languages theory writ large). This blog is mainly about those things.&#xA;In addition to my day job as a researcher at Interrupt Labs I also teach software security to students at the Australian National University (ANU). ANU is also where I completed my PhD, under the supervision of Tony Hosking (ANU), Michael Norrish (ANU), and Mathias Payer (EPFL).</description>
     </item>
   </channel>
 </rss>

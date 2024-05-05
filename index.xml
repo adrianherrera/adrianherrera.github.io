@@ -140,7 +140,7 @@ Defence Science and Technology Group (DSTG) Technical Report.</li>
 </ul>
 <h2 id="service">Service</h2>
 <ul>
-<li>Artifact evaluation committee, <a href="https://wootconference.org/">Workshop on Offensive Technologies</a> (WOOT), 2023.</li>
+<li>Artifact evaluation committee, <a href="https://wootconference.org/">Workshop on Offensive Technologies</a> (WOOT), 2023, 2024.</li>
 <li>Technical reviewer, <a href="https://www.amazon.com/Fuzzing-Against-Machine-Automate-vulnerability-ebook/dp/B0BSNNBP1D">Fuzzing Against the Machine: Automated vulnerability research with emulated IoT devices on Qemu</a>, 2022.</li>
 <li>Artifact evaluation committee, <a href="https://fuzzingworkshop.github.io/editions/2022/index.html">International Fuzzing Workshop</a> (FUZZING), 2022.</li>
 <li>Organizing committee, <a href="https://research.csiro.au/csss/">CSIRO&rsquo;s Data61 &amp; DSTG Cyber Security Summer School</a> (CSSS), 2022.</li>
@@ -614,7 +614,7 @@ required):</p>
 constraints generated at each of these four fork points. The following image
 shows a disassembly with these points highlighted.</p>
 <figure><a href="/img/getlocaltime_test-binja.png"><img src="/img/getlocaltime_test-binja.png"
-         alt="GetLocalTime-test fork points"/></a>
+    alt="GetLocalTime-test fork points"></a>
 </figure>
 
 <p><code>ReadLSB w16 X SystemTime</code> can be understood as &ldquo;read 16 bits (i.e. one <code>WORD</code>)
@@ -653,7 +653,7 @@ on the sample discussed in Amanda Rousseau&rsquo;s excellent
 <h3 id="disassembly">Disassembly</h3>
 <p>Let&rsquo;s take a quick look at the WannaCry killswitch in a disassembler.</p>
 <figure><a href="/img/wannacry-killswitch.png"><img src="/img/wannacry-killswitch.png"
-         alt="WannaCry killswitch"/></a>
+    alt="WannaCry killswitch"></a>
 </figure>
 
 <p>We can see that the
@@ -1089,7 +1089,7 @@ successfully hooked (i.e. before returning <code>TRUE</code>).</p>
 GUI), you&rsquo;ll eventually be rewarded with the following (depending on the value
 chosen for <code>CHILD_PROCESS_TIMEOUT</code>):</p>
 <figure><a href="/img/wannacry-s2e.png"><img src="/img/wannacry-s2e.png"
-         alt="WannaCry infection"/></a>
+    alt="WannaCry infection"></a>
 </figure>
 
 <h2 id="conclusion-and-next-steps">Conclusion and next steps</h2>
@@ -1673,15 +1673,15 @@ indicate blocks that were executed by S2E. Fork points have also been annotated
 with their constraints (in KLEE&rsquo;s
 <a href="https://klee.github.io/docs/kquery/">KQuery</a> format):</p>
 <figure><a href="/img/readelf-process_section_headers.png"><img src="/img/readelf-process_section_headers.png"
-         alt="readelf proccess_section_headers code coverage"/></a><figcaption>
-            <p>readelf&rsquo;s process_section_headers code coverage</p>
-        </figcaption>
+    alt="readelf proccess_section_headers code coverage"></a><figcaption>
+      <p>readelf&rsquo;s process_section_headers code coverage</p>
+    </figcaption>
 </figure>
 
 <figure><a href="/img/readelf-init_dwarf_regnames.png"><img src="/img/readelf-init_dwarf_regnames.png"
-         alt="readelf init_dwarf_regnames code coverage"/></a><figcaption>
-            <p>readelf&rsquo;s init_dwarf_regnames code coverage</p>
-        </figcaption>
+    alt="readelf init_dwarf_regnames code coverage"></a><figcaption>
+      <p>readelf&rsquo;s init_dwarf_regnames code coverage</p>
+    </figcaption>
 </figure>
 
 <p>Forking also occurs when checking:</p>
@@ -1901,7 +1901,7 @@ ELF executable) accepts a single command line argument (the product activation
 code). If this argument is not provided the program will print a usage message
 and exit.</p>
 <figure><a href="/img/google-ctf-2016-binja.png"><img src="/img/google-ctf-2016-binja.png"
-         alt="Disassembly view"/></a>
+    alt="Disassembly view"></a>
 </figure>
 
 <p>If the product activation code is provided, the argument is copied into the
@@ -2372,12 +2372,12 @@ etc.), S2E may be the more suitable choice.</p>
       <description><![CDATA[<p>Hi there! 👋</p>
 <p>My name is Adrian. I am a security researcher interested in applying program
 analysis techniques to reverse engineering and software security problems.
-I have a penchant for functional programming languages. This blog is mainly
-about those things.</p>
+I have a penchant for functional programming (and programming languages theory
+writ large). This blog is mainly about those things.</p>
 <p>In addition to my day job as a researcher at
 <a href="https://www.interruptlabs.co.uk/">Interrupt Labs</a> I also teach <a href="https://programsandcourses.anu.edu.au/2022/course/comp3703">software
 security</a> to
-undergraduates at the <a href="https://www.anu.edu.au">Australian National University</a>
+students at the <a href="https://www.anu.edu.au">Australian National University</a>
 (ANU). ANU is also where I completed my PhD, under the supervision of <a href="http://hosking.github.io/">Tony
 Hosking</a> (ANU),
 <a href="https://comp.anu.edu.au/people/michael-norrish/">Michael Norrish</a> (ANU), and
