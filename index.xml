@@ -38,8 +38,12 @@ CSIRO&rsquo;s Data61 &amp; DST <a href="https://research.csiro.au/csss/">Cyber S
 <a href="https://federation.edu.au/icsl/past-mre-conferences/mre2019">Malware Reverse Engineering</a> (MRE), 2019.</p>
 </li>
 <li>
-<p><a href="/talks/2019-bsides.pdf">Optimizing Away JavaScript Obfuscation</a>.
+<p><a href="/talks/2019-bsides.pdf">Deobfuscating JavaScript Malware</a>.
 <a href="https://www.bsidesau.com.au/2019/">BSides Canberra</a>, 2019.</p>
+</li>
+<li>
+<p>JavaScript Obfuscation.
+<a href="https://www.bsidesau.com.au/2019/csides.html">CSides Canberra</a>, 2018.</p>
 </li>
 <li>
 <p><a href="/talks/2018-bsides.pdf">Program Analysis for Reverse Engineers: from ⊤ to ⊥</a>.
