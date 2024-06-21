@@ -18,6 +18,10 @@
       <description><![CDATA[<p>Talks I&rsquo;ve given.</p>
 <ul>
 <li>
+<p>Building Domain-Specific Fuzzers.
+Australian Reverse Engineering and Vulnerability Research (AUREVR), 2024.</p>
+</li>
+<li>
 <p><a href="/talks/2024-asess.pdf">The Hitchhiker&rsquo;s Guide to Fuzzer Coverage Metrics</a>.
 <a href="https://sites.google.com/view/asess2024/home">Australasian Software Engineering Summer School</a> (ASESS), 2024.</p>
 </li>
