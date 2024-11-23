@@ -11,21 +11,5 @@
   "theme_color": "#db5793"
   
   
-    ,
-    "icons": [
-      {
-        "src": "/img/icon512.png",
-        "sizes": "512x512",
-        "type": "image/png",
-        "purpose": "maskable"
-      },
-      {
-        "src": "/img/icon512.png",
-        "sizes": "512x512",
-        "type": "image/png",
-        "purpose": "any"
-      }
-    ]
-  
 }
 

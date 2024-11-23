@@ -1,12 +1,11 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><?xml-stylesheet href="/feed_style.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="https://www.rssboard.org/media-rss">
   <channel>
     <title>Categories on Software Security from ⊤ to ⊥</title>
     <link>https://adrianherrera.github.io/categories/</link>
     <description>Recent content in Categories on Software Security from ⊤ to ⊥</description>
-    <generator>Hugo</generator>
+    <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <copyright>Copyright (c) 2023, all rights reserved.</copyright>
-    <atom:link href="https://adrianherrera.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>Copyright (c) 2023, all rights reserved.</copyright><atom:link href="https://adrianherrera.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><icon>https://adrianherrera.github.io/img/logo.png</icon>
+    
   </channel>
 </rss>

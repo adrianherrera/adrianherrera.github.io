@@ -1,41 +1,60 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><?xml-stylesheet href="/feed_style.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="https://www.rssboard.org/media-rss">
   <channel>
     <title>Tags on Software Security from ⊤ to ⊥</title>
     <link>https://adrianherrera.github.io/tags/</link>
     <description>Recent content in Tags on Software Security from ⊤ to ⊥</description>
-    <generator>Hugo</generator>
+    <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Copyright (c) 2023, all rights reserved.</copyright>
-    <lastBuildDate>Sun, 02 Sep 2018 12:08:25 +1100</lastBuildDate>
-    <atom:link href="https://adrianherrera.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 02 Sep 2018 12:08:25 +1100</lastBuildDate><atom:link href="https://adrianherrera.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><icon>https://adrianherrera.github.io/img/logo.png</icon>
+    
+    
     <item>
       <title>Malware Analysis</title>
       <link>https://adrianherrera.github.io/tags/malware-analysis/</link>
       <pubDate>Sun, 02 Sep 2018 12:08:25 +1100</pubDate>
+      
       <guid>https://adrianherrera.github.io/tags/malware-analysis/</guid>
-      <description></description>
+      <description><![CDATA[]]></description>
+      
     </item>
+    
+    
+    
     <item>
       <title>S2e</title>
       <link>https://adrianherrera.github.io/tags/s2e/</link>
       <pubDate>Sun, 02 Sep 2018 12:08:25 +1100</pubDate>
+      
       <guid>https://adrianherrera.github.io/tags/s2e/</guid>
-      <description></description>
+      <description><![CDATA[]]></description>
+      
     </item>
+    
+    
+    
     <item>
       <title>Symbolic Execution</title>
       <link>https://adrianherrera.github.io/tags/symbolic-execution/</link>
       <pubDate>Sun, 02 Sep 2018 12:08:25 +1100</pubDate>
+      
       <guid>https://adrianherrera.github.io/tags/symbolic-execution/</guid>
-      <description></description>
+      <description><![CDATA[]]></description>
+      
     </item>
+    
+    
+    
     <item>
       <title>Kaitai Struct</title>
       <link>https://adrianherrera.github.io/tags/kaitai-struct/</link>
       <pubDate>Mon, 23 Oct 2017 21:35:48 +1100</pubDate>
+      
       <guid>https://adrianherrera.github.io/tags/kaitai-struct/</guid>
-      <description></description>
+      <description><![CDATA[]]></description>
+      
     </item>
+    
+    
   </channel>
 </rss>

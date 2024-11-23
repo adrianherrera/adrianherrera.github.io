@@ -1,34 +1,212 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><?xml-stylesheet href="/feed_style.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="https://www.rssboard.org/media-rss">
   <channel>
     <title>Pages on Software Security from ⊤ to ⊥</title>
     <link>https://adrianherrera.github.io/pages/</link>
     <description>Recent content in Pages on Software Security from ⊤ to ⊥</description>
-    <generator>Hugo</generator>
+    <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Copyright (c) 2023, all rights reserved.</copyright>
-    <lastBuildDate>Tue, 25 Apr 2023 14:29:43 +1000</lastBuildDate>
-    <atom:link href="https://adrianherrera.github.io/pages/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 25 Apr 2023 14:29:43 +1000</lastBuildDate><atom:link href="https://adrianherrera.github.io/pages/index.xml" rel="self" type="application/rss+xml" /><icon>https://adrianherrera.github.io/img/logo.png</icon>
+    
+    
     <item>
       <title>Talks</title>
       <link>https://adrianherrera.github.io/pages/talks/</link>
       <pubDate>Tue, 25 Apr 2023 14:29:43 +1000</pubDate>
+      
       <guid>https://adrianherrera.github.io/pages/talks/</guid>
-      <description>Talks I&amp;rsquo;ve given.&#xA;Building Domain-Specific Fuzzers. Australian Reverse Engineering and Vulnerability Research (AUREVR), 2024.&#xA;The Hitchhiker&amp;rsquo;s Guide to Fuzzer Coverage Metrics. Australasian Software Engineering Summer School (ASESS), 2024.&#xA;Code Analysis with Databases. CSides Canberra, 2023.&#xA;Hot Fuzz: &amp;ldquo;We&amp;rsquo;ve got grey, or&amp;hellip; white[box fuzzers]&amp;rdquo;. Australian Reverse Engineering and Vulnerability Research (AUREVR), 2022.&#xA;Seed Selection for Successful Fuzzing. CSIRO&amp;rsquo;s Data61 &amp;amp; DST Cyber Security Summer School (CSSS), 2022.&#xA;Analyzing Trigger-Based Malware with S2E.</description>
+      <description><![CDATA[<p>Talks I&rsquo;ve given.</p>
+<ul>
+<li>
+<p>Building Domain-Specific Fuzzers.
+Australian Reverse Engineering and Vulnerability Research (AUREVR), 2024.</p>
+</li>
+<li>
+<p><a href="/talks/2024-asess.pdf">The Hitchhiker&rsquo;s Guide to Fuzzer Coverage Metrics</a>.
+<a href="https://sites.google.com/view/asess2024/home">Australasian Software Engineering Summer School</a> (ASESS), 2024.</p>
+</li>
+<li>
+<p><a href="/talks/2023-csides.pdf">Code Analysis with Databases</a>.
+<a href="https://www.bsidesau.com.au/2023/csides.html">CSides Canberra</a>, 2023.</p>
+</li>
+<li>
+<p><a href="/talks/2022-aurevr.pdf">Hot Fuzz: &ldquo;We&rsquo;ve got grey, or&hellip; white[box fuzzers]&rdquo;</a>.
+Australian Reverse Engineering and Vulnerability Research (AUREVR), 2022.</p>
+</li>
+<li>
+<p><a href="/talks/2022-csss.pdf">Seed Selection for Successful Fuzzing</a>.
+CSIRO&rsquo;s Data61 &amp; DST <a href="https://research.csiro.au/csss/">Cyber Security Summer School</a> (CSSS), 2022.</p>
+</li>
+<li>
+<p><a href="/talks/2019-mre.pdf">Analyzing Trigger-Based Malware with S2E</a>.
+<a href="https://federation.edu.au/icsl/past-mre-conferences/mre2019">Malware Reverse Engineering</a> (MRE), 2019.</p>
+</li>
+<li>
+<p><a href="/talks/2019-bsides.pdf">Deobfuscating JavaScript Malware</a>.
+<a href="https://www.bsidesau.com.au/2019/">BSides Canberra</a>, 2019.</p>
+</li>
+<li>
+<p>JavaScript Obfuscation.
+<a href="https://www.bsidesau.com.au/2019/csides.html">CSides Canberra</a>, 2018.</p>
+</li>
+<li>
+<p><a href="/talks/2018-bsides.pdf">Program Analysis for Reverse Engineers: from ⊤ to ⊥</a>.
+<a href="https://www.bsidesau.com.au/2018/">BSides Canberra</a>, 2018.</p>
+</li>
+</ul>
+]]></description>
+      
     </item>
+    
+    
+    
     <item>
       <title>Academics</title>
       <link>https://adrianherrera.github.io/pages/academics/</link>
       <pubDate>Sun, 05 Mar 2023 09:44:19 +1100</pubDate>
+      
       <guid>https://adrianherrera.github.io/pages/academics/</guid>
-      <description>A summary of my academic endeavours.&#xA;Publications Conferences Workshops Journals Theses Technical Reports Service Publications Conferences Make out like a (Multi-Armed) Bandit: Improving the Odds of Fuzzer Seed Scheduling with T-Scheduler. Simon Luo, Adrian Herrera, Paul Quirk, Michael Chase, Damith C. Ranasinghe, and Salil S. Kanhere. Asia Computer and Communications Security (AsiaCCS), 2024.&#xA;Evocatio: Conjuring Bug Capabilities from a Single PoC. Zhiyuan Jiang, Shuitao Gan, Adrian Herrera, Flavio Toffalini, Lucio Romerio, Chaojing Tang, Manuel Egele, Chao Zhang, and Mathias Payer.</description>
+      <description><![CDATA[<p>A summary of my academic endeavours.</p>
+<div class="toc">
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#publications">Publications</a>
+      <ul>
+        <li><a href="#conferences">Conferences</a></li>
+        <li><a href="#workshops">Workshops</a></li>
+        <li><a href="#journals">Journals</a></li>
+        <li><a href="#theses">Theses</a></li>
+        <li><a href="#technical-reports">Technical Reports</a></li>
+      </ul>
+    </li>
+    <li><a href="#service">Service</a></li>
+  </ul>
+</nav>
+</div>
+
+<h2 id="publications">Publications</h2>
+<h3 id="conferences">Conferences</h3>
+<ul>
+<li>
+<p><a href="/publications/thompson.pdf">Make out like a (Multi-Armed) Bandit: Improving the Odds of Fuzzer Seed
+Scheduling with T-Scheduler</a>.
+Simon Luo, <strong>Adrian Herrera</strong>, Paul Quirk, Michael Chase, Damith C. Ranasinghe, and Salil S. Kanhere.
+Asia Computer and Communications Security (AsiaCCS), 2024.</p>
+</li>
+<li>
+<p><a href="/publications/evocatio.pdf">Evocatio: Conjuring Bug Capabilities from a Single PoC</a>.
+Zhiyuan Jiang, Shuitao Gan, <strong>Adrian Herrera</strong>, Flavio Toffalini, Lucio Romerio, Chaojing Tang, Manuel Egele, Chao Zhang, and Mathias Payer.
+Computer and Communications Security (CCS), 2022.</p>
+</li>
+<li>
+<p><a href="/publications/seed-selection.pdf">Seed Selection for Successful Fuzzing</a>.
+<strong>Adrian Herrera</strong>, Hendra Gunadi, Shane Magrath, Michael Norrish, Mathias Payer, and Antony L. Hosking.
+International Symposium on Software Testing and Analysis (ISSTA), 2021.</p>
+</li>
+<li>
+<p><a href="/publications/magma.pdf">Magma: A Ground-Truth Fuzzing Benchmark</a>.
+Ahmad Hazimeh, <strong>Adrian Herrera</strong>, and Mathias Payer.
+SIGMETRICS, 2021.</p>
+</li>
+<li>
+<p><a href="/publications/jmd.pdf">JMD: A Hybrid Approach for Detecting Java Malware</a>.
+<strong>Adrian Herrera</strong> and Ben Cheney.
+Australiasian Information Security Conference (AISC), 2015.</p>
+</li>
+<li>
+<p><a href="/publications/key-distro-wsn.pdf">A Key Distribution Protocol for Wireless Sensor Networks</a>.
+<strong>Adrian Herrera</strong> and Wen Hu.
+Local Computer Networks (LCN), 2012.</p>
+</li>
+</ul>
+<h3 id="workshops">Workshops</h3>
+<ul>
+<li>
+<p><a href="/publications/dataflow-rr.pdf">Registered Report: datAFLow - Towards a Data-Flow-Guided Fuzzer</a>.
+<strong>Adrian Herrera</strong>, Mathias Payer, and Antony L. Hosking.
+International Fuzzing Workshop (FUZZING), 2022.</p>
+</li>
+<li>
+<p><a href="/publications/safe-deobs.pdf">Optimizing Away JavaScript Obfuscation</a>.
+<strong>Adrian Herrera</strong>.
+Source Code Analysis and Manipulation (SCAM), 2020.</p>
+</li>
+</ul>
+<h3 id="journals">Journals</h3>
+<ul>
+<li>
+<p><a href="/publications/dataflow.pdf">datAFLow: Toward a Data-Flow-Guided Fuzzer</a>.
+<strong>Adrian Herrera</strong>, Mathias Payer, and Antony L. Hosking.
+Transactions on Software Engineering Methodologies (TOSEM), 2023.</p>
+</li>
+<li>
+<p><a href="/publications/deep-bugs.pdf">Discover deeper bugs with dynamic symbolic execution and coverage-based fuzz testing</a>.
+Bin Zhang, Chao Feng, <strong>Adrian Herrera</strong>, Vitaly Chipounov, George Candea, and Chaojing Tang.
+IET Software, 2018.</p>
+</li>
+</ul>
+<h3 id="theses">Theses</h3>
+<ul>
+<li><a href="">State Space Search in Fuzzing</a>.
+<strong>Adrian Herrera</strong>.
+PhD thesis.</li>
+</ul>
+<h3 id="technical-reports">Technical Reports</h3>
+<ul>
+<li><a href="/publications/ipv6.pdf">How Secure is the Next-Generation Internet? An Examination of IPv6</a>.
+<strong>Adrian Herrera</strong>.
+Defence Science and Technology Group (DSTG) Technical Report.</li>
+</ul>
+<h2 id="service">Service</h2>
+<ul>
+<li>Artifact evaluation committee, <a href="https://wootconference.org/">Workshop on Offensive Technologies</a> (WOOT), 2023, 2024.</li>
+<li>Technical reviewer, <a href="https://www.amazon.com/Fuzzing-Against-Machine-Automate-vulnerability-ebook/dp/B0BSNNBP1D">Fuzzing Against the Machine: Automated vulnerability research with emulated IoT devices on Qemu</a>, 2022.</li>
+<li>Artifact evaluation committee, <a href="https://fuzzingworkshop.github.io/editions/2022/index.html">International Fuzzing Workshop</a> (FUZZING), 2022.</li>
+<li>Organizing committee, <a href="https://research.csiro.au/csss/">CSIRO&rsquo;s Data61 &amp; DSTG Cyber Security Summer School</a> (CSSS), 2022.</li>
+<li>Organizing committee, <a href="https://www.issisp.org/2018/">International Summer School on Information Security and Protection</a> (ISSIP), 2018.</li>
+</ul>
+]]></description>
+      
     </item>
+    
+    
+    
     <item>
       <title>About</title>
       <link>https://adrianherrera.github.io/pages/about/</link>
       <pubDate>Mon, 07 Aug 2017 07:00:31 +0200</pubDate>
+      
       <guid>https://adrianherrera.github.io/pages/about/</guid>
-      <description>Hi there! 👋&#xA;My name is Adrian. I am a security researcher interested in applying program analysis techniques to reverse engineering and software security problems. I have a penchant for functional programming (and programming languages theory writ large). This blog is mainly about those things.&#xA;In addition to my day job as a researcher at Interrupt Labs I also teach software security to students at the Australian National University (ANU). ANU is also where I completed my PhD, under the supervision of Tony Hosking (ANU), Mathias Payer (EPFL), and Michael Norrish (ANU).</description>
+      <description><![CDATA[<p>Hi there! 👋</p>
+<p>My name is Adrian. I am a security researcher interested in applying program
+analysis techniques to reverse engineering and software security problems.
+I have a penchant for functional programming (and programming languages theory
+writ large). This blog is mainly about those things.</p>
+<p>In addition to my day job as a researcher at
+<a href="https://www.interruptlabs.co.uk/">Interrupt Labs</a> I also teach <a href="https://programsandcourses.anu.edu.au/2022/course/comp3703">software
+security</a> to
+students at the <a href="https://www.anu.edu.au">Australian National University</a>
+(ANU). ANU is also where I completed my PhD, under the supervision of <a href="http://hosking.github.io/">Tony
+Hosking</a> (ANU),
+<a href="https://nebelwelt.net/">Mathias Payer</a> (EPFL), and
+<a href="https://comp.anu.edu.au/people/michael-norrish/">Michael Norrish</a> (ANU).</p>
+<p>In a previous life I undertook software security research at the <a href="https://www.dst.defence.gov.au/">Defence
+Science and Technology Group</a> (DSTG) and
+hacked on the <a href="http://s2e.systems">S2E</a> symbolic execution engine at the
+<a href="https://dslab.epfl.ch/">Dependable Systems Lab</a> (DSLab). I regularly contribute
+to <a href="https://github.com/adrianherrera">open-source software</a> (mostly focused
+around program analysis and software security. Unsurprisingly) and speak at both
+&ldquo;hacker&rdquo; and academic conferences in Australia. My CV is available
+<a href="/cv.pdf">here</a>.</p>
+<p>When I&rsquo;m not breaking software I like to run, climb, and take
+<a href="https://www.instagram.com/adrian.herrera87/">photos</a> of things (generally not
+at the same time).</p>
+<h3 id="contact">Contact</h3>
+<p>My Twitter DMs are open. Start there.</p>
+]]></description>
+      
     </item>
+    
+    
   </channel>
 </rss>
