@@ -91,32 +91,32 @@ CSIRO&rsquo;s Data61 &amp; DST <a href="https://research.csiro.au/csss/">Cyber S
 <p><a href="/publications/thompson.pdf">Make out like a (Multi-Armed) Bandit: Improving the Odds of Fuzzer Seed
 Scheduling with T-Scheduler</a>.
 Simon Luo, <strong>Adrian Herrera</strong>, Paul Quirk, Michael Chase, Damith C. Ranasinghe, and Salil S. Kanhere.
-Asia Computer and Communications Security (AsiaCCS), 2024.</p>
+<em>Asia Computer and Communications Security</em> (AsiaCCS), 2024.</p>
 </li>
 <li>
 <p><a href="/publications/evocatio.pdf">Evocatio: Conjuring Bug Capabilities from a Single PoC</a>.
 Zhiyuan Jiang, Shuitao Gan, <strong>Adrian Herrera</strong>, Flavio Toffalini, Lucio Romerio, Chaojing Tang, Manuel Egele, Chao Zhang, and Mathias Payer.
-Computer and Communications Security (CCS), 2022.</p>
+<em>Computer and Communications Security</em> (CCS), 2022.</p>
 </li>
 <li>
 <p><a href="/publications/seed-selection.pdf">Seed Selection for Successful Fuzzing</a>.
 <strong>Adrian Herrera</strong>, Hendra Gunadi, Shane Magrath, Michael Norrish, Mathias Payer, and Antony L. Hosking.
-International Symposium on Software Testing and Analysis (ISSTA), 2021.</p>
+<em>International Symposium on Software Testing and Analysis</em> (ISSTA), 2021.</p>
 </li>
 <li>
 <p><a href="/publications/magma.pdf">Magma: A Ground-Truth Fuzzing Benchmark</a>.
 Ahmad Hazimeh, <strong>Adrian Herrera</strong>, and Mathias Payer.
-SIGMETRICS, 2021.</p>
+<em>SIGMETRICS</em>, 2021.</p>
 </li>
 <li>
 <p><a href="/publications/jmd.pdf">JMD: A Hybrid Approach for Detecting Java Malware</a>.
 <strong>Adrian Herrera</strong> and Ben Cheney.
-Australiasian Information Security Conference (AISC), 2015.</p>
+<em>Australiasian Information Security Conference</em> (AISC), 2015.</p>
 </li>
 <li>
 <p><a href="/publications/key-distro-wsn.pdf">A Key Distribution Protocol for Wireless Sensor Networks</a>.
 <strong>Adrian Herrera</strong> and Wen Hu.
-Local Computer Networks (LCN), 2012.</p>
+<em>Local Computer Networks</em> (LCN), 2012.</p>
 </li>
 </ul>
 <h3 id="workshops">Workshops</h3>
@@ -124,12 +124,12 @@ Local Computer Networks (LCN), 2012.</p>
 <li>
 <p><a href="/publications/dataflow-rr.pdf">Registered Report: datAFLow - Towards a Data-Flow-Guided Fuzzer</a>.
 <strong>Adrian Herrera</strong>, Mathias Payer, and Antony L. Hosking.
-International Fuzzing Workshop (FUZZING), 2022.</p>
+<em>International Fuzzing Workshop</em> (FUZZING), 2022.</p>
 </li>
 <li>
 <p><a href="/publications/safe-deobs.pdf">Optimizing Away JavaScript Obfuscation</a>.
 <strong>Adrian Herrera</strong>.
-Source Code Analysis and Manipulation (SCAM), 2020.</p>
+<em>Source Code Analysis and Manipulation</em> (SCAM), 2020.</p>
 </li>
 </ul>
 <h3 id="journals">Journals</h3>
@@ -137,33 +137,33 @@ Source Code Analysis and Manipulation (SCAM), 2020.</p>
 <li>
 <p><a href="/publications/dataflow.pdf">datAFLow: Toward a Data-Flow-Guided Fuzzer</a>.
 <strong>Adrian Herrera</strong>, Mathias Payer, and Antony L. Hosking.
-Transactions on Software Engineering Methodologies (TOSEM), 2023.</p>
+<em>Transactions on Software Engineering Methodologies</em> (TOSEM), 2023.</p>
 </li>
 <li>
 <p><a href="/publications/deep-bugs.pdf">Discover deeper bugs with dynamic symbolic execution and coverage-based fuzz testing</a>.
 Bin Zhang, Chao Feng, <strong>Adrian Herrera</strong>, Vitaly Chipounov, George Candea, and Chaojing Tang.
-IET Software, 2018.</p>
+<em>IET Software</em>, 2018.</p>
 </li>
 </ul>
 <h3 id="theses">Theses</h3>
 <ul>
 <li><a href="">State Space Search in Fuzzing</a>.
 <strong>Adrian Herrera</strong>.
-PhD thesis, 2024.</li>
+<em>PhD thesis</em>, 2024.</li>
 </ul>
 <h3 id="technical-reports">Technical Reports</h3>
 <ul>
 <li><a href="/publications/ipv6.pdf">How Secure is the Next-Generation Internet? An Examination of IPv6</a>.
 <strong>Adrian Herrera</strong>.
-Defence Science and Technology Group (DSTG) Technical Report, 2012.</li>
+<em>Defence Science and Technology Group (DSTG) Technical Report</em>, 2012.</li>
 </ul>
 <h2 id="service">Service</h2>
 <ul>
-<li>Artifact evaluation committee, <a href="https://wootconference.org/">Workshop on Offensive Technologies</a> (WOOT), 2023, 2024.</li>
-<li>Technical reviewer, <a href="https://www.amazon.com/Fuzzing-Against-Machine-Automate-vulnerability-ebook/dp/B0BSNNBP1D">Fuzzing Against the Machine: Automated vulnerability research with emulated IoT devices on Qemu</a>, 2022.</li>
-<li>Artifact evaluation committee, <a href="https://fuzzingworkshop.github.io/editions/2022/index.html">International Fuzzing Workshop</a> (FUZZING), 2022.</li>
-<li>Organizing committee, <a href="https://research.csiro.au/csss/">CSIRO&rsquo;s Data61 &amp; DSTG Cyber Security Summer School</a> (CSSS), 2022.</li>
-<li>Organizing committee, <a href="https://www.issisp.org/2018/">International Summer School on Information Security and Protection</a> (ISSIP), 2018.</li>
+<li>Artifact evaluation committee, <a href="https://wootconference.org/"><em>Workshop on Offensive Technologies</em></a> (WOOT), 2023, 2024.</li>
+<li>Technical reviewer, <a href="https://www.amazon.com/Fuzzing-Against-Machine-Automate-vulnerability-ebook/dp/B0BSNNBP1D"><em>Fuzzing Against the Machine: Automated vulnerability research with emulated IoT devices on Qemu</em></a>, 2022.</li>
+<li>Artifact evaluation committee, <a href="https://fuzzingworkshop.github.io/editions/2022/index.html"><em>International Fuzzing Workshop</em></a> (FUZZING), 2022.</li>
+<li>Organizing committee, <a href="https://research.csiro.au/csss/"><em>CSIRO&rsquo;s Data61 &amp; DSTG Cyber Security Summer School</em></a> (CSSS), 2022.</li>
+<li>Organizing committee, <a href="https://www.issisp.org/2018/"><em>International Summer School on Information Security and Protection</em></a> (ISSIP), 2018.</li>
 </ul>
 ]]></description>
       
