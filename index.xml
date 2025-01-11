@@ -159,6 +159,7 @@ Bin Zhang, Chao Feng, <strong>Adrian Herrera</strong>, Vitaly Chipounov, George 
 </ul>
 <h2 id="service">Service</h2>
 <ul>
+<li>Artifact evaluation committee, <a href="https://www.usenix.org/conference/usenixsecurity25"><em>USENIX Security</em></a> (SEC), 2025.</li>
 <li>Artifact evaluation committee, <a href="https://wootconference.org/"><em>Workshop on Offensive Technologies</em></a> (WOOT), 2023, 2024.</li>
 <li>Technical reviewer, <a href="https://www.amazon.com/Fuzzing-Against-Machine-Automate-vulnerability-ebook/dp/B0BSNNBP1D"><em>Fuzzing Against the Machine: Automated vulnerability research with emulated IoT devices on Qemu</em></a>, 2022.</li>
 <li>Artifact evaluation committee, <a href="https://fuzzingworkshop.github.io/editions/2022/index.html"><em>International Fuzzing Workshop</em></a> (FUZZING), 2022.</li>
@@ -632,7 +633,7 @@ required):</p>
 <code>--verbose-fork-info</code> KLEE argument (in <code>s2e-config.lua</code>) we can see the
 constraints generated at each of these four fork points. The following image
 shows a disassembly with these points highlighted.</p>
-<figure><a href="/img/getlocaltime_test-binja.png"><img src="/img/getlocaltime_test-binja.png"
+<figure><a href="img/getlocaltime_test-binja.png"><img src="/posts/malware-s2e/img/getlocaltime_test-binja.png"
     alt="GetLocalTime-test fork points"></a>
 </figure>
 
@@ -671,7 +672,7 @@ on the sample discussed in Amanda Rousseau&rsquo;s excellent
 (MD5 hash db349b97c37d22f5ea1d1841e3c89eb4).</p>
 <h3 id="disassembly">Disassembly</h3>
 <p>Let&rsquo;s take a quick look at the WannaCry killswitch in a disassembler.</p>
-<figure><a href="/img/wannacry-killswitch.png"><img src="/img/wannacry-killswitch.png"
+<figure><a href="img/wannacry-killswitch.png"><img src="/posts/malware-s2e/img/wannacry-killswitch.png"
     alt="WannaCry killswitch"></a>
 </figure>
 
@@ -1107,7 +1108,7 @@ successfully hooked (i.e. before returning <code>TRUE</code>).</p>
 </span></span></code></pre></div><p>If you comment out <code>GRAPHICS=-nographic</code> in <code>launch-s2e.sh</code> (to enable the QEMU
 GUI), you&rsquo;ll eventually be rewarded with the following (depending on the value
 chosen for <code>CHILD_PROCESS_TIMEOUT</code>):</p>
-<figure><a href="/img/wannacry-s2e.png"><img src="/img/wannacry-s2e.png"
+<figure><a href="img/wannacry-s2e.png"><img src="/posts/malware-s2e/img/wannacry-s2e.png"
     alt="WannaCry infection"></a>
 </figure>
 
@@ -1691,13 +1692,13 @@ following images show snippets of two functions from readelf:
 indicate blocks that were executed by S2E. Fork points have also been annotated
 with their constraints (in KLEE&rsquo;s
 <a href="https://klee.github.io/docs/kquery/">KQuery</a> format):</p>
-<figure><a href="/img/readelf-process_section_headers.png"><img src="/img/readelf-process_section_headers.png"
+<figure><a href="img/readelf-process_section_headers.png"><img src="/posts/kaitai-s2e/img/readelf-process_section_headers.png"
     alt="readelf proccess_section_headers code coverage"></a><figcaption>
       <p>readelf&rsquo;s process_section_headers code coverage</p>
     </figcaption>
 </figure>
 
-<figure><a href="/img/readelf-init_dwarf_regnames.png"><img src="/img/readelf-init_dwarf_regnames.png"
+<figure><a href="img/readelf-init_dwarf_regnames.png"><img src="/posts/kaitai-s2e/img/readelf-init_dwarf_regnames.png"
     alt="readelf init_dwarf_regnames code coverage"></a><figcaption>
       <p>readelf&rsquo;s init_dwarf_regnames code coverage</p>
     </figcaption>
@@ -1919,7 +1920,7 @@ have discussed, an initial static analysis reveals that the binary (a 64-bit
 ELF executable) accepts a single command line argument (the product activation
 code). If this argument is not provided the program will print a usage message
 and exit.</p>
-<figure><a href="/img/google-ctf-2016-binja.png"><img src="/img/google-ctf-2016-binja.png"
+<figure><a href="img/binja.png"><img src="/posts/google-ctf-2016/img/binja.png"
     alt="Disassembly view"></a>
 </figure>
 

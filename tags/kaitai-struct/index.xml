@@ -550,13 +550,13 @@ following images show snippets of two functions from readelf:
 indicate blocks that were executed by S2E. Fork points have also been annotated
 with their constraints (in KLEE&rsquo;s
 <a href="https://klee.github.io/docs/kquery/">KQuery</a> format):</p>
-<figure><a href="/img/readelf-process_section_headers.png"><img src="/img/readelf-process_section_headers.png"
+<figure><a href="img/readelf-process_section_headers.png"><img src="/posts/kaitai-s2e/img/readelf-process_section_headers.png"
     alt="readelf proccess_section_headers code coverage"></a><figcaption>
       <p>readelf&rsquo;s process_section_headers code coverage</p>
     </figcaption>
 </figure>
 
-<figure><a href="/img/readelf-init_dwarf_regnames.png"><img src="/img/readelf-init_dwarf_regnames.png"
+<figure><a href="img/readelf-init_dwarf_regnames.png"><img src="/posts/kaitai-s2e/img/readelf-init_dwarf_regnames.png"
     alt="readelf init_dwarf_regnames code coverage"></a><figcaption>
       <p>readelf&rsquo;s init_dwarf_regnames code coverage</p>
     </figcaption>
