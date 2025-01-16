@@ -181,13 +181,13 @@ Bin Zhang, Chao Feng, <strong>Adrian Herrera</strong>, Vitaly Chipounov, George 
       <description><![CDATA[<p>Hi there! 👋</p>
 <p>My name is Adrian. I am a security researcher interested in applying program
 analysis techniques to reverse engineering and software security problems.
-I have a penchant for functional programming (and programming languages theory
-writ large). This blog is mainly about those things.</p>
+I have a penchant for programming languages theory. This blog is mainly about
+these things.</p>
 <p>In addition to my day job as a researcher at
-<a href="https://www.interruptlabs.co.uk/">Interrupt Labs</a> I also teach <a href="https://programsandcourses.anu.edu.au/2022/course/comp3703">software
-security</a> to
-students at the <a href="https://www.anu.edu.au">Australian National University</a>
-(ANU). ANU is also where I completed my PhD, under the supervision of <a href="http://hosking.github.io/">Tony
+<a href="https://www.interruptlabs.co.uk/">Interrupt Labs</a> I teach <a href="https://programsandcourses.anu.edu.au/course/comp3703">software
+security</a> at the
+<a href="https://www.anu.edu.au">Australian National University</a> (ANU). ANU is also
+where I completed my PhD, under the supervision of <a href="http://hosking.github.io/">Tony
 Hosking</a> (ANU),
 <a href="https://nebelwelt.net/">Mathias Payer</a> (EPFL), and
 <a href="https://comp.anu.edu.au/people/michael-norrish/">Michael Norrish</a> (ANU).</p>
@@ -199,7 +199,7 @@ to <a href="https://github.com/adrianherrera">open-source software</a> (mostly f
 around program analysis and software security. Unsurprisingly) and speak at both
 &ldquo;hacker&rdquo; and academic conferences in Australia. My CV is available
 <a href="/pages/about/cv.pdf">here</a>.</p>
-<p>When I&rsquo;m not breaking software I like to run, climb, and take
+<p>When I&rsquo;m not writing/breaking software I like to cook, run, climb, and take
 <a href="https://www.instagram.com/adrian.herrera87/">photos</a> of things (generally not
 at the same time).</p>
 ]]></description>
