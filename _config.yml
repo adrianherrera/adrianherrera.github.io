@@ -5,7 +5,7 @@ title: Adrian Herrera
 description: Personal website
 author: Adrian Herrera
 
-remote_theme: daattali/beautiful-jekyll@6.0.1
+remote_theme: daattali/beautiful-jekyll@master
 avatar: "/assets/img/head.jpg"
 paginate_path: "/blog/page:num/"
 
@@ -17,8 +17,8 @@ navbar-links:
 
 social-network-links:
   github: adrianherrera
-  bluesky: adrianherrera
+  bluesky: adrianherrera.bsky.social
   twitter: 0xadr1an
   linkedin: adrian-herrera-53425a260
   google-scholar: ghtw2qwAAAAJ
-  orcid: 0000-0001-9234-1694
+  ORCID: 0000-0001-9234-1694
