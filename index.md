@@ -1,31 +1,33 @@
 ---
 layout: page
 title: Adrian Herrera
+subtitle: Security Researcher
 ---
 
 Hi there! 👋
 
-My name is Adrian. I am a security researcher interested in applying program
+My name is Adrian. I'm a security researcher interested in applying program
 analysis techniques to reverse engineering and software security problems.
-I have a penchant for programming languages theory and formal methods. I have a
-(rarely updated) blog that is mainly about these things.
+I also have an interest in programming languages theory and formal methods,
+which often shapes the way I think about problems. I occasionally write about
+these topics in my (infrequently updated) blog.
 
-In addition to my day job as a researcher at
-[Interrupt Labs](https://www.interruptlabs.co.uk/) I teach [software
-  security](https://programsandcourses.anu.edu.au/course/comp3703) at the
-[Australian National University](https://www.anu.edu.au) (ANU). ANU is also
-where I completed my PhD, under the supervision of [Tony
-  Hosking](http://hosking.github.io/) (ANU),
+In my day job I'm a Principal Vulnerability Researcher and Head of Capabilities
+at [Interrupt Labs](https://www.interruptlabs.co.uk). I also teach [Software
+Security](https://programsandcourses.anu.edu.au/course/comp3703) at the
+[Australian National University](https://www.anu.edu.au) (ANU)—the same place
+where I completed my PhD, supervised by [Tony
+Hosking](http://hosking.github.io/) (ANU),
 [Mathias Payer](https://nebelwelt.net/) (EPFL), and
 [Michael Norrish](https://comp.anu.edu.au/people/michael-norrish/) (ANU).
 
-In a previous life I undertook software security research at the [Defence
-  Science and Technology Group](https://www.dst.defence.gov.au/) and
+In a previous life I conducted software security research at the [Defence
+Science and Technology Group](https://www.dst.defence.gov.au/) and
 hacked on the [S2E](http://s2e.systems) symbolic execution engine at the
 [Dependable Systems Lab](https://dslab.epfl.ch/). I regularly contribute
 to [open-source software](https://github.com/adrianherrera) (mostly focused
 around program analysis and software security. Unsurprisingly) and speak at both
-"hacker" and academic conferences in Australia. My CV is available
+"hacker" and academic conferences in Australia. You can find my CV
 [here](/assets/cv.pdf).
 
 When I'm not writing/breaking software I like to cook, run, climb, and take
