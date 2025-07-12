@@ -1,1 +1,3 @@
-gem "beautiful-jekyll-theme", "6.0.1"
+source "https://rubygems.org"
+
+gem "github-pages", "~> 232", group: :jekyll_plugins
