@@ -12,11 +12,11 @@ I also have an interest in programming languages theory and formal methods,
 which often shapes the way I think about problems. I occasionally write about
 these topics in my (infrequently updated) blog.
 
-In my day job I'm a Principal Vulnerability Researcher and Head of Capabilities
-at [Interrupt Labs](https://www.interruptlabs.co.uk). I also teach [Software
-Security](https://programsandcourses.anu.edu.au/course/comp3703) at the
-[Australian National University](https://www.anu.edu.au) (ANU)—the same place
-where I completed my PhD, supervised by [Tony
+In my day job I'm a Principal Vulnerability Researcher and the Head of
+Capabilities at [Interrupt Labs](https://www.interruptlabs.co.uk). I also teach
+[Software Security](https://programsandcourses.anu.edu.au/course/comp3703) at
+the [Australian National University](https://www.anu.edu.au) (ANU)—the same
+place where I completed my PhD, supervised by [Tony
 Hosking](http://hosking.github.io/) (ANU),
 [Mathias Payer](https://nebelwelt.net/) (EPFL), and
 [Michael Norrish](https://comp.anu.edu.au/people/michael-norrish/) (ANU).
