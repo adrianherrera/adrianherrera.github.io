@@ -7,7 +7,7 @@ Academic service.
 
 * Program committee, [_Source Code Analysis and Manipulation_](https://conf.researchr.org/home/scam-2025) (SCAM) engineering track, 2025.
 
-* Artifact evaluation committee, [_USENIX Security_](https://www.usenix.org/conference/usenixsecurity25) (SEC), 2025.
+* Artifact evaluation committee, [_USENIX Security_](https://www.usenix.org/conference/usenixsecurity25) (SEC), 2025. (**Noteworthy reviewer award**)
 
 * Artifact evaluation committee, [_Workshop on Offensive Technologies_](https://wootconference.org/) (WOOT), 2023, 2024.
 

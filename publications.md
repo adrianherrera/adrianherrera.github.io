@@ -27,6 +27,7 @@ _SIGMETRICS_, 2021.
 * [JMD: A Hybrid Approach for Detecting Java Malware](/assets/publications/jmd.pdf).
 **Adrian Herrera** and Ben Cheney.
 _Australiasian Information Security Conference_ (AISC), 2015.
+(**Best paper award**)
 
 * [A Key Distribution Protocol for Wireless Sensor Networks](/assets/publications/key-distro-wsn.pdf).
 **Adrian Herrera** and Wen Hu.

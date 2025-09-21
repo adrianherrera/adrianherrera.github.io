@@ -28,6 +28,7 @@ _Malware Reverse Engineering_ (MRE), 2019.
 
 * [Deobfuscating JavaScript Malware](/assets/talks/2019-bsides.pdf).
 _BSides Canberra_, 2019.
+(**Best speaker award**)
 
 * JavaScript Obfuscation.
 _CSides Canberra_, 2018.
