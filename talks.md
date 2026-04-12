@@ -5,6 +5,9 @@ title: Talks
 
 Technical talks I've given.
 
+* Redacted.
+_Australian Reverse Engineering and Vulnerability Research_ (AUREVR), 2026.
+
 * LLMs and Fuzzing: The Payload of the Future or Just Empty Bytes?
 _Australian Reverse Engineering and Vulnerability Research_ (AUREVR), 2025.
 
