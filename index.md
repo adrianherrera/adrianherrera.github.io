@@ -12,10 +12,10 @@ I also have an interest in programming languages theory and formal methods, whic
 I occasionally write about these topics in my (infrequently updated) blog.
 
 In my day job I'm the Head of Capabilities and a Principal Vulnerability Researcher at [Interrupt Labs](https://www.interruptlabs.co.uk).
-I also teach [Software Security](https://programsandcourses.anu.edu.au/course/comp3703)—and occasionally [Cyber Security Foundations](https://programsandcourses.anu.edu.au/course/comp2700)—at the [Australian National University](https://www.anu.edu.au) (ANU).
+I also teach [Vulnerability Research and Exploit Mitigation](https://programsandcourses.anu.edu.au/course/comp4703) (previously [Software Security](https://programsandcourses.anu.edu.au/course/comp3703))—and occasionally [Cyber Security Foundations](https://programsandcourses.anu.edu.au/course/comp2700)—at the [Australian National University](https://www.anu.edu.au) (ANU).
 ANU is also where I completed my PhD, supervised by [Tony Hosking](http://hosking.github.io/) (ANU), [Mathias Payer](https://nebelwelt.net/) (EPFL), and [Michael Norrish](https://comp.anu.edu.au/people/michael-norrish/) (ANU).
 
-In a previous life I conducted software security research at the [Defence Science and Technology Group](https://www.dst.defence.gov.au/) and hacked on the [S2E](http://s2e.systems) symbolic execution engine at the [Dependable Systems Lab](https://dslab.epfl.ch/).
+In a previous life I did cyber security research at the [Defence Science and Technology Group](https://www.dst.defence.gov.au/) and hacked on the [S2E](http://s2e.systems) symbolic execution engine at the [Dependable Systems Lab](https://dslab.epfl.ch/).
 I regularly contribute to [open-source software](https://github.com/adrianherrera) (unsurprisingly focused on program analysis and software security) and speak at both "hacker" and academic conferences in Australia.
 You can find my CV [here](/assets/cv.pdf).
 
