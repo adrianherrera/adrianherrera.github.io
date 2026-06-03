@@ -53,17 +53,17 @@ _Transactions on Software Engineering Methodologies_ (TOSEM), 2023.
 Bin Zhang, Chao Feng, **Adrian Herrera**, Vitaly Chipounov, George Candea, and Chaojing Tang.
 _IET Software_, 2018.
 
+## Preprints
+
+* [PeAR: Efficient Binary-Only Fuzzing Through Static Binary Rewriting](/assets/publications/pear.pdf).
+Alvin Charles, **Adrian Herrera**, Peter Oslington, Alwen Tiu.
+_arXiv preprint_, 2026.
+
 ## Theses
 
 * [State Space Search in Fuzzing](/assets/publications/phd.pdf).
 **Adrian Herrera**.
 _PhD thesis_, 2024.
-
-## Unpublished
-
-* [PeAR: Efficient Binary-Only Fuzzing Through Static Binary Rewriting](/assets/publications/pear.pdf).
-Alvin Charles, **Adrian Herrera**, Peter Oslington, Alwen Tiu.
-_arXiv preprint_, 2026.
 
 ## Technical Reports
 
