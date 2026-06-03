@@ -59,6 +59,12 @@ _IET Software_, 2018.
 **Adrian Herrera**.
 _PhD thesis_, 2024.
 
+## Unpublished
+
+* [PeAR: Efficient Binary-Only Fuzzing Through Static Binary Rewriting](/assets/publications/pear.pdf).
+Alvin Charles, **Adrian Herrera**, Peter Oslington, Alwen Tiu.
+_arXiv preprint_, 2026.
+
 ## Technical Reports
 
 * [How Secure is the Next-Generation Internet? An Examination of IPv6](/assets/publications/ipv6.pdf).
